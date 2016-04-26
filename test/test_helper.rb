@@ -13,3 +13,5 @@ reporter_options = { color: true, slow_count: 5, verbose: false, rerun_prefix: "
 Minitest::Reporters.use! [Minitest::Reporters::RakeRerunReporter.new(reporter_options)]
 
 
+require_relative "./playlyfe_test_class.rb"
+
