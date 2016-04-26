@@ -1,21 +1,47 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    ansi (1.5.0)
+    builder (3.2.2)
+    byebug (8.2.4)
+    coderay (1.1.1)
     json (1.8.2)
     jwt (1.5.0)
+    method_source (0.8.2)
+    minitest (5.8.4)
+    minitest-reporters (1.1.8)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     netrc (0.7.9)
     playlyfe (1.0.1)
       json (= 1.8.2)
       jwt (= 1.5.0)
       rest_client (= 1.7.2)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.3.0)
+      byebug (~> 8.0)
+      pry (~> 0.10)
+    pry-rails (0.3.4)
+      pry (>= 0.9.10)
     rest_client (1.7.2)
       netrc (~> 0.7.7)
+    ruby-progressbar (1.8.0)
+    slop (3.6.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  byebug
+  minitest-reporters
   playlyfe
+  pry-byebug
+  pry-rails
 
 BUNDLED WITH
    1.10.6
