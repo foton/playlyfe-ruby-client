@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'playlyfe'  #SDK for PlayLyfe API
-
+#gem 'playlyfe'  #SDK for PlayLyfe API
+gem 'rest_client'
+gem 'json'
+gem 'jwt'
 
 gem 'byebug'
 gem "pry-rails" # pry misto IRB v rails console

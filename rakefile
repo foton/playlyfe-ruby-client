@@ -1,4 +1,22 @@
+require "pry"
 task :default => :test
 task :test do
-  Dir.glob('./test/**/*_test.rb').each { |file| require file}
+  if ARGV.empty?
+    Dir.glob('./test/**/*_test.rb').each { |file| require file}
+  else
+    test_file=nil
+    test_opts=nil
+
+    ARGV.each do |arg|
+      if m=arg.match(/TEST=(.*)/)  
+        test_file=m[1]
+      elsif m=arg.match(/TESTOPTS=(.*)/)
+        test_opts=m[1]
+      end  
+    end
+
+    unless test_file.nil?
+      require test_file
+    end  
+  end  
 end

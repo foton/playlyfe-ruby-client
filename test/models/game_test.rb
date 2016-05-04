@@ -11,7 +11,7 @@ module Playlyfe
       # assert_equal "some_png", @game.image(:icon)
     end
 
-    def test_find_game_by_id
+    def test_get_game_info
       skip # Playlyfe::Game.find(:my_game)
     end  
 

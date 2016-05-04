@@ -5,7 +5,7 @@ GEM
     builder (3.2.2)
     byebug (8.2.4)
     coderay (1.1.1)
-    json (1.8.2)
+    json (1.8.3)
     jwt (1.5.0)
     method_source (0.8.2)
     minitest (5.8.4)
@@ -15,10 +15,6 @@ GEM
       minitest (>= 5.0)
       ruby-progressbar
     netrc (0.7.9)
-    playlyfe (1.0.1)
-      json (= 1.8.2)
-      jwt (= 1.5.0)
-      rest_client (= 1.7.2)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -38,10 +34,12 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  json
+  jwt
   minitest-reporters
-  playlyfe
   pry-byebug
   pry-rails
+  rest_client
 
 BUNDLED WITH
    1.10.6
