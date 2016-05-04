@@ -1,5 +1,7 @@
 require "pry"
+
 task :default => :test
+
 task :test do
   if ARGV.empty?
     Dir.glob('./test/**/*_test.rb').each { |file| require file}

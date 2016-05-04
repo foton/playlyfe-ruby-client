@@ -14,4 +14,7 @@ module Playlyfe
       end  
     end
   end
+
+  class ConnectionError < Playlyfe::Error; end
+  class GameError < Playlyfe::Error; end
 end

@@ -3,10 +3,11 @@ require 'json'
 require 'rest_client'
 require 'jwt'
 
-require_relative "./error.rb"
+require_relative "./errors.rb"
+require_relative "./v2/game.rb"
 
 module Playlyfe
-  #based on playlyfe-rub-sdk
+  #based on playlyfe-rub-sdk (https://github.com/playlyfe/playlyfe-ruby-sdk)
   class Connection
     attr_reader :sdk_version
 
@@ -21,7 +22,7 @@ module Playlyfe
 
     def initialize(options = {})
       if options[:type].nil?
-        err = Playlyfe::Error.new("")
+        err = Playlyfe::ConnectionError.new("")
         err.name = 'init_failed'
         err.message = "You must pass in a type whether 'client' for client credentials flow or 'code' for auth code flow"
         raise err
@@ -40,7 +41,7 @@ module Playlyfe
         get_access_token()
       else
         if options[:redirect_uri].nil?
-          err = Playlyfe::Error.new("")
+          err = Playlyfe::ConnectionError.new("")
           err.name = 'init_failed'
           err.message = 'You must pass in a redirect_uri for the auth code flow'
           raise err
@@ -51,6 +52,14 @@ module Playlyfe
     def api_version
       @version
     end
+
+    def game
+      if self.api_version == "v2"
+        Playlyfe::V2::Game.find_by_connection(self)
+      else
+        fail Playlyfe::GameError.new("{\"error\": \"unsupported version of API\", \"error_description\": \"'#{self.api_version}' of API is unsupported by playlyfe-ruby-client\"}")
+      end  
+    end 
       
     def get_access_token
       begin
@@ -97,7 +106,7 @@ module Playlyfe
           end
         end
       rescue => e
-        raise Playlyfe::Error.new(e.response)
+        raise Playlyfe::ConnectionError.new(e.response)
       end
     end
 
@@ -136,7 +145,7 @@ module Playlyfe
           end
         end
       rescue => e
-        raise Playlyfe::Error.new(e.response, "#{method} #{uri}")
+        raise Playlyfe::ConnectionError.new(e.response, "#{method} #{uri}")
       end
     end
 
@@ -179,7 +188,7 @@ module Playlyfe
 
     def exchange_code(code)
       if code.nil?
-        err = Playlyfe::Error.new("")
+        err = Playlyfe::ConnectionError.new("")
         err.name = 'init_failed'
         err.message = 'You must pass in a code in exchange_code for the auth code flow'
         raise err
