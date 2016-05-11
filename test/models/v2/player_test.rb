@@ -1,7 +1,24 @@
-require_relative '../test_helper'
+require_relative '../../playlyfe_test_class.rb'
 
 module Playlyfe
   class PlayerTest < Playlyfe::Test
+
+    def test_have_id
+      assert_equal "player1", Playlyfe::V2::Player.new({ "id"=> "player1", "alias"=> "player1_alias", "enabled"=> true}, nil).id
+    end
+    
+    def test_have_alias
+      binding.pry
+      assert_equal "player1_alias", Playlyfe::V2::Player.new({ "id"=> "player1", "alias"=> "player1_alias", "enabled"=> true}, nil).alias
+    end
+
+    def test_is_enabled  
+      assert Playlyfe::V2::Player.new({ "id"=> "player1", "alias"=> "player1_alias", "enabled"=> true}, nil).enabled?
+    end  
+
+    def test_is_disabled
+      refute Playlyfe::V2::Player.new({ id: "player1", alias: "player1_alias", enabled: false}, nil).enabled?
+    end  
 
     def test_find_by_id
       skip 

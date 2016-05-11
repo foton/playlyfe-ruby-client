@@ -54,11 +54,7 @@ module Playlyfe
     end
 
     def game
-      if self.api_version == "v2"
-        Playlyfe::V2::Game.find_by_connection(self)
-      else
-        fail Playlyfe::GameError.new("{\"error\": \"unsupported version of API\", \"error_description\": \"'#{self.api_version}' of API is unsupported by playlyfe-ruby-client\"}")
-      end  
+      fail Playlyfe::GameError.new("{\"error\": \"unsupported version of API\", \"error_description\": \"'#{self.api_version}' of API is unsupported by playlyfe-ruby-client\"}")
     end 
       
     def get_access_token
@@ -125,7 +121,8 @@ module Playlyfe
       query = check_token(query)
       begin
         uri="https://api.playlyfe.com/#{@version}#{route}?#{query}"
-        res = RestClient::Request.execute(
+        puts "doing real query to api"
+        response = RestClient::Request.execute(
           :method => method,
           :url => uri,
           :headers => {
@@ -135,13 +132,14 @@ module Playlyfe
           :payload => body.to_json,
           :ssl_version => 'SSLv23'
         )
+
         if raw == true
-          return res.body
+          return response.body
         else
-          if res.body == 'null'
+          if response.body == 'null'
             return nil
           else
-            return JSON.parse(res.body)
+            return JSON.parse(response.body)
           end
         end
       rescue => e

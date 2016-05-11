@@ -1,0 +1,34 @@
+
+require_relative "../connection.rb"
+
+module Playlyfe
+  module V2
+    class Connection < Playlyfe::Connection
+  
+      def game
+        Playlyfe::V2::Game.find_by_connection(self)
+      end
+  
+      def get_full_game_hash
+        self.get('/admin')
+      end
+        
+      def get_game_hash
+        get_full_game_hash["game"]  
+      end  
+
+      def get_full_players_hash
+        get("/admin/players")
+      end   
+
+      def get_player_hash_array
+        get_full_players_hash["data"]
+      end   
+
+      def get_game_image_data
+        get_raw("/runtime/assets/game", {"size": style.to_s,"player_id":"player1"})
+      end
+        
+    end  
+  end
+end

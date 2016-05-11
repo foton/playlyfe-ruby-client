@@ -5,7 +5,7 @@ module Playlyfe
   #Game is 1:1 to connection, so only one instance per connection
   class Game
     
-    attr_reader :name, :title
+    attr_reader :title, :connection
 
     
     def to_hash

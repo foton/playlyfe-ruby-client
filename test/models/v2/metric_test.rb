@@ -1,4 +1,4 @@
-require_relative '../test_helper'
+require_relative '../../playlyfe_test_class.rb'
 
 module Playlyfe
   class MetricTest < Playlyfe::Test

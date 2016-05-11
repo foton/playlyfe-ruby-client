@@ -61,8 +61,7 @@ module Playlyfe
 
     def test_get_game
       game= connection.game
-      assert_equal "LMS", game.title
-      assert_equal "Playlyfe Hermes", game.name
+      assert_equal "Game for Ruby client test", game.title
     end
     
     def test_raise_error_for_unknown_api_version
