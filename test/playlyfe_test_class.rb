@@ -43,6 +43,12 @@ module Playlyfe
         yield 
       end
     end  
+ 
+    def stub_teams_query &block
+      connection.stub :get_full_teams_hash, full_teams_hash do 
+        yield 
+      end
+    end 
 
   end  
 end

@@ -1,5 +1,6 @@
 
 require_relative "./player_collection.rb"
+require_relative "./team_collection.rb"
 #require_relative "./action.rb"
 #require_relative "./ledaderboard.rb"
 
@@ -20,6 +21,10 @@ module Playlyfe
       def players
         @players ||= Playlyfe::V2::PlayerCollection.new(self)
       end
+
+      def teams 
+        @teams ||= Playlyfe::V2::TeamCollection.new(self)
+      end  
      
 
       def actions

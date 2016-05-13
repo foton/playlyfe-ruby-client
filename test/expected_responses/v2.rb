@@ -50,4 +50,59 @@ module ExpectedResponses
       "created" => "2016-04-26T14:23:27.408Z"
     }
   end
+
+  def full_teams_hash
+    {
+      "data" => expected_team_hash_array,
+      "total" => 2
+    }
+  end  
+
+  def expected_team_hash_array
+    [
+      expected_team1_hash,
+      {
+        "id" => "team_57349f9b3409e252002cd0e3",
+        "name" => "Team 2 baased on Team 1 template",
+        "definition" => {
+          "id" => "team1",
+          "name" => "Team1"
+        },
+        "access" => "PRIVATE",
+        "created" => "2016-05-12T15:22:03.976Z",
+        "game_id" => "ruby_client_test",
+        "owner" => {
+          "id" => "player1",
+          "alias" => "player1_alias"
+        },
+        "roles" => [
+          "Captain",
+          "Private"
+        ]
+      }
+    ]
+  end
+
+  def expected_team1_hash
+    {
+        "id" => "team_57349f7b7d0ed66b0193101f",
+        "name" => "Team1 for RUby client",
+        "definition" => {
+          "id" => "team1",
+          "name" => "Team1"
+        },
+        "access" => "PRIVATE",
+        "created" => "2016-05-12T15:21:31.418Z",
+        "game_id" => "ruby_client_test",
+        "owner" => {
+          "id" => "player1",
+          "alias" => "player1_alias"
+        },
+        "roles" => [
+          "Captain",
+          "Private"
+        ]
+      }
+  end  
+
 end

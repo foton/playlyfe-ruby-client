@@ -1,37 +1,24 @@
+require_relative "./collection.rb"
 require_relative "./player.rb"
 
 module Playlyfe
   module V2
-    class PlayerCollection 
-      attr_reader :game
-
-      def self.xxx
-        "aaa"
-      end
-        
-      def all
-        @players
-      end
-
+    class PlayerCollection < Playlyfe::V2::Collection
       def find(str)
-        @players.select {|pl| pl.alias.include?(str) || pl.id.include?(str)}
-      end  
-
-      def to_a
-        @players
+        @items.select {|pl| pl.alias.include?(str) || pl.id.include?(str)}
       end  
       
       private
 
         def initialize(game)  
-          @game= game
-          @players=[]
-          fill_players(@game.connection.get_player_hash_array)
+          super
+          @items=[]
+          fill_items(@game.connection.get_player_hash_array)
         end
         
-        def fill_players(player_hash_array)  
+        def fill_items(player_hash_array)  
           player_hash_array.each do |player_hash|
-            @players << Playlyfe::V2::Player.new(player_hash, @game)
+            @items << Playlyfe::V2::Player.new(player_hash, @game)
           end  
         end  
 

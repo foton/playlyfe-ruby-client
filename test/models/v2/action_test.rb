@@ -1,4 +1,4 @@
-require_relative '../playlyfe_test_class.rb'
+require_relative '../../playlyfe_test_class.rb'
 
 module Playlyfe
   class ActionTest < Playlyfe::Test

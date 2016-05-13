@@ -29,6 +29,13 @@ module Playlyfe
         get_raw("/runtime/assets/game", {"size": style.to_s,"player_id":"player1"})
       end
         
+      def get_full_teams_hash
+        get("/admin/teams")
+      end  
+      
+      def get_team_hash_array
+        get_full_teams_hash["data"]
+      end  
     end  
   end
 end
