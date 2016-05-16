@@ -24,31 +24,16 @@ module Playlyfe
     end  
 
     #here you can switch responses for API versions
-    require_relative "./expected_responses/v2.rb"
+    require_relative "./stubbed_api/v2_expected_responses.rb"
     include ExpectedResponses
+
+    require_relative "./stubbed_api/stubbed_querries.rb"
+    include StubbedQuerries
 
     def initialize(*args)
       super
       #@real_calls_to_api=false #here You can switch to real calls to Playlyfe API
     end
-    
-    def stub_game_query &block
-      connection.stub :get_full_game_hash, full_game_hash do 
-        yield 
-      end
-    end  
-
-    def stub_players_query &block
-      connection.stub :get_full_players_hash, full_players_hash do 
-        yield 
-      end
-    end  
- 
-    def stub_teams_query &block
-      connection.stub :get_full_teams_hash, full_teams_hash do 
-        yield 
-      end
-    end 
 
   end  
 end

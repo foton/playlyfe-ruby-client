@@ -11,6 +11,14 @@ module Playlyfe
         @items.select {|item| item.id.include?(str)}
       end  
 
+      def first
+        @items.first
+      end
+        
+      def last
+        @items.last
+      end
+
       def to_a
         @items
       end  

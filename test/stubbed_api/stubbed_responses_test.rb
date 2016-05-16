@@ -29,7 +29,14 @@ module Playlyfe
         stub_teams_query { stubbed_hash=connection.get_full_teams_hash }
         
         verify_stubbing(real_hash, stubbed_hash, "teams_hash")
-      end  
+      end 
+
+      def test_verify_player_profile_hash
+        real_hash=connection.get_full_player_profile_hash("player1")
+        stubbed_hash={}
+        stub_player_profile_query { stubbed_hash=connection.get_full_player_profile_hash("player1") }
+        verify_stubbing(real_hash, stubbed_hash, "player1_profile_hash")
+      end 
 
       private
 
@@ -39,11 +46,12 @@ module Playlyfe
         end  
 
         def verify_array(real_arr, stubbed_arr, what)
-          assert_equal real_arr.size, stubbed_arr.size
+          assert_equal real_arr.size, stubbed_arr.size, "#{what}.size is #{real_arr.size} instead expected #{stubbed_arr.size}: #{real_arr}]"
           real_arr.each_with_index do |ra_item, index|
 
             if ra_item.kind_of?(Hash)
-              stubbed_item=(stubbed_arr.detect {|i| i["id"] == ra_item["id"]})
+              #stubbed_item=(stubbed_arr.detect {|i| i["id"] == ra_item["id"]})
+              stubbed_item=stubbed_arr[index]
               verify_hash(ra_item, stubbed_item, "#{what}[#{ra_item["id"]}]")
             elsif ra_item.kind_of?(Array)  
               stubbed_item=stubbed_arr[index]

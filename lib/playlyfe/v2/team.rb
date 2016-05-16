@@ -22,10 +22,12 @@ module Playlyfe
           @id=team_hash[:id] || team_hash["id"]
           @name=team_hash[:name] || team_hash["name"]
           @access=team_hash[:access] || team_hash["access"]
-          @created_at=team_hash[:created_at] || team_hash["created_at"] || (Time.parse(team_hash[:created] || team_hash["created"]) )
           @game_id=team_hash[:game_id] || team_hash["game_id"]
           @roles=team_hash[:roles] || team_hash["roles"]
           @definition=team_hash[:definition] || team_hash["definition"]
+          
+          @created_at=team_hash[:created_at] || team_hash["created_at"] 
+          @created_at=(Time.parse(team_hash[:created] || team_hash["created"]) ) if @created_at.nil? && !(team_hash[:created] || team_hash["created"]).nil?
 
           own=team_hash[:owner] || team_hash["owner"]
           @owner=nil

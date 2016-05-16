@@ -22,7 +22,10 @@ module Playlyfe
         assert_equal expected_game_hash["created"], @game.created_at.strftime("%FT%T.%3NZ")
       end  
 
-     
+      def test_fill_all_objects
+        skip "get all teams and players"
+      end  
+
       # def test_get_game_image
       #   original_image_data=nil
       #   large_image_data=nil
@@ -62,9 +65,14 @@ module Playlyfe
         end        
       end  
 
+      def test_get_leaderboards
+        skip
+      end   
+
             
 
-      # def test_get_available_actions
+      def test_get_available_actions
+        skip
       #   stub_available_actions_query do
       #     expected_available_actions_hash_array.each do |pl|
       #       actual_player=@game.players.find(pl["id"]).first
@@ -74,11 +82,8 @@ module Playlyfe
       #       assert_equal pl["enabled"], actual_player.enabled, "Player '#{pl}' has id = '#{actual_player.enabled}' instead expected."
       #     end 
       #   end        
-      # end  
+      end  
 
-      # private
-
-       
     end    
   end
 end
