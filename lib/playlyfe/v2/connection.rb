@@ -40,6 +40,14 @@ module Playlyfe
       def get_full_player_profile_hash(player_id)
         get("/admin/players/#{player_id}")
       end  
+
+      def get_full_team_members_hash(team_id)
+        get("/admin/teams/#{team_id}/members")
+      end  
+
+      def get_team_members_hash_array(team_id)
+        get_full_team_members_hash(team_id)["data"]
+      end  
       
     end  
   end

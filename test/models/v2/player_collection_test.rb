@@ -19,14 +19,14 @@ module Playlyfe
 
     def test_can_find_player_by_id
       expected_player_hash_array.each do |exp_player|
-        actual_player=@collection.find(exp_player["id"]).first
+        actual_player=@collection.find(exp_player["id"])
         refute actual_player.nil?, "Player '#{exp_player}' was not found in collection #{@collection} by ID"
       end 
     end
 
     def test_can_find_player_by_alias
       expected_player_hash_array.each do |exp_player|
-        actual_player=@collection.find(exp_player["alias"]).first
+        actual_player=@collection.find(exp_player["alias"])
         refute actual_player.nil?, "Player '#{exp_player}' was not found in collection #{@collection} by ALIAS"
       end 
     end

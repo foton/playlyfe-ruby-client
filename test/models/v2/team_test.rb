@@ -30,7 +30,7 @@ module Playlyfe
 
       real_value=@team.owner
       expected_value=@game.players.find(@exp_team_hash["owner"]["id"])
-      refute (expected_value.nil? || expected_value.empty?)
+      refute (expected_value.nil?)
       assert_equal expected_value, real_value, "Team '#{@exp_team_hash["id"]}' has OWNER = '#{real_value}' instead expected '#{expected_value}'."
 
 
@@ -44,7 +44,9 @@ module Playlyfe
     end
     
     def test_get_members
-      skip
+      stub_team_members_query do
+        assert_equal [@game.players.find("player1")], @team.members
+      end  
     end
 
     def test_get_team_leaderboards

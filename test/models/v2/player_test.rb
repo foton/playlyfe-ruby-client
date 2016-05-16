@@ -17,7 +17,7 @@ module Playlyfe
         @game.teams
       end  
 
-      @player = @game.players.find("player1").first
+      @player = @game.players.find("player1")
     
     end
       

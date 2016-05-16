@@ -175,4 +175,21 @@ module ExpectedResponses
     }
   end
 
+
+   def full_team1_members_hash
+    {
+      "data" => expected_team1_members_hash_array,
+      "total" => 1
+    }
+  end  
+
+  def expected_team1_members_hash_array
+    [
+      {
+        "id" => "player1",
+        "alias" => "player1_alias"
+      }
+    ]
+  end  
+
 end

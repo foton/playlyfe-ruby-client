@@ -8,7 +8,7 @@ module Playlyfe
       end
 
       def find(str)
-        @items.select {|item| item.id.include?(str)}
+        (@items.select {|item| item.id.include?(str)}).first
       end  
 
       def first

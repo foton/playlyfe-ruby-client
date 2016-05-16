@@ -46,7 +46,7 @@ module Playlyfe
       def test_get_players
         stub_players_query do
           expected_player_hash_array.each do |pl|
-            actual_player=@game.players.find(pl["id"]).first
+            actual_player=@game.players.find(pl["id"])
             refute actual_player.nil?, "Player '#{pl}' was not found in collection #{@game.players}"
             
             assert_equal pl["id"], actual_player.id, "Player '#{pl}' has id = '#{actual_player.id}' instead expected."
@@ -59,7 +59,7 @@ module Playlyfe
       def test_get_teams
         stub_teams_query do
           expected_team_hash_array.each do |exp_team|
-            actual_team=@game.teams.find(exp_team["id"]).first
+            actual_team=@game.teams.find(exp_team["id"])
             refute actual_team.nil?, "Team '#{exp_team}' was not found in collection #{@game.teams}"
           end 
         end        
@@ -75,7 +75,7 @@ module Playlyfe
         skip
       #   stub_available_actions_query do
       #     expected_available_actions_hash_array.each do |pl|
-      #       actual_player=@game.players.find(pl["id"]).first
+      #       actual_player=@game.players.find(pl["id"])
       #       refute actual_player.nil?, "Player '#{pl}' was not found in collection #{@game.players}"
       #       assert_equal pl["id"], actual_player.id, "Player '#{pl}' has id = '#{actual_player.id}' instead expected."
       #       assert_equal pl["alias"], actual_player.alias, "Player '#{pl}' has id = '#{actual_player.alias}' instead expected."

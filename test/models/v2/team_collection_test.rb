@@ -23,14 +23,14 @@ module Playlyfe
 
     def test_can_find_team_by_id
       expected_team_hash_array.each do |exp_team|
-        actual_team=@collection.find(exp_team["id"]).first
+        actual_team=@collection.find(exp_team["id"])
         refute actual_team.nil?, "Team '#{exp_team}' was not found in collection #{@collection} by ID"
       end 
     end
 
     def test_can_find_team_by_name
       expected_team_hash_array.each do |exp_team|
-        actual_team=@collection.find(exp_team["name"]).first
+        actual_team=@collection.find(exp_team["name"])
         refute actual_team.nil?, "Team '#{exp_team}' was not found in collection #{@collection} by NAME"
       end 
     end

@@ -6,7 +6,7 @@ module Playlyfe
     class TeamCollection < Playlyfe::V2::Collection
      
       def find(str)
-        @items.select {|pl| pl.name == str || pl.id == str}
+        (@items.select {|pl| pl.name == str || pl.id == str}).first
       end  
       
       private

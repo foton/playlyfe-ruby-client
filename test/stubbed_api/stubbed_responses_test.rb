@@ -31,11 +31,18 @@ module Playlyfe
         verify_stubbing(real_hash, stubbed_hash, "teams_hash")
       end 
 
-      def test_verify_player_profile_hash
+      def test_verify_player1_profile_hash
         real_hash=connection.get_full_player_profile_hash("player1")
         stubbed_hash={}
         stub_player_profile_query { stubbed_hash=connection.get_full_player_profile_hash("player1") }
         verify_stubbing(real_hash, stubbed_hash, "player1_profile_hash")
+      end 
+
+      def test_verify_team1_members_hash_array
+        real_hash=connection.get_full_team_members_hash("team_57349f9b3409e252002cd0e3")
+        stubbed_hash={}
+        stub_team_members_query(full_team1_members_hash) { stubbed_hash=connection.get_full_team_members_hash("team_57349f9b3409e252002cd0e3") }
+        verify_stubbing(real_hash, stubbed_hash, "team1_members_hash")
       end 
 
       private

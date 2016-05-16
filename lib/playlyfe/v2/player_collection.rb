@@ -5,7 +5,7 @@ module Playlyfe
   module V2
     class PlayerCollection < Playlyfe::V2::Collection
       def find(str)
-        @items.select {|pl| pl.alias.include?(str) || pl.id.include?(str)}
+        (@items.select {|pl| pl.alias.include?(str) || pl.id.include?(str)}).first
       end  
       
       private

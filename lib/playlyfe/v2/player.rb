@@ -56,7 +56,7 @@ module Playlyfe
           @teams=[]
           @teams_roles={}
           @profile_hash["teams"].each do |team_hash|
-            team=game.teams.find(team_hash["id"]).first
+            team=game.teams.find(team_hash["id"])
 
             #all teams should be listed in game, so if nothing is found raise exception
             if team.nil?

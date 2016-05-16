@@ -7,7 +7,7 @@ module Playlyfe
       attr_reader :definition, :access, :game_id, :roles, :owner
 
       def members
-        []
+        @members ||= fill_members
       end
 
       def leaderboards
@@ -35,6 +35,23 @@ module Playlyfe
           unless own.nil? || own.empty?
             @owner=game.players.find(own[:id] || own["id"])
           end  
+        end  
+
+        def fill_members
+          @members=[]
+
+          game.connection.get_team_members_hash_array(self.id).each do |player_hash|
+            player=game.players.find(player_hash["id"])
+
+            #all players should be listed in game, so if nothing is found raise exception
+            if player.nil?
+              fail Playlyfe::TeamError.new("{\"error\": \"Player not found\", \"error_description\": \"Player '#{player_hash["id"]}' from '#{self.name}'[#{self.id}] team was not found between game.players!\"}")
+            end  
+            
+            @members << player
+          end  
+          
+          @members
         end  
     end
   end
