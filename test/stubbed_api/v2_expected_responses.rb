@@ -76,8 +76,9 @@ module ExpectedResponses
           "alias" => "player1_alias"
         },
         "roles" => [
-          "Captain",
-          "Private"
+          "Private",
+          "Sergeant",
+          "Captain"
         ]
       },
       {
@@ -95,8 +96,9 @@ module ExpectedResponses
           "alias" => "player2_alias"
         },
         "roles" => [
-          "Captain",
-          "Private"
+          "Private",
+          "Sergeant",
+          "Captain"
         ]
       }
     ]
@@ -118,58 +120,111 @@ module ExpectedResponses
           "alias" => "player1_alias"
         },
         "roles" => [
-          "Captain",
-          "Private"
+          "Private",
+          "Sergeant",
+          "Captain"
         ]
       }
   end  
 
-  def expected_player1_profile_full_hash
+  def full_profile_hash_for_player1
     {
-      "alias" => "player1_alias",
-      "id" => "player1",
-      "enabled" => true,
-      "created" => "2016-05-04T11:39:26.539Z",
-      "scores" => [
+      "alias" =>  "player1_alias",
+      "id" =>  "player1",
+      "enabled" =>  true,
+      "created" =>  "2016-05-04T11:39:26.539Z",
+      "scores" =>  [
         {
-          "metric" => {
-            "id" => "plus_points",
-            "name" => "plus_points",
-            "type" => "point"
+          "metric" =>  {
+            "id" =>  "compound_metric",
+            "name" =>  "Compound metric",
+            "type" =>  "compound"
           },
-          "value" => "2"
+          "value" =>  "21"
         },
         {
-          "metric" => {
-            "id" => "test_points",
-            "name" => "test points",
-            "type" => "point"
+          "metric" =>  {
+            "id" =>  "experience",
+            "name" =>  "Experience",
+            "type" =>  "state"
           },
-          "value" => "7"
+          "value" =>  {
+            "name" =>  "Guild leader",
+            "description" =>  ""
+          },
+          "meta" =>  {
+            "high" =>  "Infinity",
+            "low" =>  "21",
+            "base_metric" =>  {
+              "id" =>  "test_points",
+              "name" =>  "test points"
+            }
+          }
+        },
+        {
+          "metric" =>  {
+            "id" =>  "toolbox",
+            "name" =>  "Toolbox",
+            "type" =>  "set"
+          },
+          "value" =>  [
+            {
+              "name" =>  "Hammer",
+              "description" =>  "Hammer for nails",
+              "count" =>  "2"
+            },
+            {
+              "name" =>  "Screwdriver",
+              "description" =>  "Just screwdriver",
+              "count" =>  "1"
+            },
+            {
+              "name" =>  "Multitool",
+              "description" =>  "Universal do-all-thing tool. Very rare!",
+              "count" =>  "1"
+            }
+          ]
+        },
+        {
+          "metric" =>  {
+            "id" =>  "plus_points",
+            "name" =>  "plus_points",
+            "type" =>  "point"
+          },
+          "value" =>  "4"
+        },
+        {
+          "metric" =>  {
+            "id" =>  "test_points",
+            "name" =>  "test points",
+            "type" =>  "point"
+          },
+          "value" =>  "22"
         }
       ],
-      "teams" => [
+      "teams" =>  [
         {
-          "id" => "team_57349f9b3409e252002cd0e3",
-          "definition" => {
-            "id" => "team1",
-            "name" => "Team1"
+          "id" =>  "team_57349f9b3409e252002cd0e3",
+          "definition" =>  {
+            "id" =>  "team1",
+            "name" =>  "Team1"
           },
-          "roles" => [
+          "roles" =>  [
             "Captain"
           ],
-          "name" => "Team 2 baased on Team 1 template"
+          "name" =>  "Team 2 baased on Team 1 template"
         },
         {
-          "id" => "team_57349f7b7d0ed66b0193101f",
-          "definition" => {
-            "id" => "team1",
-            "name" => "Team1"
+          "id" =>  "team_57349f7b7d0ed66b0193101f",
+          "definition" =>  {
+            "id" =>  "team1",
+            "name" =>  "Team1"
           },
-          "roles" => [
-            "Captain"
+          "roles" =>  [
+            "Captain",
+            "Private"
           ],
-          "name" => "Team1 for RUby client"
+          "name" =>  "Team1 for RUby client"
         }
       ]
     }

@@ -18,7 +18,7 @@ module StubbedQuerries
     end
   end 
 
-  def stub_player_profile_query(stubbed_response=expected_player1_profile_full_hash, &block)
+  def stub_player_profile_query(stubbed_response=full_profile_hash_for_player1, &block)
     connection.stub :get_full_player_profile_hash, stubbed_response do 
       yield 
     end

@@ -15,7 +15,7 @@ module Playlyfe
       end
       
       def scores
-        {points: {} ,sets: {}, states: {}, compound: {}}
+        @scores||=fill_scores
       end
         
       def badges
@@ -52,10 +52,9 @@ module Playlyfe
         end  
 
         def fill_teams
-          profile_hash
-          @teams=[]
+          teams=[]
           @teams_roles={}
-          @profile_hash["teams"].each do |team_hash|
+          profile_hash["teams"].each do |team_hash|
             team=game.teams.find(team_hash["id"])
 
             #all teams should be listed in game, so if nothing is found raise exception
@@ -63,11 +62,33 @@ module Playlyfe
               fail Playlyfe::PlayerError.new("{\"error\": \"Team not found\", \"error_description\": \"Team '#{team_hash["id"]}' from #{self.id} player profile was not found between game.teams!\"}")
             end  
             
-            @teams << team
+            teams << team
             @teams_roles[team.id]=team_hash["roles"]
 
           end  
-          @teams
+          teams
+        end  
+
+        def fill_scores
+          scores={points: {} ,sets: {}, states: {}, compounds: {}}
+          profile_hash["scores"].each do |score|
+            case score["metric"]["type"]
+              when "point"
+                scores[:points][score["metric"]["id"].to_sym]=score["value"].to_i
+              when "set"
+                scores[:sets][score["metric"]["id"].to_sym]=sets_metric_value_from(score["value"])
+              when "state"
+                scores[:states][score["metric"]["id"].to_sym]=score["value"]["name"] #"value": { "name": "Hell", "description": "The plane of demons" }
+              when "compound"
+                scores[:compounds][score["metric"]["id"].to_sym]=score["value"].to_i
+            end
+
+          end  
+          scores
+        end  
+
+        def sets_metric_value_from(value)
+          (value.each.collect {|item| {name: item["name"], count: item["count"].to_i} } )
         end  
     end
   end

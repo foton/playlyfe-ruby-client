@@ -47,7 +47,7 @@ module Playlyfe
           roles =[]
           case team.name
             when "Team1 for RUby client"
-              roles= ["Captain"] 
+              roles= ["Captain","Private"] 
             when "Team 2 baased on Team 1 template"
               roles= ["Captain"] 
           end  
@@ -99,7 +99,24 @@ module Playlyfe
     end  
       
     def test_get_scores
-      skip
+      stub_player_profile_query do
+        scores= @player.scores  #this will load profile with teams and scores
+       
+        assert_equal 2, scores[:points].size
+        assert_equal 1, scores[:sets].size
+        assert_equal 1, scores[:states].size
+        assert_equal 1, scores[:compounds].size
+
+        assert_equal 4, scores[:points][:plus_points]
+        assert_equal 22, scores[:points][:test_points]
+        assert_equal [
+                      {name: "Hammer", count: 2}, 
+                      {name: "Screwdriver", count: 1}, 
+                      {name: "Multitool", count: 1}
+                     ], scores[:sets][:toolbox]
+        assert_equal "Guild leader", scores[:states][:experience]
+        assert_equal 21, scores[:compounds][:compound_metric]
+      end  
     end  
 
     def test_get_profile_image
