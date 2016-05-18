@@ -68,9 +68,21 @@ module Playlyfe
         verify_hash(real_response, stubbed_response, "players_leaderboard")
       end 
 
+      def test_verify_all_actions_array
+        real_response=connection.get_full_all_actions_array
+        stubbed_response={}
+        stub_all_actions_query { stubbed_response=connection.get_full_all_actions_array}
+        verify_array(real_response, stubbed_response, "all_actions_array")
+      end 
+
+      def test_verify_metrics_array
+        real_response=connection.get_full_metrics_array
+        stubbed_response={}
+        stub_metrics_query { stubbed_response=connection.get_full_metrics_array}
+        verify_array(real_response, stubbed_response, "get_full_metric_array")
+      end 
 
       private
-
 
         def verify_stubbing(real_hash, stubbed_hash, what)
           verify_hash(real_hash,stubbed_hash, what)

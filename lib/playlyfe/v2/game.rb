@@ -1,9 +1,9 @@
 
-require_relative "./player_collection.rb"
-require_relative "./team_collection.rb"
-require_relative "./leaderboard_collection.rb"
-#require_relative "./action.rb"
-#require_relative "./ledaderboard.rb"
+require_relative "./collection/player_collection.rb"
+require_relative "./collection/team_collection.rb"
+require_relative "./collection/leaderboard_collection.rb"
+require_relative "./collection/action_collection.rb"
+require_relative "./collection/metric_collection.rb"
 
 require_relative "../game.rb"
 
@@ -26,10 +26,18 @@ module Playlyfe
       def teams 
         @teams ||= Playlyfe::V2::TeamCollection.new(self)
       end  
-     
 
+      def metrics
+        @metrics ||= Playlyfe::V2::MetricCollection.new(self)
+      end 
+     
       def actions
+        @actions ||= Playlyfe::V2::ActionCollection.new(self)
       end
+
+      def available_actions
+        actions
+      end  
 
       def leaderboards
         @leaderboards ||= Playlyfe::V2::LeaderboardCollection.new(self)

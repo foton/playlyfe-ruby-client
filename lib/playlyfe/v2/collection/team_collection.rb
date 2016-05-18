@@ -1,12 +1,12 @@
-require_relative "./collection.rb"
-require_relative "./team.rb"
+require_relative "../collection.rb"
+require_relative "../team.rb"
 
 module Playlyfe
   module V2
     class TeamCollection < Playlyfe::V2::Collection
      
       def find(str)
-        (@items.select {|pl| pl.name == str || pl.id == str}).first
+        (@items.detect {|pl| pl.name == str || pl.id == str})
       end  
       
       private

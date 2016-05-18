@@ -5,6 +5,10 @@ module Playlyfe
     
     attr_reader :id, :name, :game, :positions
     
+    def self.all(game)
+      game.leaderboards
+    end  
+    
     def table
       positions
     end

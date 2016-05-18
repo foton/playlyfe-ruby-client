@@ -42,6 +42,16 @@ module StubbedQuerries
     end
   end 
 
- 
+  def stub_all_actions_query(stubbed_response=Playlyfe::Testing::ExpectedResponses.full_all_actions_array, &block)
+    connection.stub :get_full_all_actions_array, stubbed_response do 
+      yield 
+    end
+  end 
+  
+  def stub_metrics_query(stubbed_response=Playlyfe::Testing::ExpectedResponses.full_metrics_array, &block)
+    connection.stub :get_full_metrics_array, stubbed_response do 
+      yield 
+    end
+  end 
 
 end    

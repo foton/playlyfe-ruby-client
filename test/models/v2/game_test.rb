@@ -24,10 +24,6 @@ module Playlyfe
         assert_equal expected_game_hash["created"], @game.created_at.strftime("%FT%T.%3NZ")
       end  
 
-      def test_fill_all_objects
-        skip "get all teams and players"
-      end  
-
       # def test_get_game_image
       #   original_image_data=nil
       #   large_image_data=nil
@@ -90,20 +86,30 @@ module Playlyfe
         end
       end   
 
-            
-
       def test_get_available_actions
-        skip
-      #   stub_available_actions_query do
-      #     expected_available_actions_hash_array.each do |pl|
-      #       actual_player=@game.players.find(pl["id"])
-      #       refute actual_player.nil?, "Player '#{pl}' was not found in collection #{@game.players}"
-      #       assert_equal pl["id"], actual_player.id, "Player '#{pl}' has id = '#{actual_player.id}' instead expected."
-      #       assert_equal pl["alias"], actual_player.alias, "Player '#{pl}' has id = '#{actual_player.alias}' instead expected."
-      #       assert_equal pl["enabled"], actual_player.enabled, "Player '#{pl}' has id = '#{actual_player.enabled}' instead expected."
-      #     end 
-      #   end        
+        expected_available_actions_hash_array=Playlyfe::Testing::ExpectedResponses.full_all_actions_array
+
+        stub_all_actions_query do
+          assert_equal expected_available_actions_hash_array.size, @game.actions.size
+
+          expected_available_actions_hash_array.each do |exp_action|
+            actual_action=@game.available_actions.find(exp_action["id"])
+            refute actual_action.nil?, "Action '#{exp_action}' was not found in collection #{@game.available_actions}"
+          end 
+        end        
       end  
+
+      def test_get_all_metrics
+        expected_metric_array=Playlyfe::Testing::ExpectedResponses.full_metrics_array
+
+        stub_metrics_query do
+          assert_equal expected_metric_array.size, @game.metrics.size
+          expected_metric_array.each do |exp_metric|
+            actual_metric=@game.metrics.find(exp_metric["id"])
+            refute actual_metric.nil?, "Metric '#{exp_metric}' was not found in collection #{@game.metrics}"
+          end 
+        end        
+      end 
 
     end    
   end

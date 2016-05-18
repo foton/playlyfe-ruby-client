@@ -8,7 +8,7 @@ module Playlyfe
       end
 
       def find(str)
-        (@items.select {|item| item.id.include?(str)}).first
+        (@items.detect {|item| item.id.include?(str)})
       end  
 
       def find_all(str_arr)

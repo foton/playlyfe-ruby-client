@@ -131,5 +131,9 @@ module Playlyfe
       skip 
     end  
 
+    def test_play_action
+      skip
+    end  
+
   end
 end

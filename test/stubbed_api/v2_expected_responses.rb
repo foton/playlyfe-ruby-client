@@ -360,6 +360,226 @@ module Playlyfe
       }
     end  
 
+    def self.full_all_actions_array
+      [
+        {
+          "description" => "Just Action numero uno",
+          "id" => "action1",
+          "name" => "Action1 Name",
+          "variables" => [],
+          "rewards" => [
+            {
+              "metric" => {
+                "id" => "test_points",
+                "type" => "point",
+                "name" => "test points"
+              },
+              "value" => "2",
+              "verb" => "add",
+              "probability" => 1
+            }
+          ],
+          "count" => 9
+        },
+        {
+          "description" => "Action 2 is the second action to play. Adds plus_points and test_points.",
+          "id" => "action2",
+          "name" => "Action2 Name",
+          "variables" => [],
+          "rewards" => [
+            {
+              "metric" => {
+                "id" => "plus_points",
+                "type" => "point",
+                "name" => "plus_points"
+              },
+              "value" => "1",
+              "verb" => "add",
+              "probability" => 1
+            },
+            {
+              "metric" => {
+                "id" => "test_points",
+                "type" => "point",
+                "name" => "test points"
+              },
+              "value" => "1",
+              "verb" => "add",
+              "probability" => 1
+            }
+          ],
+          "count" => 2
+        },
+        {
+          "id" => "get_hammer",
+          "name" => "get_hammer",
+          "variables" => [],
+          "rewards" => [
+            {
+              "metric" => {
+                "id" => "toolbox",
+                "type" => "set",
+                "name" => "Toolbox"
+              },
+              "value" => {
+                "Hammer" => "1"
+              },
+              "verb" => "add",
+              "probability" => 1
+            }
+          ],
+          "count" => 1
+        },
+        get_hammer_screwdriver_and_plus_point_action_hash,
+        {
+          "description" => "add 1 plus_point",
+          "id" => "plus_action",
+          "name" => "Plus action",
+          "variables" => [],
+          "rewards" => [
+            {
+              "metric" => {
+                "id" => "plus_points",
+                "type" => "point",
+                "name" => "plus_points"
+              },
+              "value" => "1",
+              "verb" => "add",
+              "probability" => 1
+            }
+          ],
+          "count" => 1
+        }
+      ]
+    end  
+
+    def self.get_hammer_screwdriver_and_plus_point_action_hash
+        {
+          "id" => "get_hammer_screwdriver_and_plus_point",
+          "name" => "get_hammer_screwdriver_and_plus_point",
+          "variables" => [],
+          "rewards" => [
+            {
+              "metric" => {
+                "id" => "toolbox",
+                "type" => "set",
+                "name" => "Toolbox"
+              },
+              "value" => {
+                "Hammer" => "1"
+              },
+              "verb" => "add",
+              "probability" => 1
+            },
+            {
+              "metric" => {
+                "id" => "plus_points",
+                "type" => "point",
+                "name" => "plus_points"
+              },
+              "value" => "1",
+              "verb" => "add",
+              "probability" => 1
+            },
+            {
+              "metric" => {
+                "id" => "toolbox",
+                "type" => "set",
+                "name" => "Toolbox"
+              },
+              "value" => {
+                "Screwdriver" => "1"
+              },
+              "verb" => "add",
+              "probability" => 1
+            }
+          ],
+          "count" => 1
+        }
+      end
+
+
+      def self.full_metrics_array
+        [
+          compound_metric_hash,
+          state_metric_hash,
+          point_metric_hash1,
+          point_metric_hash2,
+          set_metric_hash
+        ]
+      end  
+          
+      def self.compound_metric_hash
+        {
+          "description" => "Just mixed metric with no purpose",
+          "formula" => " $scores['test_points'] -$scores['toolbox']['multitool'] ",
+          "id" => "compound_metric",
+          "name" => "Compound metric",
+          "type" => "compound"
+        }
+      end
+
+      def self.state_metric_hash
+      {
+        "description" => "How many experiences player have",
+        "id" => "experience",
+        "name" => "Experience",
+        "states" => {
+          "Apprentice" => {
+            "description" => ""
+          },
+          "Guild leader" => {
+            "description" => ""
+          },
+          "Journeyman" => {
+            "description" => ""
+          },
+          "Master" => {
+            "description" => ""
+          }
+        },
+        "type" => "state"
+      }
+      end
+           
+      def self.point_metric_hash1
+        {
+          "description" => "This metrics measure nothing.",
+          "id" => "plus_points",
+          "name" => "plus_points",
+          "type" => "point"
+        }
+      end
+
+      def self.point_metric_hash2
+        {
+          "id" => "test_points",
+          "name" => "test points",
+          "type" => "point"
+        }
+      end
+
+      def self.set_metric_hash
+        {
+          "id" => "toolbox",
+          "items" => {
+            "Hammer" => {
+              "description" => "Hammer for nails"
+            },
+            "Multitool" => {
+              "description" => "Universal do-all-thing tool. Very rare!"
+            },
+            "Screwdriver" => {
+              "description" => "Just screwdriver"
+            }
+          },
+          "name" => "Toolbox",
+          "type" => "set"
+        }
+      end                                                             
+
+
+
     end  
   end
 end

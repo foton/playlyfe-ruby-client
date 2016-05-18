@@ -9,6 +9,7 @@ module Playlyfe
         Playlyfe::V2::Game.find_by_connection(self)
       end
 
+      #for calls to "runtime" there MUST be a player_id, even for Metrics or Leaderboards. So we pick first one.
       def dummy_player_id
         @dummy_player_id||= get_full_players_hash["data"].first["id"]
       end  
@@ -60,6 +61,14 @@ module Playlyfe
       def get_full_leaderboard_hash(leaderboard_id, cycle="alltime", player_id=dummy_player_id)
         get("/runtime/leaderboards/#{leaderboard_id}", {cycle: cycle, player_id: player_id})
       end 
+
+      def get_full_all_actions_array(player_id=dummy_player_id)
+        get("/runtime/actions", {player_id: player_id})
+      end  
+
+      def get_full_metrics_array(player_id=dummy_player_id)
+        get("/runtime/definitions/metrics", {player_id: player_id})
+      end  
 
     end  
   end

@@ -1,12 +1,12 @@
-require_relative "./collection.rb"
-require_relative "./leaderboard/unknown_leaderboard.rb"
+require_relative "../collection.rb"
+require_relative "../leaderboard/unknown_leaderboard.rb"
 
 module Playlyfe
   module V2
     class LeaderboardCollection < Playlyfe::V2::Collection
      
       def find(str)
-        (@items.select {|pl| pl.name == str || pl.id == str}).first
+        (@items.detect {|pl| pl.name == str || pl.id == str})
       end  
       
       private
