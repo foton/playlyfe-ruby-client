@@ -83,8 +83,8 @@ module Playlyfe
         begin
           @player.teams
         rescue Playlyfe::PlayerError => e
-          assert_equal e.name, "Team not found"
-          assert_equal e.message, "Team 'ttt' from player1 player profile was not found between game.teams!"
+          assert_equal "Team not found", e.name 
+          assert_equal "Team 'ttt' from player1 player profile was not found between game.teams!", e.message
         end
       end
     end

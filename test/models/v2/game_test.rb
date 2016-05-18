@@ -5,13 +5,15 @@ module Playlyfe
     class GameTest < Playlyfe::Test
       
       def setup
-        stub_game_query do
+        stub_game_query(Playlyfe::Testing::ExpectedResponses.full_game_hash) do
           @game=connection.game
         end
       end    
 
       def test_setup_correctly_from_connection
         #@game stubbed in setup
+        expected_game_hash=Playlyfe::Testing::ExpectedResponses.game_hash
+
         assert_equal expected_game_hash, @game.to_hash
         assert_equal expected_game_hash, @game.game_hash
 
@@ -44,8 +46,10 @@ module Playlyfe
       # end
 
       def test_get_players
+        expected_players_hash_array=Playlyfe::Testing::ExpectedResponses.player_hash_array
+        
         stub_players_query do
-          expected_player_hash_array.each do |pl|
+         expected_players_hash_array.each do |pl|
             actual_player=@game.players.find(pl["id"])
             refute actual_player.nil?, "Player '#{pl}' was not found in collection #{@game.players}"
             
@@ -57,7 +61,12 @@ module Playlyfe
       end  
 
       def test_get_teams
+        expected_team_hash_array=Playlyfe::Testing::ExpectedResponses.team_hash_array
+        stub_players_query { @game.players } #to load all players
+
         stub_teams_query do
+          assert_equal expected_team_hash_array.size, @game.teams.size
+
           expected_team_hash_array.each do |exp_team|
             actual_team=@game.teams.find(exp_team["id"])
             refute actual_team.nil?, "Team '#{exp_team}' was not found in collection #{@game.teams}"
@@ -66,7 +75,19 @@ module Playlyfe
       end  
 
       def test_get_leaderboards
-        skip
+        full_leaderboards_array=Playlyfe::Testing::ExpectedResponses.full_leaderboards_array
+
+        stub_players_query { @game.players } #to load all players
+        stub_teams_query { @game.teams } #to load all teams
+
+        stub_leaderboards_query do
+          assert_equal full_leaderboards_array.size, @game.leaderboards.size
+
+          full_leaderboards_array.each do |exp_ldb|
+            actual_leaderboard=@game.leaderboards.find(exp_ldb["id"])
+            refute actual_leaderboard.nil?, "Leaderboard '#{exp_ldb}' was not found in collection #{@game.leaderboards}"
+          end 
+        end
       end   
 
             

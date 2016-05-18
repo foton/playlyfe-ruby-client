@@ -1,6 +1,7 @@
 
 require_relative "./player_collection.rb"
 require_relative "./team_collection.rb"
+require_relative "./leaderboard_collection.rb"
 #require_relative "./action.rb"
 #require_relative "./ledaderboard.rb"
 
@@ -31,6 +32,7 @@ module Playlyfe
       end
 
       def leaderboards
+        @leaderboards ||= Playlyfe::V2::LeaderboardCollection.new(self)
       end
 
       def image_data(style=:original)
@@ -41,25 +43,7 @@ module Playlyfe
       private
 
         def initialize(conn)    
-           super(conn)
-           # expected_game_hash= {
-           #        "name"=>"Playlyfe Hermes",
-           #        "version"=>"v1",
-           #        "status"=>"ok",
-           #        "game"=> {
-           #          "_errors"=>[],
-           #          "access"=>"PUBLIC",
-           #          "description"=>"",
-           #          "id"=>"lms",
-           #          "image"=>"default-game",
-           #          "listed"=>false,
-           #          "title"=>"LMS",
-           #          "type"=>"native",
-           #          "timezone"=>"Asia/Kolkata",
-           #          "template"=>"custom",
-           #          "created"=>"2014-06-18T07:43:25.000Z"
-           #        }
-           #      }
+          super(conn)
           @game_hash=connection.get_game_hash
           #name is not name of Game but rather connection   @name= game_hash["name"]
           @description=game_hash["description"]

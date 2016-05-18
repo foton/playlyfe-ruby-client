@@ -1,0 +1,58 @@
+require_relative '../../playlyfe_test_class.rb'
+
+module Playlyfe
+  class LeaderboardCollectionTest < Playlyfe::Test
+
+    def setup
+      stub_game_query { @game=connection.game}
+      stub_players_query { @game.players}
+      stub_teams_query { @game.teams}
+
+      stub_leaderboards_query do
+        
+        #stubbing method directly, so it responds with expected responses and do not call real api
+        def connection.get_full_leaderboard_hash(leaderboard_id, cycle="alltime", player_id=dummy_player_id) 
+          case leaderboard_id 
+          when 'leaderboard_plus_points'
+            return Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash
+          when 'leaderboard1'  
+            return Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash
+          else
+            raise "Uncatched stub for leaderboard_id = #{leaderboard_id}"  
+          end
+        end  
+
+        @collection = Playlyfe::V2::LeaderboardCollection.new(@game)
+      end  
+    end  
+
+    def test_build_from_game
+      assert_equal Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.size, @collection.size
+    end  
+
+    def test_can_find_leaderboard_by_id
+       Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.each do |exp_leaderboard|
+        actual_leaderboard=@collection.find(exp_leaderboard["id"])
+        refute actual_leaderboard.nil?, "Leaderboard '#{exp_leaderboard}' was not found in collection #{@collection.to_a} by ID"
+      end 
+    end
+
+    def test_can_find_leaderboard_by_name
+       Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.each do |exp_leaderboard|
+        actual_leaderboard=@collection.find(exp_leaderboard["name"])
+        refute actual_leaderboard.nil?, "Leaderboard '#{exp_leaderboard}' was not found in collection #{@collection.to_a} by NAME"
+      end 
+    end
+    
+    def test_can_convert_to_array  
+      assert @collection.to_a.kind_of?(Array)
+      assert_equal Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.size, @collection.to_a.size
+    end
+    
+    def test_can_return_all
+      assert_equal @collection.to_a , @collection.all
+    end  
+   
+
+  end
+end

@@ -18,18 +18,18 @@ module Playlyfe
     end  
 
     def test_build_from_game
-      assert_equal expected_team_hash_array.size, @collection.size
+      assert_equal Playlyfe::Testing::ExpectedResponses.team_hash_array.size, @collection.size
     end  
 
     def test_can_find_team_by_id
-      expected_team_hash_array.each do |exp_team|
+      Playlyfe::Testing::ExpectedResponses.team_hash_array.each do |exp_team|
         actual_team=@collection.find(exp_team["id"])
         refute actual_team.nil?, "Team '#{exp_team}' was not found in collection #{@collection} by ID"
       end 
     end
 
     def test_can_find_team_by_name
-      expected_team_hash_array.each do |exp_team|
+      Playlyfe::Testing::ExpectedResponses.team_hash_array.each do |exp_team|
         actual_team=@collection.find(exp_team["name"])
         refute actual_team.nil?, "Team '#{exp_team}' was not found in collection #{@collection} by NAME"
       end 
@@ -37,7 +37,7 @@ module Playlyfe
     
     def test_can_convert_to_array  
       assert @collection.to_a.kind_of?(Array)
-      assert_equal expected_team_hash_array.size, @collection.to_a.size
+      assert_equal Playlyfe::Testing::ExpectedResponses.team_hash_array.size, @collection.to_a.size
     end
     
     def test_can_return_all

@@ -3,7 +3,7 @@ require_relative '../playlyfe_test_class.rb'
 module Playlyfe
   module V2
 
-    #I have to verified that my stubs are in sync with real API responses
+    #I have to verify, that my stubs are in sync with real API responses
     class StubbedResponsesTest < Playlyfe::Test
 
       def test_verify_game_hash
@@ -11,7 +11,7 @@ module Playlyfe
         stubbed_hash={}
         stub_game_query { stubbed_hash=connection.get_full_game_hash }
         
-        verify_stubbing(real_hash, stubbed_hash, "game_hash")
+        verify_hash(real_hash, stubbed_hash, "game_hash")
       end  
 
       def test_verify_players_hash
@@ -19,7 +19,7 @@ module Playlyfe
         stubbed_hash={}
         stub_players_query { stubbed_hash=connection.get_full_players_hash }
         
-        verify_stubbing(real_hash, stubbed_hash, "players_hash")
+        verify_hash(real_hash, stubbed_hash, "players_hash")
       end  
 
 
@@ -28,22 +28,46 @@ module Playlyfe
         stubbed_hash={}
         stub_teams_query { stubbed_hash=connection.get_full_teams_hash }
         
-        verify_stubbing(real_hash, stubbed_hash, "teams_hash")
+        verify_hash(real_hash, stubbed_hash, "teams_hash")
       end 
 
       def test_verify_player1_profile_hash
         real_hash=connection.get_full_player_profile_hash("player1")
         stubbed_hash={}
         stub_player_profile_query { stubbed_hash=connection.get_full_player_profile_hash("player1") }
-        verify_stubbing(real_hash, stubbed_hash, "player1_profile_hash")
+        
+        verify_hash(real_hash, stubbed_hash, "player1_profile_hash")
       end 
 
       def test_verify_team1_members_hash_array
-        real_hash=connection.get_full_team_members_hash("team_57349f9b3409e252002cd0e3")
+        real_hash=connection.get_full_team_members_hash("team_57349f7b7d0ed66b0193101f")
         stubbed_hash={}
-        stub_team_members_query(full_team1_members_hash) { stubbed_hash=connection.get_full_team_members_hash("team_57349f9b3409e252002cd0e3") }
-        verify_stubbing(real_hash, stubbed_hash, "team1_members_hash")
+        stub_team_members_query(Playlyfe::Testing::ExpectedResponses.full_team1_members_hash) { stubbed_hash=connection.get_full_team_members_hash("team_57349f9b3409e252002cd0e3") }
+        
+        verify_hash(real_hash, stubbed_hash, "team1_ruby_members_hash")
       end 
+
+      def test_verify_leaderboards_array
+        real_response=connection.get_full_leaderboards_array
+        stubbed_response={}
+        stub_leaderboards_query { stubbed_response=connection.get_full_leaderboards_array }
+        verify_array(real_response, stubbed_response, "leaderboards_array")
+      end 
+
+      def test_verify_teams_leaderboard_hash
+        real_response=connection.get_full_leaderboard_hash("leaderboard_plus_points")
+        stubbed_response={}
+        stub_leaderboard_query(Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash) { stubbed_response=connection.get_full_leaderboard_hash("leaderboard_plus_points") }
+        verify_hash(real_response, stubbed_response, "team_leaderboard")
+      end 
+
+      def test_verify_players_leaderboard_hash
+        real_response=connection.get_full_leaderboard_hash("leaderboard1")
+        stubbed_response={}
+        stub_leaderboard_query(Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash) { stubbed_response=connection.get_full_leaderboard_hash("leaderboard1") }
+        verify_hash(real_response, stubbed_response, "players_leaderboard")
+      end 
+
 
       private
 

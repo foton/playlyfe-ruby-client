@@ -8,6 +8,10 @@ module Playlyfe
       def game
         Playlyfe::V2::Game.find_by_connection(self)
       end
+
+      def dummy_player_id
+        @dummy_player_id||= get_full_players_hash["data"].first["id"]
+      end  
   
       def get_full_game_hash
         self.get('/admin')
@@ -25,8 +29,8 @@ module Playlyfe
         get_full_players_hash["data"]
       end   
 
-      def get_game_image_data
-        get_raw("/runtime/assets/game", {"size": style.to_s,"player_id":"player1"})
+      def get_game_image_data(player_id=dummy_player_id)
+        get_raw("/runtime/assets/game", {size: style.to_s, player_id: player_id})
       end
         
       def get_full_teams_hash
@@ -49,6 +53,14 @@ module Playlyfe
         get_full_team_members_hash(team_id)["data"]
       end  
       
+      def get_full_leaderboards_array(player_id=dummy_player_id)
+        get("/runtime/leaderboards", {player_id: player_id})
+      end  
+
+      def get_full_leaderboard_hash(leaderboard_id, cycle="alltime", player_id=dummy_player_id)
+        get("/runtime/leaderboards/#{leaderboard_id}", {cycle: cycle, player_id: player_id})
+      end 
+
     end  
   end
 end

@@ -11,6 +11,14 @@ module Playlyfe
         (@items.select {|item| item.id.include?(str)}).first
       end  
 
+      def find_all(str_arr)
+        coll=[]
+        str_arr.each do |str|
+          coll << self.find(str)
+        end
+        coll.compact
+      end  
+
       def first
         @items.first
       end

@@ -12,7 +12,7 @@ module Playlyfe
         @game.players
       end  
 
-      @exp_team_hash=expected_team1_hash
+      @exp_team_hash=Playlyfe::Testing::ExpectedResponses.team1_hash
       @team = Playlyfe::V2::Team.new(@exp_team_hash, @game)
     end  
 
@@ -45,14 +45,17 @@ module Playlyfe
     
     def test_get_members
       stub_team_members_query do
-        assert_equal [@game.players.find("player1")], @team.members
+        assert_equal @game.players.find_all(["player1","player2","player3"]), @team.members
       end  
     end
 
     def test_get_team_leaderboards
       skip
     end  
-    
 
+    def test_get_team_activity
+      skip #/runtime/teams/team_57349f9b3409e252002cd0e3/activity
+    end  
+    
   end
 end

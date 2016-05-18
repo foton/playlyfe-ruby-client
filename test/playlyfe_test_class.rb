@@ -2,6 +2,11 @@ require_relative "../lib/playlyfe.rb"
 require_relative 'test_helper'
 
 module Playlyfe
+
+  #here you can switch stubbed/expected responses for API versions
+  require_relative "./stubbed_api/v2_expected_responses.rb"
+  #require_relative "./stubbed_api/v1_expected_responses.rb"
+
   #for mocking and other setups
   class Test < Minitest::Test
 
@@ -22,11 +27,7 @@ module Playlyfe
         type: 'client'
       )
     end  
-
-    #here you can switch responses for API versions
-    require_relative "./stubbed_api/v2_expected_responses.rb"
-    include ExpectedResponses
-
+    
     require_relative "./stubbed_api/stubbed_querries.rb"
     include StubbedQuerries
 
