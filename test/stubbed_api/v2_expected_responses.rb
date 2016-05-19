@@ -143,7 +143,7 @@ module Playlyfe
               "name" =>  "Compound metric",
               "type" =>  "compound"
             },
-            "value" =>  "21"
+            "value" =>  "23"
           },
           {
             "metric" =>  {
@@ -174,12 +174,12 @@ module Playlyfe
               {
                 "name" =>  "Hammer",
                 "description" =>  "Hammer for nails",
-                "count" =>  "2"
+                "count" =>  "3"
               },
               {
                 "name" =>  "Screwdriver",
                 "description" =>  "Just screwdriver",
-                "count" =>  "1"
+                "count" =>  "2"
               },
               {
                 "name" =>  "Multitool",
@@ -194,7 +194,7 @@ module Playlyfe
               "name" =>  "plus_points",
               "type" =>  "point"
             },
-            "value" =>  "4"
+            "value" =>  "5"
           },
           {
             "metric" =>  {
@@ -202,7 +202,7 @@ module Playlyfe
               "name" =>  "test points",
               "type" =>  "point"
             },
-            "value" =>  "22"
+            "value" =>  "24"
           }
         ],
         "teams" =>  [
@@ -304,7 +304,7 @@ module Playlyfe
               "id" =>  "team_57349f7b7d0ed66b0193101f",
               "name" =>  "Team1 for RUby client"
             },
-            "score" =>  "7",
+            "score" =>  "8",
             "rank" =>  1
           },
           {
@@ -312,7 +312,7 @@ module Playlyfe
               "id" =>  "team_57349f9b3409e252002cd0e3",
               "name" =>  "Team 2 baased on Team 1 template"
             },
-            "score" =>  "4",
+            "score" =>  "5",
             "rank" =>  2
           },
           {
@@ -336,7 +336,7 @@ module Playlyfe
               "alias" =>  "player1_alias",
               "id" =>  "player1"
             },
-            "score" =>  "22",
+            "score" =>  "24",
             "rank" =>  1
           },
           {
@@ -379,7 +379,7 @@ module Playlyfe
               "probability" => 1
             }
           ],
-          "count" => 9
+          "count" => 10
         },
         {
           "description" => "Action 2 is the second action to play. Adds plus_points and test_points.",
@@ -431,6 +431,48 @@ module Playlyfe
           "count" => 1
         },
         get_hammer_screwdriver_and_plus_point_action_hash,
+        {
+          "id" => "loose_hammer_screwdriver_and_plus_point",
+          "name" => "loose_hammer_screwdriver_and_plus_point",
+          "variables" => [],
+          "rewards" => [
+            {
+              "metric" => {
+                "id" => "toolbox",
+                "type" => "set",
+                "name" => "Toolbox"
+              },
+              "value" => {
+                "Hammer" => "1"
+              },
+              "verb" => "remove",
+              "probability" => 1
+            },
+            {
+              "metric" => {
+                "id" => "toolbox",
+                "type" => "set",
+                "name" => "Toolbox"
+              },
+              "value" => {
+                "Screwdriver" => "1"
+              },
+              "verb" => "remove",
+              "probability" => 1
+            },
+            {
+              "metric" => {
+                "id" => "plus_points",
+                "type" => "point",
+                "name" => "plus_points"
+              },
+              "value" => "1",
+              "verb" => "remove",
+              "probability" => 1
+            }
+          ],
+          "count" => 0
+        },
         {
           "description" => "add 1 plus_point",
           "id" => "plus_action",
@@ -494,7 +536,7 @@ module Playlyfe
               "probability" => 1
             }
           ],
-          "count" => 1
+          "count" => 2
         }
       end
 
@@ -578,7 +620,243 @@ module Playlyfe
         }
       end                                                             
 
-
+      def self.full_play_action_hammer_screwdriver_and_plus_point_hash
+        {
+          "actions" => [
+            {
+              "description" => "Just Action numero uno",
+              "id" => "action1",
+              "name" => "Action1 Name",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "test_points",
+                    "type" => "point",
+                    "name" => "test points"
+                  },
+                  "value" => "2",
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 10
+            },
+            {
+              "description" => "Action 2 is the second action to play. Adds plus_points and test_points.",
+              "id" => "action2",
+              "name" => "Action2 Name",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "plus_points",
+                    "type" => "point",
+                    "name" => "plus_points"
+                  },
+                  "value" => "1",
+                  "verb" => "add",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "test_points",
+                    "type" => "point",
+                    "name" => "test points"
+                  },
+                  "value" => "1",
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 2
+            },
+            {
+              "id" => "get_hammer",
+              "name" => "get_hammer",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Hammer" => "1"
+                  },
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 1
+            },
+            {
+              "id" => "get_hammer_screwdriver_and_plus_point",
+              "name" => "get_hammer_screwdriver_and_plus_point",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Hammer" => "1"
+                  },
+                  "verb" => "add",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "plus_points",
+                    "type" => "point",
+                    "name" => "plus_points"
+                  },
+                  "value" => "1",
+                  "verb" => "add",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Screwdriver" => "1"
+                  },
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 2
+            },
+            {
+              "id" => "loose_hammer_screwdriver_and_plus_point",
+              "name" => "loose_hammer_screwdriver_and_plus_point",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Hammer" => "1"
+                  },
+                  "verb" => "remove",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Screwdriver" => "1"
+                  },
+                  "verb" => "remove",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "plus_points",
+                    "type" => "point",
+                    "name" => "plus_points"
+                  },
+                  "value" => "1",
+                  "verb" => "remove",
+                  "probability" => 1
+                }
+              ],
+              "count" => 0
+            },
+            {
+              "description" => "add 1 plus_point",
+              "id" => "plus_action",
+              "name" => "Plus action",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "plus_points",
+                    "type" => "point",
+                    "name" => "plus_points"
+                  },
+                  "value" => "1",
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 1
+            }
+          ],
+          "events" => {
+            "local" => [
+              {
+                "event" => "action",
+                "actor" => {
+                  "id" => "player1",
+                  "alias" => "player1_alias"
+                },
+                "action" => {
+                  "id" => "get_hammer_screwdriver_and_plus_point",
+                  "name" => "get_hammer_screwdriver_and_plus_point",
+                  "vars" => {}
+                },
+                "count" => 1,
+                "changes" => [
+                  {
+                    "metric" => {
+                      "id" => "toolbox",
+                      "name" => "Toolbox",
+                      "type" => "set"
+                    },
+                    "delta" => {
+                      "Hammer" => {
+                        "old" => "2",
+                        "new" => "3"
+                      }
+                    }
+                  },
+                  {
+                    "metric" => {
+                      "id" => "plus_points",
+                      "name" => "plus_points",
+                      "type" => "point"
+                    },
+                    "delta" => {
+                      "old" => "4",
+                      "new" => "5"
+                    }
+                  },
+                  {
+                    "metric" => {
+                      "id" => "toolbox",
+                      "name" => "Toolbox",
+                      "type" => "set"
+                    },
+                    "delta" => {
+                      "Screwdriver" => {
+                        "old" => "1",
+                        "new" => "2"
+                      }
+                    }
+                  }
+                ],
+                "timestamp" => "2016-05-19T09:59:11.179Z",
+                "scopes" => [],
+                "id" => "55c0d1b0-1da8-11e6-9d43-49dbe52b2558"
+              }
+            ],
+            "global" => []
+          }
+        }
+      end  
 
     end  
   end

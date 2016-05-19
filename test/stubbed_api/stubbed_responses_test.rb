@@ -51,6 +51,7 @@ module Playlyfe
         real_response=connection.get_full_leaderboards_array
         stubbed_response={}
         stub_leaderboards_query { stubbed_response=connection.get_full_leaderboards_array }
+        
         verify_array(real_response, stubbed_response, "leaderboards_array")
       end 
 
@@ -58,6 +59,7 @@ module Playlyfe
         real_response=connection.get_full_leaderboard_hash("leaderboard_plus_points")
         stubbed_response={}
         stub_leaderboard_query(Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash) { stubbed_response=connection.get_full_leaderboard_hash("leaderboard_plus_points") }
+        
         verify_hash(real_response, stubbed_response, "team_leaderboard")
       end 
 
@@ -65,6 +67,7 @@ module Playlyfe
         real_response=connection.get_full_leaderboard_hash("leaderboard1")
         stubbed_response={}
         stub_leaderboard_query(Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash) { stubbed_response=connection.get_full_leaderboard_hash("leaderboard1") }
+        
         verify_hash(real_response, stubbed_response, "players_leaderboard")
       end 
 
@@ -72,6 +75,7 @@ module Playlyfe
         real_response=connection.get_full_all_actions_array
         stubbed_response={}
         stub_all_actions_query { stubbed_response=connection.get_full_all_actions_array}
+        
         verify_array(real_response, stubbed_response, "all_actions_array")
       end 
 
@@ -79,7 +83,22 @@ module Playlyfe
         real_response=connection.get_full_metrics_array
         stubbed_response={}
         stub_metrics_query { stubbed_response=connection.get_full_metrics_array}
+        
         verify_array(real_response, stubbed_response, "get_full_metric_array")
+      end 
+
+      def test_verify_play_action_hash
+        action_id="get_hammer_screwdriver_and_plus_point"
+        player_id="player1"
+        
+        real_response=connection.post_play_action(action_id, player_id)
+        stubbed_response={}
+        stub_play_action(action_id, Playlyfe::Testing::ExpectedResponses.full_play_action_hammer_screwdriver_and_plus_point_hash) { stubbed_response=connection.post_play_action(action_id, player_id) }
+        
+        verify_hash(real_response, stubbed_response, "players_leaderboard")
+
+        #to revert rewards
+        connection.post_play_action("loose_hammer_screwdriver_and_plus_point", player_id)
       end 
 
       private

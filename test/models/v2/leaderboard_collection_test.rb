@@ -52,7 +52,20 @@ module Playlyfe
     def test_can_return_all
       assert_equal @collection.to_a , @collection.all
     end  
+
+    def test_can_find_team_only_leaderboards
+      exp_ids=(Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.select {|t| t["entity_type"] == "teams"}).collect {|t| t["id"]}
+      refute exp_ids.empty?
+
+      assert_equal exp_ids, (@collection.for_teams.collect {|t| t.id}).sort
+    end  
    
+    def test_can_find_team_only_leaderboards
+      exp_ids=(Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.select {|t| t["entity_type"] == "players"}).collect {|t| t["id"]}
+      refute exp_ids.empty?
+
+      assert_equal exp_ids, (@collection.for_players.collect {|t| t.id}).sort
+    end  
 
   end
 end

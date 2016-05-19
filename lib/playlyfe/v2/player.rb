@@ -37,6 +37,14 @@ module Playlyfe
       def teams
         @teams||= fill_teams
       end
+
+      def teams_leaderboards
+        game.leaderboards.for_teams
+      end  
+
+      def players_leaderboards
+        game.leaderboards.for_players
+      end  
    
       private 
       

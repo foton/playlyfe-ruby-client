@@ -1,5 +1,7 @@
 require_relative "../collection.rb"
 require_relative "../leaderboard/unknown_leaderboard.rb"
+require_relative "../leaderboard/teams_leaderboard.rb"
+require_relative "../leaderboard/players_leaderboard.rb"
 
 module Playlyfe
   module V2
@@ -8,6 +10,15 @@ module Playlyfe
       def find(str)
         (@items.detect {|pl| pl.name == str || pl.id == str})
       end  
+
+      def for_teams
+        @items.select {|lbd| lbd.kind_of?(Playlyfe::V2::TeamsLeaderboard)}
+      end
+        
+      def for_players
+        @items.select {|lbd| lbd.kind_of?(Playlyfe::V2::PlayersLeaderboard)}
+      end  
+         
       
       private
 
@@ -24,7 +35,7 @@ module Playlyfe
           end  
         end  
 
-         
+
     end  
   end
 end    

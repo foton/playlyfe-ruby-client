@@ -52,6 +52,12 @@ module StubbedQuerries
     connection.stub :get_full_metrics_array, stubbed_response do 
       yield 
     end
-  end 
+  end
+
+  def stub_play_action(action_id, stubbed_response, &block) 
+    connection.stub :post_play_action, stubbed_response do 
+      yield 
+    end
+  end  
 
 end    

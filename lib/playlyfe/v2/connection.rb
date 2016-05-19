@@ -6,13 +6,17 @@ module Playlyfe
     class Connection < Playlyfe::Connection
   
       def game
-        Playlyfe::V2::Game.find_by_connection(self)
+        @game ||= Playlyfe::V2::Game.find_by_connection(self)
       end
 
       #for calls to "runtime" there MUST be a player_id, even for Metrics or Leaderboards. So we pick first one.
       def dummy_player_id
         @dummy_player_id||= get_full_players_hash["data"].first["id"]
       end  
+
+      def dummy_player_id=(id)
+        @dummy_player_id= id
+      end 
   
       def get_full_game_hash
         self.get('/admin')
@@ -66,9 +70,14 @@ module Playlyfe
         get("/runtime/actions", {player_id: player_id})
       end  
 
+      def post_play_action(action_id, player_id)
+        get("/runtime/actions/#{action_id}/play", {player_id: player_id}, {})
+      end  
+
       def get_full_metrics_array(player_id=dummy_player_id)
         get("/runtime/definitions/metrics", {player_id: player_id})
       end  
+
 
     end  
   end

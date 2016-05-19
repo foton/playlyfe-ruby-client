@@ -31,11 +31,13 @@ module Playlyfe
             value=rwd_hash[:value] || rwd_hash["value"]
             if metric.kind_of?(Playlyfe::V2::SetMetric)
               value=get_rewards_array(value,metric)
+              id="#{metric.id}_#{(value.collect {|i| i[:name]}).join("_").underscore}"
             else
               value=value.to_i  
+              id="#{metric.id}_#{value}"
             end  
 
-            @rewards << {metric: metric, value: value, verb: verb, probability: probability }
+            @rewards << {id: id, metric: metric, value: value, verb: verb, probability: probability }
           end  
 
           @rewards

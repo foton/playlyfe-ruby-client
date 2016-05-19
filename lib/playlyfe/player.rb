@@ -33,6 +33,14 @@ module Playlyfe
       []
     end
 
+    def players_leaderboards
+      []
+    end
+    
+    def teams_leaderboards  
+      []
+    end  
+
     private 
       def initialize(game)
         @game=game

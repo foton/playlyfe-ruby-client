@@ -11,7 +11,7 @@ module Playlyfe
       end
 
       def leaderboards
-        []
+        @game.leaderboards.for_teams
       end
    
       private 

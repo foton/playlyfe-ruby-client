@@ -50,11 +50,28 @@ module Playlyfe
     end
 
     def test_get_team_leaderboards
-      skip
-    end  
+      stub_teams_query { @game.teams}
+      stub_leaderboards_query do
+        
+        #stubbing method directly, so it responds with expected responses and do not call real api
+        def connection.get_full_leaderboard_hash(leaderboard_id, cycle="alltime", player_id=dummy_player_id) 
+          case leaderboard_id 
+          when 'leaderboard_plus_points'
+            return Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash
+          when 'leaderboard1'  
+            return Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash
+          else
+            raise "Uncatched stub for leaderboard_id = #{leaderboard_id}"  
+          end
+        end  
 
-    def test_get_team_activity
-      skip #/runtime/teams/team_57349f9b3409e252002cd0e3/activity
+        @game.leaderboards
+      end  
+      
+      real_value= @team.leaderboards
+      expected_value=@game.leaderboards.for_teams
+
+      assert_equal expected_value, real_value
     end  
     
   end
