@@ -76,6 +76,8 @@ module Playlyfe
         stubbed_response={}
         stub_all_actions_query { stubbed_response=connection.get_full_all_actions_array}
         
+        fix_counts_for_actions([action_id, revert_action_id],  real_response, stubbed_response)
+        
         verify_array(real_response, stubbed_response, "all_actions_array")
       end 
 
@@ -88,17 +90,19 @@ module Playlyfe
       end 
 
       def test_verify_play_action_hash
-        action_id="get_hammer_screwdriver_and_plus_point"
         player_id="player1"
         
         real_response=connection.post_play_action(action_id, player_id)
         stubbed_response={}
         stub_play_action(action_id, Playlyfe::Testing::ExpectedResponses.full_play_action_hammer_screwdriver_and_plus_point_hash) { stubbed_response=connection.post_play_action(action_id, player_id) }
         
-        verify_hash(real_response, stubbed_response, "players_leaderboard")
+        #i cannot stop Playlyfe counting action plays, and I do not want to change stubbed values each time I run this test, so I fix it here
+        fix_counts_for_actions([action_id, revert_action_id],  real_response["actions"], stubbed_response["actions"])
+        
+        verify_hash(real_response, stubbed_response, "play_action_hash")
 
         #to revert rewards
-        connection.post_play_action("loose_hammer_screwdriver_and_plus_point", player_id)
+        connection.post_play_action(revert_action_id, player_id)
       end 
 
       private
@@ -108,7 +112,7 @@ module Playlyfe
         end  
 
         def verify_array(real_arr, stubbed_arr, what)
-          assert_equal real_arr.size, stubbed_arr.size, "#{what}.size is #{real_arr.size} instead expected #{stubbed_arr.size}: #{real_arr}]"
+          assert_equal real_arr.size, stubbed_arr.size, "#{what}.size is #{real_arr.size} instead expected/stubbed #{stubbed_arr.size}: #{real_arr}]"
           real_arr.each_with_index do |ra_item, index|
 
             if ra_item.kind_of?(Hash)
@@ -136,7 +140,9 @@ module Playlyfe
             elsif real_value.kind_of?(Array)  
               verify_array(real_value,stubbed_hash[key], "#{what}:#{key}")
             else  
-              verify_simple_value(real_hash[key], stubbed_hash[key], "[#{what}][\"#{key}\"]")
+              unless ["timestamp"].include?(key) || (key =="id" && what.include?(":events:"))  #new, old are deltas which 
+                verify_simple_value(real_hash[key], stubbed_hash[key], "[#{what}][\"#{key}\"]") 
+              end  
             end  
           end 
         end  
@@ -145,6 +151,22 @@ module Playlyfe
           assert_equal real_value, stubbed_value, "#{what} is '#{stubbed_value}' but expected is '#{real_value}'"
         end  
 
+        #i cannot stop Playlyfe counting action plays, and I do not want to change stubbed values each time I run this test, so I fix it here
+        def fix_counts_for_actions(action_ids, real_action_array, stubbed_action_array)
+          action_ids.each do |action_id|
+            real_action_hash=real_action_array.detect {|a| a["id"] == action_id}
+            stubbed_action_hash=stubbed_action_array.detect {|a| a["id"] == action_id}
+            real_action_hash["count"] = stubbed_action_hash["count"]
+          end  
+        end
+
+        def action_id
+          "get_hammer_screwdriver_and_plus_point"
+        end
+          
+        def revert_action_id
+          "loose_hammer_screwdriver_and_plus_point"
+        end  
     end
   end
 end      

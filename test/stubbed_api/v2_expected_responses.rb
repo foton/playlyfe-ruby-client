@@ -174,7 +174,7 @@ module Playlyfe
               {
                 "name" =>  "Hammer",
                 "description" =>  "Hammer for nails",
-                "count" =>  "3"
+                "count" =>  "1"
               },
               {
                 "name" =>  "Screwdriver",
@@ -194,7 +194,7 @@ module Playlyfe
               "name" =>  "plus_points",
               "type" =>  "point"
             },
-            "value" =>  "5"
+            "value" =>  "13"
           },
           {
             "metric" =>  {
@@ -304,7 +304,7 @@ module Playlyfe
               "id" =>  "team_57349f7b7d0ed66b0193101f",
               "name" =>  "Team1 for RUby client"
             },
-            "score" =>  "8",
+            "score" =>  "16",
             "rank" =>  1
           },
           {
@@ -312,7 +312,7 @@ module Playlyfe
               "id" =>  "team_57349f9b3409e252002cd0e3",
               "name" =>  "Team 2 baased on Team 1 template"
             },
-            "score" =>  "5",
+            "score" =>  "13",
             "rank" =>  2
           },
           {
@@ -432,6 +432,7 @@ module Playlyfe
         },
         get_hammer_screwdriver_and_plus_point_action_hash,
         {
+          "description" => "For reverting action \"get_hammer_screwdriver_and_plus_point\".",
           "id" => "loose_hammer_screwdriver_and_plus_point",
           "name" => "loose_hammer_screwdriver_and_plus_point",
           "variables" => [],
@@ -734,6 +735,7 @@ module Playlyfe
               "count" => 2
             },
             {
+              "description" => "For reverting action \"get_hammer_screwdriver_and_plus_point\".",
               "id" => "loose_hammer_screwdriver_and_plus_point",
               "name" => "loose_hammer_screwdriver_and_plus_point",
               "variables" => [],
@@ -818,8 +820,8 @@ module Playlyfe
                     },
                     "delta" => {
                       "Hammer" => {
-                        "old" => "2",
-                        "new" => "3"
+                        "old" => "1",
+                        "new" => "2"
                       }
                     }
                   },
@@ -830,8 +832,8 @@ module Playlyfe
                       "type" => "point"
                     },
                     "delta" => {
-                      "old" => "4",
-                      "new" => "5"
+                      "old" => "13",
+                      "new" => "14"
                     }
                   },
                   {
@@ -842,8 +844,8 @@ module Playlyfe
                     },
                     "delta" => {
                       "Screwdriver" => {
-                        "old" => "1",
-                        "new" => "2"
+                        "old" => "2",
+                        "new" => "3"
                       }
                     }
                   }
