@@ -28,6 +28,10 @@ module Playlyfe
 
       end  
 
+      def apply_reward(reward, scores)
+        fail Playlyfe::MetricError.new("{\"error\": \"Rewards can not be applyed!\", \"error_description\": \"For these metric, direct action rewards cannot be applied. Probably some rules based awards are used.\"}")
+      end
+
       private 
       
         def initialize(metric_hash, game)

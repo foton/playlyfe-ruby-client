@@ -4,7 +4,7 @@ module Playlyfe
   module V2
     class StateMetric < Playlyfe::V2::Metric
       attr_reader :states
-      
+
       private 
       
         def initialize(metric_hash, game)

@@ -142,95 +142,95 @@ module Playlyfe
               "id" =>  "compound_metric",
               "name" =>  "Compound metric",
               "type" =>  "compound"
-            },
+            }.freeze,
             "value" =>  "23"
-          },
+          }.freeze,
           {
             "metric" =>  {
               "id" =>  "experience",
               "name" =>  "Experience",
               "type" =>  "state"
-            },
+            }.freeze,
             "value" =>  {
               "name" =>  "Guild leader",
               "description" =>  ""
-            },
+            }.freeze,
             "meta" =>  {
               "high" =>  "Infinity",
               "low" =>  "21",
               "base_metric" =>  {
                 "id" =>  "test_points",
                 "name" =>  "test points"
-              }
-            }
-          },
+              }.freeze
+            }.freeze
+          }.freeze,
           {
             "metric" =>  {
               "id" =>  "toolbox",
               "name" =>  "Toolbox",
               "type" =>  "set"
-            },
+            }.freeze,
             "value" =>  [
               {
                 "name" =>  "Hammer",
                 "description" =>  "Hammer for nails",
                 "count" =>  "1"
-              },
+              }.freeze,
               {
                 "name" =>  "Screwdriver",
                 "description" =>  "Just screwdriver",
                 "count" =>  "2"
-              },
+              }.freeze,
               {
                 "name" =>  "Multitool",
                 "description" =>  "Universal do-all-thing tool. Very rare!",
                 "count" =>  "1"
-              }
-            ]
-          },
+              }.freeze
+            ].freeze
+          }.freeze,
           {
             "metric" =>  {
               "id" =>  "plus_points",
               "name" =>  "plus_points",
               "type" =>  "point"
-            },
+            }.freeze,
             "value" =>  "13"
-          },
+          }.freeze,
           {
             "metric" =>  {
               "id" =>  "test_points",
               "name" =>  "test points",
               "type" =>  "point"
-            },
+            }.freeze,
             "value" =>  "24"
-          }
-        ],
+          }.freeze
+        ].freeze,
         "teams" =>  [
           {
             "id" =>  "team_57349f9b3409e252002cd0e3",
             "definition" =>  {
               "id" =>  "team1",
               "name" =>  "Team1"
-            },
+            }.freeze,
             "roles" =>  [
               "Captain"
-            ],
+            ].freeze,
             "name" =>  "Team 2 baased on Team 1 template"
-          },
+          }.freeze,
           {
             "id" =>  "team_57349f7b7d0ed66b0193101f",
             "definition" =>  {
               "id" =>  "team1",
               "name" =>  "Team1"
-            },
+            }.freeze,
             "roles" =>  [
               "Captain",
               "Private"
-            ],
+            ].freeze,
             "name" =>  "Team1 for RUby client"
-          }
-        ]
-      }
+          }.freeze
+        ].freeze
+      }.freeze
     end
 
 

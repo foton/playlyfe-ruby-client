@@ -11,7 +11,9 @@ module Playlyfe
       end  
 
       def play(action)
-        false
+        game.connection.post_play_action(action.id, self.id)
+        @profile_hash= game.connection.get_full_player_profile_hash(self.id)
+        @scores=fill_scores
       end
       
       def scores

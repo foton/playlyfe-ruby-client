@@ -120,10 +120,10 @@ module Playlyfe
         assert_equal 1, scores[:states].size
         assert_equal 1, scores[:compounds].size
 
-        assert_equal 5, scores[:points][:plus_points]
+        assert_equal 13, scores[:points][:plus_points]
         assert_equal 24, scores[:points][:test_points]
         assert_equal [
-                      {name: "Hammer", count: 3}, 
+                      {name: "Hammer", count: 1}, 
                       {name: "Screwdriver", count: 2}, 
                       {name: "Multitool", count: 1}
                      ], scores[:sets][:toolbox]

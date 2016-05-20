@@ -4,6 +4,20 @@ module Playlyfe
   module V2
     class CompoundMetric < Playlyfe::V2::Metric
       attr_reader :formula
+
+
+      def apply_reward(reward, scores)
+        metric_sym=self.id.to_sym
+        case reward[:verb]
+          when "add"
+           scores[:compounds][metric_sym]+=reward[:value].to_i
+          when "remove"
+           scores[:compounds][metric_sym]-=reward[:value].to_i
+          when "set"
+           scores[:compounds][metric_sym]=reward[:value].to_i
+        end
+      end
+
       private 
       
         def initialize(metric_hash, game)
