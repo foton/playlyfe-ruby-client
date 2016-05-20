@@ -18,7 +18,7 @@ module StubbedQuerries
     end
   end 
 
-  def stub_player_profile_query(stubbed_response=Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1, &block)
+  def stub_player_profile_query(stubbed_response, &block)
     connection.stub :get_full_player_profile_hash, stubbed_response do 
       yield 
     end

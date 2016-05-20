@@ -4,6 +4,7 @@ module Playlyfe
   class TeamTest < Playlyfe::Test
 
     def setup
+      super
       stub_game_query do
         @game=connection.game
       end

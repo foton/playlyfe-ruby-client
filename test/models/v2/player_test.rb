@@ -4,6 +4,7 @@ module Playlyfe
   class PlayerTest < Playlyfe::Test
 
     def setup 
+      super
       stub_game_query { @game=connection.game }
       #we need players and teams uploaded in front
       stub_players_query { @game.players }
@@ -49,7 +50,7 @@ module Playlyfe
     end  
 
     def test_get_roles_in_teams
-      stub_player_profile_query do
+      stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
         teams= @player.teams #this will load profile with teams and scores
         assert_equal 2, teams.size
         
@@ -77,7 +78,7 @@ module Playlyfe
     
     def test_get_empty_roles_for_unregistered_team
       team=Playlyfe::V2::Team.new({"id" => "not_in_player_teams"},@game)
-      stub_player_profile_query do 
+      stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do 
         assert_equal [], @player.roles_in_team(team)
       end
 
@@ -103,7 +104,7 @@ module Playlyfe
     end
       
     def test_get_teams
-      stub_player_profile_query do
+      stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
         teams= @player.teams #this will load profile with teams and scores
      
         assert_equal 2, teams.size
@@ -112,7 +113,7 @@ module Playlyfe
     end  
       
     def test_get_scores
-      stub_player_profile_query do
+      stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
         scores= @player.scores  #this will load profile with teams and scores
        
         assert_equal 2, scores[:points].size

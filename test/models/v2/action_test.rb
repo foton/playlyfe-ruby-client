@@ -4,6 +4,7 @@ module Playlyfe
   class ActionTest < Playlyfe::Test
   
     def setup
+      super
       stub_game_query { @game=connection.game}
       stub_metrics_query { @game.metrics }
       stub_all_actions_query { @game.available_actions }
@@ -52,7 +53,7 @@ module Playlyfe
           real_after_scores=@player.scores
         end  
       end
-      
+
       assert_equal expected_after_scores, real_after_scores
 
       assert_equal expected_after_scores[:sets].size, real_after_scores[:sets].size

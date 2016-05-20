@@ -34,7 +34,7 @@ module Playlyfe
       def test_verify_player1_profile_hash
         real_hash=connection.get_full_player_profile_hash("player1")
         stubbed_hash={}
-        stub_player_profile_query { stubbed_hash=connection.get_full_player_profile_hash("player1") }
+        stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) { stubbed_hash=connection.get_full_player_profile_hash("player1") }
         
         verify_hash(real_hash, stubbed_hash, "player1_profile_hash")
       end 

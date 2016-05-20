@@ -9,6 +9,10 @@ module Playlyfe
         @game ||= Playlyfe::V2::Game.find_by_connection(self)
       end
 
+      def reset_game!
+        @game=nil
+      end  
+
       #for calls to "runtime" there MUST be a player_id, even for Metrics or Leaderboards. So we pick first one.
       def dummy_player_id
         @dummy_player_id||= get_full_players_hash["data"].first["id"]

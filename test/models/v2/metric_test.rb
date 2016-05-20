@@ -4,6 +4,7 @@ module Playlyfe
   class MetricTest < Playlyfe::Test
 
     def setup
+      super
       stub_game_query { @game=connection.game}
     end  
 

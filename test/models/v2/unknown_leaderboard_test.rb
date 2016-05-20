@@ -4,6 +4,7 @@ module Playlyfe
   class UnknownLeaderboardTest < Playlyfe::Test
 
     def setup
+      super
       stub_game_query { @game=connection.game}
       stub_players_query { @game.players}
       stub_teams_query { @game.teams}

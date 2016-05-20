@@ -5,6 +5,7 @@ module Playlyfe
     class GameTest < Playlyfe::Test
       
       def setup
+        super
         stub_game_query(Playlyfe::Testing::ExpectedResponses.full_game_hash) do
           @game=connection.game
         end
@@ -75,6 +76,18 @@ module Playlyfe
 
         stub_players_query { @game.players } #to load all players
         stub_teams_query { @game.teams } #to load all teams
+ 
+        #stubbing method directly, so it responds with expected responses and do not call real api
+        def connection.get_full_leaderboard_hash(leaderboard_id, cycle="alltime", player_id=dummy_player_id) 
+          case leaderboard_id 
+          when 'leaderboard_plus_points'
+            return Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash
+          when 'leaderboard1'  
+            return Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash
+          else
+            raise "Uncatched stub for leaderboard_id = #{leaderboard_id}"  
+          end
+        end  
 
         stub_leaderboards_query do
           assert_equal full_leaderboards_array.size, @game.leaderboards.size
@@ -88,15 +101,17 @@ module Playlyfe
 
       def test_get_available_actions
         expected_available_actions_hash_array=Playlyfe::Testing::ExpectedResponses.full_all_actions_array
+        stub_metrics_query do
+          stub_all_actions_query do
 
-        stub_all_actions_query do
-          assert_equal expected_available_actions_hash_array.size, @game.actions.size
+            assert_equal expected_available_actions_hash_array.size, @game.actions.size
 
-          expected_available_actions_hash_array.each do |exp_action|
-            actual_action=@game.available_actions.find(exp_action["id"])
-            refute actual_action.nil?, "Action '#{exp_action}' was not found in collection #{@game.available_actions}"
-          end 
-        end        
+            expected_available_actions_hash_array.each do |exp_action|
+              actual_action=@game.available_actions.find(exp_action["id"])
+              refute actual_action.nil?, "Action '#{exp_action}' was not found in collection #{@game.available_actions}"
+            end 
+          end        
+        end  
       end  
 
       def test_get_all_metrics
