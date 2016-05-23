@@ -147,32 +147,78 @@ module Playlyfe
       assert_equal expected_value, real_value
     end  
 
-    def test_get_profile_image
-      skip 
+    def test_get_profile_image 
+      #skip #get /runtime/assets/players/player1  returning PNG image data
     end  
 
-    def test_get_activity_feed
-      skip 
-    end  
+    def test_get_all_activities
+      stub_activity_feed(Playlyfe::Testing::ExpectedResponses.full_player2_activity_feed_array) do
+        activities=@player.activities() 
+        assert_equal 7, activities.size
+        #activities are now just simple hashes
+        assert_equal 4, (activities.select {|a| a["event"] == "action"}).size
+        assert_equal 1, (activities.select {|a| a["event"] == "level"}).size
+        assert_equal 1, (activities.select {|a| a["event"] == "create"}).size
+        assert_equal 1, (activities.select {|a| a["event"] == "invite:accept"}).size
+      end  
+    end    
 
-    def test_get_notifications
-      skip 
-    end  
+    def test_get_activities_for_a_period
+      stub_activity_feed(Playlyfe::Testing::ExpectedResponses.full_player2_activity_feed_array) do
+        activities=@player.activities(Time.parse("2016-05-13T08:16:41.000Z"), Time.parse("2016-05-17T10:00:00.000Z"))
+        assert_equal 3, activities.size
+        #activities are now just simple hashes
+        assert_equal 1, (activities.select {|a| a["event"] == "action"}).size
+        assert_equal 0, (activities.select {|a| a["event"] == "level"}).size
+        assert_equal 1, (activities.select {|a| a["event"] == "create"}).size
+        assert_equal 1, (activities.select {|a| a["event"] == "invite:accept"}).size
+      end  
+    end    
 
     def test_play_action
-      skip
+      # already verified by action_test.rb#test_play_action
     end  
 
     def test_have_badges
-      skip #AKA things from sets
+      stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
+        assert_equal @player.items_from_sets, @player.badges    
+      end  
     end
+
+    def test_have_items_from_sets
+      stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
+        expected_value=[
+          {:name=>"Hammer", :count=>1, :metric_id=>"toolbox"}, 
+          {:name=>"Multitool", :count=>1, :metric_id=>"toolbox"}, 
+          {:name=>"Screwdriver", :count=>2, :metric_id=>"toolbox"}
+        ]
+
+        assert_equal expected_value, @player.items_from_sets
+      end  
+    end  
     
     def test_have_points
-      skip
+      stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
+        
+        expected_value=[
+          {count: 13, metric_id: "plus_points"},
+          {count: 24, metric_id: "test_points"}
+        ]
+        assert_equal expected_value, @player.points
+      end  
     end
-    
+ 
     def test_have_levels
-      skip #AKA statuses
+      stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
+        assert_equal @player.states, @player.levels
+      end  
+    end
+
+    def test_have_states
+      stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
+        expected_value=[{name: "Guild leader", metric_id: "experience"}]
+        assert_equal expected_value, @player.states
+      end
     end    
 
   end

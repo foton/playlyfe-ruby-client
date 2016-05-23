@@ -105,6 +105,21 @@ module Playlyfe
         connection.post_play_action(revert_action_id, player_id)
       end 
 
+      def test_verify_player2_activity_feed_array
+        player_id="player2" #no actions during test is played on player2
+        stubbed_start_time=Time.parse("2016-05-01T00:00:00Z")
+        stubbed_end_time=Time.parse("2016-05-21T00:00:00Z")
+
+        real_response=connection.get_full_activity_feed_array(player_id, stubbed_start_time, stubbed_end_time)
+        stubbed_response={}
+        stub_activity_feed(Playlyfe::Testing::ExpectedResponses.full_player2_activity_feed_array) { stubbed_response=connection.get_full_activity_feed_array(player_id, stubbed_start_time, stubbed_end_time)}
+        
+        verify_array(real_response, stubbed_response, "get_full_activity_feed_array")
+      end  
+
+
+
+
       private
 
         def verify_stubbing(real_hash, stubbed_hash, what)

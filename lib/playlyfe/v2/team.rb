@@ -26,8 +26,8 @@ module Playlyfe
           @roles=team_hash[:roles] || team_hash["roles"]
           @definition=team_hash[:definition] || team_hash["definition"]
           
-          @created_at=team_hash[:created_at] || team_hash["created_at"] 
-          @created_at=(Time.parse(team_hash[:created] || team_hash["created"]) ) if @created_at.nil? && !(team_hash[:created] || team_hash["created"]).nil?
+          @created_at=team_hash[:created_at] || team_hash["created_at"] #created_at should be Time instance
+          @created_at=(Time.parse(team_hash[:created] || team_hash["created"]) ) if @created_at.nil? && !(team_hash[:created] || team_hash["created"]).nil? #created_at is string representation of time
 
           own=team_hash[:owner] || team_hash["owner"]
           @owner=nil

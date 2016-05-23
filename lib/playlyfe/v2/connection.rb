@@ -82,6 +82,20 @@ module Playlyfe
         get("/runtime/definitions/metrics", {player_id: player_id})
       end  
 
+      def get_full_activity_feed_array(player_id, start_time=nil, end_time=nil)
+        start_str=start_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
+        end_str=end_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
+
+        #/admin/players/player2/activity?start=2016-05-01T00:00:00Z&end=2016-05-21T00:00:00Z
+        if start_time
+          #get specified period of time
+          get("/admin/players/#{player_id}/activity",{"start" => start_str, "end" => end_str})
+        else
+          #get last 24 hours
+          get("/admin/players/#{player_id}/activity")
+        end  
+      end  
+
 
     end  
   end

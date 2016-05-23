@@ -32,10 +32,7 @@ module Playlyfe
     include StubbedQuerries
 
     def initialize(*args)
-      puts("#{self.class} init ")
-
-      #puts(" #{Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1["scores"][3]}")
-      #raise "je #{Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1["scores"][3]["value"]} a ma byt 13" if Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1["scores"][3]["value"].to_i != 13
+      puts("#{self.class} init :: real queries to API allowed ") if ["V2::StubbedResponsesTest", "ConnectionTest"].include?(self.class.to_s.gsub("Playlyfe::",""))
       super
     end
 
