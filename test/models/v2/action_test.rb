@@ -63,9 +63,9 @@ module Playlyfe
       assert_equal expected_after_scores[:points][:plus_points], real_after_scores[:points][:plus_points]
       assert_equal expected_after_scores[:points][:test_points], real_after_scores[:points][:test_points]
       assert_equal [        
+                   {name: "Multitool", count: 1},
                    {name: "Hammer", count: 2}, 
-                   {name: "Screwdriver", count: 3}, 
-                   {name: "Multitool", count: 1}
+                   {name: "Screwdriver", count: 2} 
                   ], real_after_scores[:sets][:toolbox]
       assert_equal expected_after_scores[:states][:experience], real_after_scores[:states][:experience]
       assert_equal expected_after_scores[:compounds][:compound_metric], real_after_scores[:compounds][:compound_metric]
@@ -99,6 +99,39 @@ module Playlyfe
                    ], new_scores[:sets][:toolbox]
     end  
 
+
+    def test_raise_error_when_rate_limit_is_exceed
+      action_id= "get_hammer_screwdriver_and_plus_point"
+      action=@game.available_actions.find(action_id)
+      stubbed_response= Playlyfe::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action '#{action_id}' can only be triggered 1 times every day\"}", "") 
+
+      #DEFAULT: @game.ignore_rate_limit_errors=false
+      connection.stub(:post_play_action, -> (action_id, player_id) { raise stubbed_response }) do
+        e=assert_raises(Playlyfe::ActionRateLimitExceededError) { action.play_by(@player) }
+  
+        expected_error=stubbed_response
+        assert_equal expected_error.name, e.name
+        assert_equal expected_error.message.gsub(/access_token=\w*/,""), e.message.gsub(/access_token=\w*/,"")
+      end   
+    end  
+
+    def test_silently_ignore_error_when_rate_limit_is_exceed
+      action_id= "get_hammer_screwdriver_and_plus_point"
+      action=@game.available_actions.find(action_id)
+      before_scores= stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) { @player.scores }
+      stubbed_response= Playlyfe::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action '#{action_id}' can only be triggered 1 times every day\"}", "") 
+
+      #NON-DEFAULT just pretend no action was played
+      @game.ignore_rate_limit_errors=true
+
+      connection.stub(:post_play_action, -> (action_id, player_id) { raise stubbed_response }) do
+        #e=assert_raises(Playlyfe::ActionRateLimitExceededError) { action.play_by(@player) }
+        #nothing should be raised
+        action.play_by(@player)
+
+        assert_equal before_scores, @player.scores
+      end   
+    end  
 
     private
 

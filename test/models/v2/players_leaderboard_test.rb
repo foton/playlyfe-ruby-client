@@ -39,12 +39,11 @@ module Playlyfe
     def test_raise_exception_if_player_is_not_in_game_players          
       leaderboard_hash=@exp_leaderboard_hash.dup
       leaderboard_hash["data"].first["player"]["id"] = "player0"
-      begin
+      e=assert_raises(Playlyfe::LeaderboardError) do
         Playlyfe::V2::PlayersLeaderboard.new(leaderboard_hash, @game)
-      rescue Playlyfe::LeaderboardError => e
-        assert_equal "Player not found", e.name
-        assert_equal "Player 'player0' from 'Leaderboard Test points Name'[leaderboard1] leaderboard was not found between game.players!", e.message
       end
+      assert_equal "Player not found", e.name
+      assert_equal "Player 'player0' from 'Leaderboard Test points Name'[leaderboard1] leaderboard was not found between game.players!", e.message
     end 
 
     private

@@ -11,9 +11,15 @@ module Playlyfe
       end  
 
       def play(action)
-        game.connection.post_play_action(action.id, self.id)
-        @profile_hash= game.connection.get_full_player_profile_hash(self.id)
-        @scores=fill_scores
+        begin
+          game.connection.post_play_action(action.id, self.id)
+          @profile_hash= game.connection.get_full_player_profile_hash(self.id)
+          @scores=fill_scores
+        rescue Playlyfe::ActionRateLimitExceededError => e
+          unless game.ignore_rate_limit_errors  
+            fail e
+          end
+        end  
       end
       
       def scores

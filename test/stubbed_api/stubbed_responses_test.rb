@@ -76,8 +76,8 @@ module Playlyfe
         stubbed_response={}
         stub_all_actions_query { stubbed_response=connection.get_full_all_actions_array}
         
-        fix_counts_for_actions([action_id, revert_action_id],  real_response, stubbed_response)
-        
+        fix_counts_for_actions(actions_triggered_during_testing,  real_response, stubbed_response)
+
         verify_array(real_response, stubbed_response, "all_actions_array")
       end 
 
@@ -95,10 +95,10 @@ module Playlyfe
         real_response=connection.post_play_action(action_id, player_id)
         stubbed_response={}
         stub_play_action(action_id, Playlyfe::Testing::ExpectedResponses.full_play_action_hammer_screwdriver_and_plus_point_hash) { stubbed_response=connection.post_play_action(action_id, player_id) }
-        
+                
         #i cannot stop Playlyfe counting action plays, and I do not want to change stubbed values each time I run this test, so I fix it here
-        fix_counts_for_actions([action_id, revert_action_id],  real_response["actions"], stubbed_response["actions"])
-        
+        fix_counts_for_actions( actions_triggered_during_testing,  real_response["actions"], stubbed_response["actions"])
+
         verify_hash(real_response, stubbed_response, "play_action_hash")
 
         #to revert rewards
@@ -116,6 +116,25 @@ module Playlyfe
         
         verify_array(real_response, stubbed_response, "get_full_activity_feed_array")
       end  
+
+      def test_verify_play_not_alowed_action_hash
+        player_id="player1"
+        
+        #once_per_day_action should change only "test_points" metric, so we save "before value" and after this test we change it back to it
+        original_test_points=(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1["scores"].detect {|sc| sc["metric"]["id"] == "test_points"})["value"]
+
+        e=assert_raises(ActionRateLimitExceededError) do
+          real_response1=connection.post_play_action(once_per_day_action_id, player_id)
+          #second call will not be definitelly first at this day
+          real_response2=connection.post_play_action(once_per_day_action_id, player_id)
+        end
+        expected_error=Playlyfe::Testing::ExpectedResponses.full_error_for_playing_action_over_limit
+        assert_equal expected_error.name, e.name 
+        assert_equal expected_error.message.gsub(/access_token=\w*/,""), e.message.gsub(/access_token=\w*/,"")
+
+        #to revert rewards, which can happen on first action call
+        connection.post_play_action(set_test_points_action_id, player_id, {variables: {tst_p: original_test_points.to_i}})
+      end 
 
 
 
@@ -178,10 +197,22 @@ module Playlyfe
         def action_id
           "get_hammer_screwdriver_and_plus_point"
         end
+
+        def once_per_day_action_id
+          "only_one_time_per_day_action"
+        end
+
+        def set_test_points_action_id
+          "set_test_points_to_value"
+        end  
           
         def revert_action_id
           "loose_hammer_screwdriver_and_plus_point"
         end  
+
+        def actions_triggered_during_testing
+          [action_id, revert_action_id, once_per_day_action_id, set_test_points_action_id]
+        end
     end
   end
 end      

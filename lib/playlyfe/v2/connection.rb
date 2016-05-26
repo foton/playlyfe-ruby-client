@@ -74,8 +74,8 @@ module Playlyfe
         get("/runtime/actions", {player_id: player_id})
       end  
 
-      def post_play_action(action_id, player_id)
-        post("/runtime/actions/#{action_id}/play", {player_id: player_id}, {})
+      def post_play_action(action_id, player_id, body ={})
+        post("/runtime/actions/#{action_id}/play", {player_id: player_id}, body)
       end  
 
       def get_full_metrics_array(player_id=dummy_player_id)

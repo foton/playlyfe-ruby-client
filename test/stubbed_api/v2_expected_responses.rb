@@ -171,21 +171,21 @@ module Playlyfe
                 "type" =>  "set"
               }.freeze,
               "value" =>  [
+                   {
+                  "name" =>  "Multitool",
+                  "description" =>  "Universal do-all-thing tool. Very rare!",
+                  "count" =>  "1"
+                }.freeze,
                 {
                   "name" =>  "Hammer",
                   "description" =>  "Hammer for nails",
-                  "count" =>  "1"
+                  "count" =>  "1" #DO NOT CHANGE this value unless test for "PLAY ACTION" is successfull. Then call "loose_hammer ...." action to decrease real values to test values.
                 }.freeze,
                 {
                   "name" =>  "Screwdriver",
                   "description" =>  "Just screwdriver",
-                  "count" =>  "2"
-                }.freeze,
-                {
-                  "name" =>  "Multitool",
-                  "description" =>  "Universal do-all-thing tool. Very rare!",
                   "count" =>  "1"
-                }.freeze
+                }.freeze,
               ].freeze
             }.freeze,
             {
@@ -194,7 +194,7 @@ module Playlyfe
                 "name" =>  "plus_points",
                 "type" =>  "point"
               }.freeze,
-              "value" =>  "13"
+              "value" =>  "19"
             }.freeze,
             {
               "metric" =>  {
@@ -304,7 +304,7 @@ module Playlyfe
                 "id" =>  "team_57349f7b7d0ed66b0193101f",
                 "name" =>  "Team1 for RUby client"
               },
-              "score" =>  "18",
+              "score" =>  "24",
               "rank" =>  1
             },
             {
@@ -312,7 +312,7 @@ module Playlyfe
                 "id" =>  "team_57349f9b3409e252002cd0e3",
                 "name" =>  "Team 2 baased on Team 1 template"
               },
-              "score" =>  "13",
+              "score" =>  "19",
               "rank" =>  2
             },
             {
@@ -428,7 +428,7 @@ module Playlyfe
                 "probability" => 1
               }
             ],
-            "count" => 1
+            "count" => 2
           },
           get_hammer_screwdriver_and_plus_point_action_hash,
           {
@@ -472,8 +472,9 @@ module Playlyfe
                 "probability" => 1
               }
             ],
-            "count" => 0
+            "count" => 57
           },
+          one_time_per_day_action_hash,
           {
             "description" => "add 1 plus_point",
             "id" => "plus_action",
@@ -492,9 +493,21 @@ module Playlyfe
               }
             ],
             "count" => 1
-          }
+          },
+          set_test_points_to_value_action_hash
         ]
       end  
+
+      def self.one_time_per_day_action_hash
+        {
+          "id" => "only_one_time_per_day_action",
+          "name" => "only one time per day action",
+          "variables" => [],
+          "rewards" =>[
+            {"metric" => {"id" => "test_points", "type" => "point", "name" => "test points"}, "value" => "1", "verb" => "add", "probability" => 1}
+          ],
+          "count" => 1}
+      end
 
       def self.get_hammer_screwdriver_and_plus_point_action_hash
           {
@@ -537,8 +550,36 @@ module Playlyfe
                 "probability" => 1
               }
             ],
-            "count" => 2
+            "count" => 75
           }
+      end
+
+      def self.set_test_points_to_value_action_hash
+        {
+          "id" => "set_test_points_to_value",
+          "name" => "set_test_points_to_value",
+          "variables" => [
+            {
+              "default" => 0,
+              "name" => "tst_p",
+              "required" => true,
+              "type" => "int"
+            }
+          ],
+          "rewards" => [
+            {
+              "metric" => {
+                "id" => "test_points",
+                "type" => "point",
+                "name" => "test points"
+              },
+              "value" => "$vars['tst_p'] ",
+              "verb" => "set",
+              "probability" => 1
+            }
+          ],
+          "count" => 6
+        }
       end
 
 
@@ -623,180 +664,7 @@ module Playlyfe
 
       def self.full_play_action_hammer_screwdriver_and_plus_point_hash
         {
-          "actions" => [
-            {
-              "description" => "Just Action numero uno",
-              "id" => "action1",
-              "name" => "Action1 Name",
-              "variables" => [],
-              "rewards" => [
-                {
-                  "metric" => {
-                    "id" => "test_points",
-                    "type" => "point",
-                    "name" => "test points"
-                  },
-                  "value" => "2",
-                  "verb" => "add",
-                  "probability" => 1
-                }
-              ],
-              "count" => 10
-            },
-            {
-              "description" => "Action 2 is the second action to play. Adds plus_points and test_points.",
-              "id" => "action2",
-              "name" => "Action2 Name",
-              "variables" => [],
-              "rewards" => [
-                {
-                  "metric" => {
-                    "id" => "plus_points",
-                    "type" => "point",
-                    "name" => "plus_points"
-                  },
-                  "value" => "1",
-                  "verb" => "add",
-                  "probability" => 1
-                },
-                {
-                  "metric" => {
-                    "id" => "test_points",
-                    "type" => "point",
-                    "name" => "test points"
-                  },
-                  "value" => "1",
-                  "verb" => "add",
-                  "probability" => 1
-                }
-              ],
-              "count" => 2
-            },
-            {
-              "id" => "get_hammer",
-              "name" => "get_hammer",
-              "variables" => [],
-              "rewards" => [
-                {
-                  "metric" => {
-                    "id" => "toolbox",
-                    "type" => "set",
-                    "name" => "Toolbox"
-                  },
-                  "value" => {
-                    "Hammer" => "1"
-                  },
-                  "verb" => "add",
-                  "probability" => 1
-                }
-              ],
-              "count" => 1
-            },
-            {
-              "id" => "get_hammer_screwdriver_and_plus_point",
-              "name" => "get_hammer_screwdriver_and_plus_point",
-              "variables" => [],
-              "rewards" => [
-                {
-                  "metric" => {
-                    "id" => "toolbox",
-                    "type" => "set",
-                    "name" => "Toolbox"
-                  },
-                  "value" => {
-                    "Hammer" => "1"
-                  },
-                  "verb" => "add",
-                  "probability" => 1
-                },
-                {
-                  "metric" => {
-                    "id" => "plus_points",
-                    "type" => "point",
-                    "name" => "plus_points"
-                  },
-                  "value" => "1",
-                  "verb" => "add",
-                  "probability" => 1
-                },
-                {
-                  "metric" => {
-                    "id" => "toolbox",
-                    "type" => "set",
-                    "name" => "Toolbox"
-                  },
-                  "value" => {
-                    "Screwdriver" => "1"
-                  },
-                  "verb" => "add",
-                  "probability" => 1
-                }
-              ],
-              "count" => 2
-            },
-            {
-              "description" => "For reverting action \"get_hammer_screwdriver_and_plus_point\".",
-              "id" => "loose_hammer_screwdriver_and_plus_point",
-              "name" => "loose_hammer_screwdriver_and_plus_point",
-              "variables" => [],
-              "rewards" => [
-                {
-                  "metric" => {
-                    "id" => "toolbox",
-                    "type" => "set",
-                    "name" => "Toolbox"
-                  },
-                  "value" => {
-                    "Hammer" => "1"
-                  },
-                  "verb" => "remove",
-                  "probability" => 1
-                },
-                {
-                  "metric" => {
-                    "id" => "toolbox",
-                    "type" => "set",
-                    "name" => "Toolbox"
-                  },
-                  "value" => {
-                    "Screwdriver" => "1"
-                  },
-                  "verb" => "remove",
-                  "probability" => 1
-                },
-                {
-                  "metric" => {
-                    "id" => "plus_points",
-                    "type" => "point",
-                    "name" => "plus_points"
-                  },
-                  "value" => "1",
-                  "verb" => "remove",
-                  "probability" => 1
-                }
-              ],
-              "count" => 0
-            },
-            {
-              "description" => "add 1 plus_point",
-              "id" => "plus_action",
-              "name" => "Plus action",
-              "variables" => [],
-              "rewards" => [
-                {
-                  "metric" => {
-                    "id" => "plus_points",
-                    "type" => "point",
-                    "name" => "plus_points"
-                  },
-                  "value" => "1",
-                  "verb" => "add",
-                  "probability" => 1
-                }
-              ],
-              "count" => 1
-            }
-          ],
+          "actions" => full_all_actions_array,
           "events" => {
             "local" => [
               {
@@ -832,8 +700,8 @@ module Playlyfe
                       "type" => "point"
                     },
                     "delta" => {
-                      "old" => "13",
-                      "new" => "14"
+                      "old" => "19",
+                      "new" => "20"
                     }
                   },
                   {
@@ -844,8 +712,8 @@ module Playlyfe
                     },
                     "delta" => {
                       "Screwdriver" => {
-                        "old" => "2",
-                        "new" => "3"
+                        "old" => "1",
+                        "new" => "2"
                       }
                     }
                   }
@@ -860,7 +728,9 @@ module Playlyfe
         }
       end  
 
-
+      def self.full_error_for_playing_action_over_limit
+        Playlyfe::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action 'only_one_time_per_day_action' can only be triggered 1 times every day\"}", "post https://api.playlyfe.com/v2/runtime/actions/only_one_time_per_day_action/play?player_id=player1&access_token=NDgwNTQ4ZDYtYjkzNC00N2M3LTkyMDYtN2M0N2MzMGYyOTY3")
+      end  
 
       def self.full_player2_activity_feed_array(start_time=nil, end_time=nil)
         #response for /admin/players/player2/activity?start=2016-05-01T00:00:00Z&end=2016-05-21T00:00:00Z

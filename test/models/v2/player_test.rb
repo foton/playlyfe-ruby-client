@@ -93,13 +93,12 @@ module Playlyfe
 
     def test_raise_exception_if_players_team_is_not_in_game_teams          
       connection.stub :get_full_player_profile_hash, {"teams" => [{"id" => "ttt", "name" => "not in game team"}]} do 
-        begin
+        e=assert_raises(Playlyfe::PlayerError) do
           player=Playlyfe::V2::Player.new(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1, @game)
           player.teams
-        rescue Playlyfe::PlayerError => e
-          assert_equal "Team not found", e.name 
-          assert_equal "Team 'ttt' from player1 player profile was not found between game.teams!", e.message
         end
+        assert_equal "Team not found", e.name 
+        assert_equal "Team 'ttt' from player1 player profile was not found between game.teams!", e.message
       end
     end
       
@@ -121,12 +120,12 @@ module Playlyfe
         assert_equal 1, scores[:states].size
         assert_equal 1, scores[:compounds].size
 
-        assert_equal 13, scores[:points][:plus_points]
+        assert_equal 19, scores[:points][:plus_points]
         assert_equal 24, scores[:points][:test_points]
         assert_equal [
+                      {name: "Multitool", count: 1},
                       {name: "Hammer", count: 1}, 
-                      {name: "Screwdriver", count: 2}, 
-                      {name: "Multitool", count: 1}
+                      {name: "Screwdriver", count: 1}, 
                      ], scores[:sets][:toolbox]
         assert_equal "Guild leader", scores[:states][:experience]
         assert_equal 23, scores[:compounds][:compound_metric]
@@ -188,9 +187,9 @@ module Playlyfe
     def test_have_items_from_sets
       stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
         expected_value=[
-          {:name=>"Hammer", :count=>1, :metric_id=>"toolbox"}, 
-          {:name=>"Multitool", :count=>1, :metric_id=>"toolbox"}, 
-          {:name=>"Screwdriver", :count=>2, :metric_id=>"toolbox"}
+          {name: "Hammer", count: 1, metric_id: "toolbox"}, 
+          {name: "Multitool", count: 1, metric_id: "toolbox"}, 
+          {name: "Screwdriver", count: 1, metric_id: "toolbox"}
         ]
 
         assert_equal expected_value, @player.items_from_sets
@@ -201,7 +200,7 @@ module Playlyfe
       stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) do
         
         expected_value=[
-          {count: 13, metric_id: "plus_points"},
+          {count: 19, metric_id: "plus_points"},
           {count: 24, metric_id: "test_points"}
         ]
         assert_equal expected_value, @player.points

@@ -143,7 +143,7 @@ module Playlyfe
           end
         end
       rescue => e
-        raise Playlyfe::ConnectionError.new(e.response, "#{method} #{uri}")
+        raise Playlyfe::Error.build(e.response, "#{method} #{uri}")
       end
     end
 

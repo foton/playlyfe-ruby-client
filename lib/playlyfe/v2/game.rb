@@ -14,6 +14,7 @@ module Playlyfe
     class Game < Playlyfe::Game
 
       attr_reader :game_hash, :description, :id, :type, :timezone, :created_at
+      attr_accessor :ignore_rate_limit_errors
 
       def self.find_by_connection(conn)
         Playlyfe::V2::Game.new(conn)
