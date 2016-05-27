@@ -121,7 +121,7 @@ module Playlyfe
       query = check_token(query)
       begin
         uri="https://api.playlyfe.com/#{@version}#{route}?#{query}"
-        puts "doing real query to api.uri : #{uri}" 
+        puts "doing real query to api.uri : #{uri} with body #{body.to_json}" 
         response = RestClient::Request.execute(
           :method => method,
           :url => uri,

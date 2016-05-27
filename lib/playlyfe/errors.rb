@@ -10,6 +10,7 @@ module Playlyfe
   class ActionError < Playlyfe::Error; end
   class MetricError < Playlyfe::Error; end
   class Playlyfe::ActionRateLimitExceededError < Playlyfe::ActionError; end
+  class Playlyfe::PlayerExistsError < Playlyfe::PlayerError; end
 
   class Error < StandardError
     attr_accessor :name, :message
@@ -29,6 +30,9 @@ module Playlyfe
         res_h = JSON.parse(res)
         if res_h['error'] == "rate_limit_exceeded"
           err_class= Playlyfe::ActionRateLimitExceededError
+        elsif res_h['error'] == "player_exists"
+          err_class= Playlyfe::PlayerExistsError
+              
         end  
       end  
       err_class.new(res, uri)

@@ -5,6 +5,10 @@ module Playlyfe
     
     attr_reader :game
 
+    def self.create(player_hash, game)
+      nil
+    end  
+
     def self.all(game)
       game.players
     end  

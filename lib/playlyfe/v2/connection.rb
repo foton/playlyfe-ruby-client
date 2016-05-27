@@ -95,7 +95,14 @@ module Playlyfe
           get("/admin/players/#{player_id}/activity")
         end  
       end  
+   
+      def post_create_player(player_h)
+        post("/admin/players", {}, player_h)
+      end  
 
+      def delete_player(player_id)
+        delete("/admin/players/#{player_id}")
+      end  
 
     end  
   end

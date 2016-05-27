@@ -136,7 +136,24 @@ module Playlyfe
         connection.post_play_action(set_test_points_action_id, player_id, {variables: {tst_p: original_test_points.to_i}})
       end 
 
+      def test_verify_creation_of_player
+        player_h={id: "newone", alias: "Just born"}
+        real_response= connection.post_create_player(player_h) #{"created" => "connection.post_create_player(player_h)" }
+        #verify that player was really created
+        assert (connection.get_full_players_hash["data"].collect {|pl| pl["id"]}).include?(player_h[:id])
+        
+        stubbed_response={}
 
+        stub_player_create(Playlyfe::Testing::ExpectedResponses.player_created_hash(player_h)) do
+          stubbed_response=connection.post_create_player(player_h)
+          stubbed_response["created"]=real_response["created"]
+        end  
+
+        verify_hash(real_response, stubbed_response, "creating_player")
+
+        #cleanup
+        connection.delete_player(player_h[:id])
+      end  
 
 
       private

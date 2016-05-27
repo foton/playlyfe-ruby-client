@@ -6,6 +6,16 @@ module Playlyfe
      
       attr_reader :enabled ,:alias, :id
 
+      def self.create(pl_hash, game)
+        unless pl_hash.has_key?(:id) && pl_hash.has_key?(:alias)
+          fail Playlyfe::PlayerError.new("{\"error\": \"keys missing\", \"error_description\": \"Player's hash is missing values for keys :id and :alias!\"}")
+        end  
+        
+        p=self.new( game.connection.post_create_player( pl_hash.select { |key, value| [:id, :alias].include?(key) } ), game )
+        game.players.add(p)
+        p
+      end   
+
       def enabled?
         enabled
       end  

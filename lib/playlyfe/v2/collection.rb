@@ -7,6 +7,10 @@ module Playlyfe
         @items
       end
 
+      def add(item)
+        @items << item
+      end  
+
       def find(str)
         (@items.detect {|item| item.id.include?(str)})
       end  

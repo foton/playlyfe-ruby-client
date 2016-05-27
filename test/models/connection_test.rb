@@ -63,7 +63,7 @@ module Playlyfe
       game= connection.game
       assert_equal "Game for Ruby client test", game.title
     end
-    
+        
     def test_raise_error_for_unknown_api_version
       #API V1 is implemented only in Connection, not other classes
       pl = Playlyfe::Connection.new( version: 'v1', client_id: CLIENT_ID, client_secret: CLIENT_SECRET, type: 'client')

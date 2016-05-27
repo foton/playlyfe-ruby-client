@@ -953,7 +953,23 @@ module Playlyfe
         end    
         activities 
       end
-    end  
 
+      def self.player_created_hash(pl_h)
+        {
+          "id" => pl_h[:id],
+          "alias" => pl_h[:alias],
+          "created" => Time.now.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ"),
+          "scores" => {},
+          "teams" => {},
+          "enabled" => true,
+          "bootstrap" => true
+        }
+      end
+
+      def self.full_error_for_creating_existing_player(player_id)
+        Playlyfe::PlayerExistsError.new("{\"error\": \"player_exists\", \"error_description\": \"A player with ID '#{player_id}' already exists\"}", "post https://api.playlyfe.com/v2/admin/players?&access_token=NDgwNTQ4ZDYtYjkzNC00N2M3LTkyMDYtN2M0N2MzMGYyOTY3")
+      end 
+
+    end  #end of class
   end
 end

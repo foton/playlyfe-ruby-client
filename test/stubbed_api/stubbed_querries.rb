@@ -66,4 +66,10 @@ module StubbedQuerries
     end
   end  
 
+  def stub_player_create(stubbed_response, &block)
+    connection.stub :post_create_player, stubbed_response do 
+      yield 
+    end
+  end  
+
 end    

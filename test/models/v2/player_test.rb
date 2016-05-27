@@ -220,5 +220,32 @@ module Playlyfe
       end
     end    
 
+    # Ijust realize, that I cannot add players to running as admin manualy on website :-(
+    def test_create_player_in_game
+      player_h=player_h={id: "newone", alias: "Just born"}
+      stub_player_create(Playlyfe::Testing::ExpectedResponses.player_created_hash(player_h)) do
+        new_player=Playlyfe::V2::Player.create(player_h, @game)
+
+        assert_equal player_h[:id], new_player.id 
+        assert_equal player_h[:alias], new_player.alias
+        #check for empty scores and teams?
+
+        refute @game.players.find(player_h[:id]).nil?
+      end  
+    end 
+
+    def test_raise_error_on_create_already_existing_player
+      player_h=player_h={id: "newone", alias: "Just born"}   
+      stubbed_response= Playlyfe::Testing::ExpectedResponses.full_error_for_creating_existing_player(player_h[:id])
+
+      stub_player_create( -> (player_h) { raise stubbed_response }) do
+        e=assert_raises(Playlyfe::PlayerExistsError) { Playlyfe::V2::Player.create(player_h, @game) }
+  
+        expected_error=stubbed_response
+        assert_equal expected_error.name, e.name
+        assert_equal expected_error.message.gsub(/access_token=\w*/,""), e.message.gsub(/access_token=\w*/,"")
+      end   
+    end  
+
   end
 end
