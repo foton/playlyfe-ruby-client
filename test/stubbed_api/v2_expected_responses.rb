@@ -1,4 +1,4 @@
-module Playlyfe
+module PlaylyfeClient
   module Testing
 #    module V2
     class ExpectedResponses
@@ -32,7 +32,7 @@ module Playlyfe
 
       def self.full_game_hash
         {
-          "name" => "Playlyfe Hermes",
+          "name" => "PlaylyfeClient Hermes",
           "version" => "v1",
           "status" => "ok",
           "game" => game_hash
@@ -729,7 +729,7 @@ module Playlyfe
       end  
 
       def self.full_error_for_playing_action_over_limit
-        Playlyfe::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action 'only_one_time_per_day_action' can only be triggered 1 times every day\"}", "post https://api.playlyfe.com/v2/runtime/actions/only_one_time_per_day_action/play?player_id=player1&access_token=NDgwNTQ4ZDYtYjkzNC00N2M3LTkyMDYtN2M0N2MzMGYyOTY3")
+        PlaylyfeClient::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action 'only_one_time_per_day_action' can only be triggered 1 times every day\"}", "post https://api.playlyfe.com/v2/runtime/actions/only_one_time_per_day_action/play?player_id=player1&access_token=NDgwNTQ4ZDYtYjkzNC00N2M3LTkyMDYtN2M0N2MzMGYyOTY3")
       end  
 
       def self.full_player2_activity_feed_array(start_time=nil, end_time=nil)
@@ -967,7 +967,7 @@ module Playlyfe
       end
 
       def self.full_error_for_creating_existing_player(player_id)
-        Playlyfe::PlayerExistsError.new("{\"error\": \"player_exists\", \"error_description\": \"A player with ID '#{player_id}' already exists\"}", "post https://api.playlyfe.com/v2/admin/players?&access_token=NDgwNTQ4ZDYtYjkzNC00N2M3LTkyMDYtN2M0N2MzMGYyOTY3")
+        PlaylyfeClient::PlayerExistsError.new("{\"error\": \"player_exists\", \"error_description\": \"A player with ID '#{player_id}' already exists\"}", "post https://api.playlyfe.com/v2/admin/players?&access_token=NDgwNTQ4ZDYtYjkzNC00N2M3LTkyMDYtN2M0N2MzMGYyOTY3")
       end 
 
     end  #end of class

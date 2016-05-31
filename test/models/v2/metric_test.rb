@@ -1,7 +1,7 @@
 require_relative '../../playlyfe_test_class.rb'
 
-module Playlyfe
-  class MetricTest < Playlyfe::Test
+module PlaylyfeClient
+  class MetricTest < PlaylyfeClient::Test
 
     def setup
       super
@@ -9,10 +9,10 @@ module Playlyfe
     end  
 
     def test_create_point_metric_from_hash
-      exp_metric_hash=Playlyfe::Testing::ExpectedResponses.point_metric_hash1
-      metric=Playlyfe::V2::Metric.create_from(exp_metric_hash,@game)
+      exp_metric_hash=PlaylyfeClient::Testing::ExpectedResponses.point_metric_hash1
+      metric=PlaylyfeClient::V2::Metric.create_from(exp_metric_hash,@game)
 
-      assert metric.kind_of?(Playlyfe::V2::PointMetric)
+      assert metric.kind_of?(PlaylyfeClient::V2::PointMetric)
       ["id","name","type","description"].each do |key|
         real_value=metric.send(key)  
         expected_value=exp_metric_hash[key]
@@ -21,10 +21,10 @@ module Playlyfe
     end  
 
     def test_create_compound_metric_from_hash
-      exp_metric_hash=Playlyfe::Testing::ExpectedResponses.compound_metric_hash
-      metric=Playlyfe::V2::Metric.create_from(exp_metric_hash,@game)
+      exp_metric_hash=PlaylyfeClient::Testing::ExpectedResponses.compound_metric_hash
+      metric=PlaylyfeClient::V2::Metric.create_from(exp_metric_hash,@game)
 
-      assert metric.kind_of?(Playlyfe::V2::CompoundMetric)
+      assert metric.kind_of?(PlaylyfeClient::V2::CompoundMetric)
       ["id","name","type","description","formula"].each do |key|
         real_value=metric.send(key)  
         expected_value=exp_metric_hash[key]
@@ -33,10 +33,10 @@ module Playlyfe
     end  
 
     def test_create_set_metric_from_hash
-      exp_metric_hash=Playlyfe::Testing::ExpectedResponses.set_metric_hash
-      metric=Playlyfe::V2::Metric.create_from(exp_metric_hash,@game)
+      exp_metric_hash=PlaylyfeClient::Testing::ExpectedResponses.set_metric_hash
+      metric=PlaylyfeClient::V2::Metric.create_from(exp_metric_hash,@game)
 
-      assert metric.kind_of?(Playlyfe::V2::SetMetric)
+      assert metric.kind_of?(PlaylyfeClient::V2::SetMetric)
       ["id","name","type","description"].each do |key|
         real_value=metric.send(key)  
         expected_value=exp_metric_hash[key]
@@ -51,10 +51,10 @@ module Playlyfe
     end
 
     def test_create_state_metric_from_hash
-      exp_metric_hash=Playlyfe::Testing::ExpectedResponses.state_metric_hash
-      metric=Playlyfe::V2::Metric.create_from(exp_metric_hash,@game)
+      exp_metric_hash=PlaylyfeClient::Testing::ExpectedResponses.state_metric_hash
+      metric=PlaylyfeClient::V2::Metric.create_from(exp_metric_hash,@game)
 
-      assert metric.kind_of?(Playlyfe::V2::StateMetric)
+      assert metric.kind_of?(PlaylyfeClient::V2::StateMetric)
       ["id","name","type","description"].each do |key|
         real_value=metric.send(key)  
         expected_value=exp_metric_hash[key]

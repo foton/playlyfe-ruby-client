@@ -1,7 +1,7 @@
 require_relative '../../playlyfe_test_class.rb'
 
-module Playlyfe
-  class LeaderboardCollectionTest < Playlyfe::Test
+module PlaylyfeClient
+  class LeaderboardCollectionTest < PlaylyfeClient::Test
 
     def setup
       super
@@ -15,31 +15,31 @@ module Playlyfe
         def connection.get_full_leaderboard_hash(leaderboard_id, cycle="alltime", player_id=dummy_player_id) 
           case leaderboard_id 
           when 'leaderboard_plus_points'
-            return Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash
+            return PlaylyfeClient::Testing::ExpectedResponses.full_teams_leaderboard_hash
           when 'leaderboard1'  
-            return Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash
+            return PlaylyfeClient::Testing::ExpectedResponses.full_players_leaderboard_hash
           else
             raise "Uncatched stub for leaderboard_id = #{leaderboard_id}"  
           end
         end  
 
-        @collection = Playlyfe::V2::LeaderboardCollection.new(@game)
+        @collection = PlaylyfeClient::V2::LeaderboardCollection.new(@game)
       end  
     end  
 
     def test_build_from_game
-      assert_equal Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.size, @collection.size
+      assert_equal PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array.size, @collection.size
     end  
 
     def test_can_find_leaderboard_by_id
-       Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.each do |exp_leaderboard|
+       PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array.each do |exp_leaderboard|
         actual_leaderboard=@collection.find(exp_leaderboard["id"])
         refute actual_leaderboard.nil?, "Leaderboard '#{exp_leaderboard}' was not found in collection #{@collection.to_a} by ID"
       end 
     end
 
     def test_can_find_leaderboard_by_name
-       Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.each do |exp_leaderboard|
+       PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array.each do |exp_leaderboard|
         actual_leaderboard=@collection.find(exp_leaderboard["name"])
         refute actual_leaderboard.nil?, "Leaderboard '#{exp_leaderboard}' was not found in collection #{@collection.to_a} by NAME"
       end 
@@ -47,7 +47,7 @@ module Playlyfe
     
     def test_can_convert_to_array  
       assert @collection.to_a.kind_of?(Array)
-      assert_equal Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.size, @collection.to_a.size
+      assert_equal PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array.size, @collection.to_a.size
     end
     
     def test_can_return_all
@@ -55,14 +55,14 @@ module Playlyfe
     end  
 
     def test_can_find_team_only_leaderboards
-      exp_ids=(Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.select {|t| t["entity_type"] == "teams"}).collect {|t| t["id"]}
+      exp_ids=(PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array.select {|t| t["entity_type"] == "teams"}).collect {|t| t["id"]}
       refute exp_ids.empty?
 
       assert_equal exp_ids, (@collection.for_teams.collect {|t| t.id}).sort
     end  
    
     def test_can_find_team_only_leaderboards
-      exp_ids=(Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.select {|t| t["entity_type"] == "players"}).collect {|t| t["id"]}
+      exp_ids=(PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array.select {|t| t["entity_type"] == "players"}).collect {|t| t["id"]}
       refute exp_ids.empty?
 
       assert_equal exp_ids, (@collection.for_players.collect {|t| t.id}).sort

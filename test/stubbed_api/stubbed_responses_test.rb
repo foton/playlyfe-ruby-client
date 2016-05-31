@@ -1,10 +1,10 @@
 require_relative '../playlyfe_test_class.rb'
 
-module Playlyfe
+module PlaylyfeClient
   module V2
 
     #I have to verify, that my stubs are in sync with real API responses
-    class StubbedResponsesTest < Playlyfe::Test
+    class StubbedResponsesTest < PlaylyfeClient::Test
 
       def test_verify_game_hash
         real_hash=connection.get_full_game_hash
@@ -34,7 +34,7 @@ module Playlyfe
       def test_verify_player1_profile_hash
         real_hash=connection.get_full_player_profile_hash("player1")
         stubbed_hash={}
-        stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) { stubbed_hash=connection.get_full_player_profile_hash("player1") }
+        stub_player_profile_query(PlaylyfeClient::Testing::ExpectedResponses.full_profile_hash_for_player1) { stubbed_hash=connection.get_full_player_profile_hash("player1") }
         
         verify_hash(real_hash, stubbed_hash, "player1_profile_hash")
       end 
@@ -42,7 +42,7 @@ module Playlyfe
       def test_verify_team1_members_hash_array
         real_hash=connection.get_full_team_members_hash("team_57349f7b7d0ed66b0193101f")
         stubbed_hash={}
-        stub_team_members_query(Playlyfe::Testing::ExpectedResponses.full_team1_members_hash) { stubbed_hash=connection.get_full_team_members_hash("team_57349f9b3409e252002cd0e3") }
+        stub_team_members_query(PlaylyfeClient::Testing::ExpectedResponses.full_team1_members_hash) { stubbed_hash=connection.get_full_team_members_hash("team_57349f9b3409e252002cd0e3") }
         
         verify_hash(real_hash, stubbed_hash, "team1_ruby_members_hash")
       end 
@@ -58,7 +58,7 @@ module Playlyfe
       def test_verify_teams_leaderboard_hash
         real_response=connection.get_full_leaderboard_hash("leaderboard_plus_points")
         stubbed_response={}
-        stub_leaderboard_query(Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash) { stubbed_response=connection.get_full_leaderboard_hash("leaderboard_plus_points") }
+        stub_leaderboard_query(PlaylyfeClient::Testing::ExpectedResponses.full_teams_leaderboard_hash) { stubbed_response=connection.get_full_leaderboard_hash("leaderboard_plus_points") }
         
         verify_hash(real_response, stubbed_response, "team_leaderboard")
       end 
@@ -66,7 +66,7 @@ module Playlyfe
       def test_verify_players_leaderboard_hash
         real_response=connection.get_full_leaderboard_hash("leaderboard1")
         stubbed_response={}
-        stub_leaderboard_query(Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash) { stubbed_response=connection.get_full_leaderboard_hash("leaderboard1") }
+        stub_leaderboard_query(PlaylyfeClient::Testing::ExpectedResponses.full_players_leaderboard_hash) { stubbed_response=connection.get_full_leaderboard_hash("leaderboard1") }
         
         verify_hash(real_response, stubbed_response, "players_leaderboard")
       end 
@@ -94,9 +94,9 @@ module Playlyfe
         
         real_response=connection.post_play_action(action_id, player_id)
         stubbed_response={}
-        stub_play_action(action_id, Playlyfe::Testing::ExpectedResponses.full_play_action_hammer_screwdriver_and_plus_point_hash) { stubbed_response=connection.post_play_action(action_id, player_id) }
+        stub_play_action(action_id, PlaylyfeClient::Testing::ExpectedResponses.full_play_action_hammer_screwdriver_and_plus_point_hash) { stubbed_response=connection.post_play_action(action_id, player_id) }
                 
-        #i cannot stop Playlyfe counting action plays, and I do not want to change stubbed values each time I run this test, so I fix it here
+        #i cannot stop PlaylyfeClient counting action plays, and I do not want to change stubbed values each time I run this test, so I fix it here
         fix_counts_for_actions( actions_triggered_during_testing,  real_response["actions"], stubbed_response["actions"])
 
         verify_hash(real_response, stubbed_response, "play_action_hash")
@@ -112,7 +112,7 @@ module Playlyfe
 
         real_response=connection.get_full_activity_feed_array(player_id, stubbed_start_time, stubbed_end_time)
         stubbed_response={}
-        stub_activity_feed(Playlyfe::Testing::ExpectedResponses.full_player2_activity_feed_array) { stubbed_response=connection.get_full_activity_feed_array(player_id, stubbed_start_time, stubbed_end_time)}
+        stub_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) { stubbed_response=connection.get_full_activity_feed_array(player_id, stubbed_start_time, stubbed_end_time)}
         
         verify_array(real_response, stubbed_response, "get_full_activity_feed_array")
       end  
@@ -121,14 +121,14 @@ module Playlyfe
         player_id="player1"
         
         #once_per_day_action should change only "test_points" metric, so we save "before value" and after this test we change it back to it
-        original_test_points=(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1["scores"].detect {|sc| sc["metric"]["id"] == "test_points"})["value"]
+        original_test_points=(PlaylyfeClient::Testing::ExpectedResponses.full_profile_hash_for_player1["scores"].detect {|sc| sc["metric"]["id"] == "test_points"})["value"]
 
         e=assert_raises(ActionRateLimitExceededError) do
           real_response1=connection.post_play_action(once_per_day_action_id, player_id)
           #second call will not be definitelly first at this day
           real_response2=connection.post_play_action(once_per_day_action_id, player_id)
         end
-        expected_error=Playlyfe::Testing::ExpectedResponses.full_error_for_playing_action_over_limit
+        expected_error=PlaylyfeClient::Testing::ExpectedResponses.full_error_for_playing_action_over_limit
         assert_equal expected_error.name, e.name 
         assert_equal expected_error.message.gsub(/access_token=\w*/,""), e.message.gsub(/access_token=\w*/,"")
 
@@ -144,7 +144,7 @@ module Playlyfe
         
         stubbed_response={}
 
-        stub_player_create(Playlyfe::Testing::ExpectedResponses.player_created_hash(player_h)) do
+        stub_player_create(PlaylyfeClient::Testing::ExpectedResponses.player_created_hash(player_h)) do
           stubbed_response=connection.post_create_player(player_h)
           stubbed_response["created"]=real_response["created"]
         end  
@@ -202,7 +202,7 @@ module Playlyfe
           assert_equal real_value, stubbed_value, "#{what} is '#{stubbed_value}' but expected is '#{real_value}'"
         end  
 
-        #i cannot stop Playlyfe counting action plays, and I do not want to change stubbed values each time I run this test, so I fix it here
+        #i cannot stop PlaylyfeClient counting action plays, and I do not want to change stubbed values each time I run this test, so I fix it here
         def fix_counts_for_actions(action_ids, real_action_array, stubbed_action_array)
           action_ids.each do |action_id|
             real_action_hash=real_action_array.detect {|a| a["id"] == action_id}

@@ -1,7 +1,7 @@
 require_relative '../../playlyfe_test_class.rb'
 
-module Playlyfe
-  class TeamsLeaderboardTest < Playlyfe::Test
+module PlaylyfeClient
+  class TeamsLeaderboardTest < PlaylyfeClient::Test
 
     def setup
       super
@@ -9,14 +9,14 @@ module Playlyfe
       stub_players_query { @game.players}
       stub_teams_query { @game.teams}
 
-      exp_leaderboard_definition_hash= Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.last #teams LDB 'leaderboard_plus_points'
+      exp_leaderboard_definition_hash= PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array.last #teams LDB 'leaderboard_plus_points'
       assert_equal 'leaderboard_plus_points', exp_leaderboard_definition_hash["id"]
 
-      exp_leaderboard_positions_hash = Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash
+      exp_leaderboard_positions_hash = PlaylyfeClient::Testing::ExpectedResponses.full_teams_leaderboard_hash
 
       @exp_leaderboard_positions = extract_positions(exp_leaderboard_positions_hash["data"])
       @exp_leaderboard_hash=exp_leaderboard_definition_hash.merge(exp_leaderboard_positions_hash)
-      @leaderboard = Playlyfe::V2::TeamsLeaderboard.new(@exp_leaderboard_hash, @game)
+      @leaderboard = PlaylyfeClient::V2::TeamsLeaderboard.new(@exp_leaderboard_hash, @game)
     end  
 
     def test_build_from_hash
@@ -39,8 +39,8 @@ module Playlyfe
     def test_raise_exception_if_player_is_not_in_game_players          
       leaderboard_hash=@exp_leaderboard_hash.dup
       leaderboard_hash["data"].first["team"]["id"] = "team0"
-      e=assert_raises(Playlyfe::LeaderboardError) do
-        Playlyfe::V2::TeamsLeaderboard.new(leaderboard_hash, @game)
+      e=assert_raises(PlaylyfeClient::LeaderboardError) do
+        PlaylyfeClient::V2::TeamsLeaderboard.new(leaderboard_hash, @game)
       end
       assert_equal "Team not found", e.name
       assert_equal "Team 'team0' from 'Leaderboard plus points'[leaderboard_plus_points] leaderboard was not found between game.teams!", e.message

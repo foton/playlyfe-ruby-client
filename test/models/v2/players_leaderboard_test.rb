@@ -1,7 +1,7 @@
 require_relative '../../playlyfe_test_class.rb'
 
-module Playlyfe
-  class PlayersLeaderboardTest < Playlyfe::Test
+module PlaylyfeClient
+  class PlayersLeaderboardTest < PlaylyfeClient::Test
 
     def setup
       super
@@ -9,14 +9,14 @@ module Playlyfe
       stub_players_query { @game.players}
       stub_teams_query { @game.teams}
     
-      exp_leaderboard_definition_hash= Playlyfe::Testing::ExpectedResponses.full_leaderboards_array.first #players LDB 'leaderboard1'
+      exp_leaderboard_definition_hash= PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array.first #players LDB 'leaderboard1'
       assert_equal 'leaderboard1', exp_leaderboard_definition_hash["id"]
 
-      exp_leaderboard_positions_hash = Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash
+      exp_leaderboard_positions_hash = PlaylyfeClient::Testing::ExpectedResponses.full_players_leaderboard_hash
 
       @exp_leaderboard_positions = extract_positions(exp_leaderboard_positions_hash["data"])
       @exp_leaderboard_hash=exp_leaderboard_definition_hash.merge(exp_leaderboard_positions_hash)
-      @leaderboard = Playlyfe::V2::PlayersLeaderboard.new(@exp_leaderboard_hash, @game)
+      @leaderboard = PlaylyfeClient::V2::PlayersLeaderboard.new(@exp_leaderboard_hash, @game)
     end  
 
     def test_build_from_hash
@@ -39,8 +39,8 @@ module Playlyfe
     def test_raise_exception_if_player_is_not_in_game_players          
       leaderboard_hash=@exp_leaderboard_hash.dup
       leaderboard_hash["data"].first["player"]["id"] = "player0"
-      e=assert_raises(Playlyfe::LeaderboardError) do
-        Playlyfe::V2::PlayersLeaderboard.new(leaderboard_hash, @game)
+      e=assert_raises(PlaylyfeClient::LeaderboardError) do
+        PlaylyfeClient::V2::PlayersLeaderboard.new(leaderboard_hash, @game)
       end
       assert_equal "Player not found", e.name
       assert_equal "Player 'player0' from 'Leaderboard Test points Name'[leaderboard1] leaderboard was not found between game.players!", e.message

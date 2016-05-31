@@ -1,18 +1,18 @@
 require_relative '../playlyfe_test_class.rb'
 
-module Playlyfe
+module PlaylyfeClient
 
-  class ConnectionTest < Playlyfe::Test
+  class ConnectionTest < PlaylyfeClient::Test
   
     def test_invalid_credentials
       begin
-        Playlyfe::Connection.new(
+        PlaylyfeClient::Connection.new(
           version: 'v2',
           client_id: "wrong_id",
           client_secret: "wrong_secret",
           type: 'client'
         )
-      rescue Playlyfe::Error => e
+      rescue PlaylyfeClient::Error => e
         assert_equal e.name,'client_auth_fail'
         assert_equal e.message, 'Client authentication failed'
       end
@@ -20,12 +20,12 @@ module Playlyfe
 
     def test_wrong_init #really I do not know what is this test for , I just took it from Ruby SDK
       begin
-        Playlyfe::Connection.new(
+        PlaylyfeClient::Connection.new(
           version: 'v2',
           client_id: CLIENT_ID,
           client_secret: CLIENT_SECRET
         )
-      rescue Playlyfe::Error => e
+      rescue PlaylyfeClient::Error => e
         assert_equal e.name, 'init_failed'
       end
     end
@@ -33,14 +33,14 @@ module Playlyfe
     def test_wrong_route
       begin
         connection.get('/not_known_route', { player_id: 'student1' })
-      rescue Playlyfe::Error => e
+      rescue PlaylyfeClient::Error => e
         assert_equal e.name,'route_not_found'
         assert e.message.include?('This route does not exist')
       end
     end  
 
     def test_return_api_version
-       conn= Playlyfe::Connection.new(
+       conn= PlaylyfeClient::Connection.new(
         version: 'v2',
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
@@ -49,7 +49,7 @@ module Playlyfe
 
       assert_equal "v2", conn.api_version
 
-      conn= Playlyfe::Connection.new(
+      conn= PlaylyfeClient::Connection.new(
         version: 'v1',
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
@@ -66,14 +66,14 @@ module Playlyfe
         
     def test_raise_error_for_unknown_api_version
       #API V1 is implemented only in Connection, not other classes
-      pl = Playlyfe::Connection.new( version: 'v1', client_id: CLIENT_ID, client_secret: CLIENT_SECRET, type: 'client')
+      pl = PlaylyfeClient::Connection.new( version: 'v1', client_id: CLIENT_ID, client_secret: CLIENT_SECRET, type: 'client')
 
       begin
         game=pl.game
-      rescue Playlyfe::GameError => e
+      rescue PlaylyfeClient::GameError => e
         
         assert_equal e.name, "unsupported version of API"
-        assert_equal e.message, "'v1' of API is unsupported by playlyfe-ruby-client"
+        assert_equal e.message, "'v1' of API is unsupported by playlyfe-client"
       end
     end
         

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    playlyfe (1.0.1)
+    playlyfe_client (1.0.1)
       json
       jwt
       rest_client
@@ -41,7 +41,7 @@ DEPENDENCIES
   jwt
   minitest
   minitest-reporters
-  playlyfe!
+  playlyfe_client!
   pry
   rake (~> 10.0)
   rest_client

@@ -1,19 +1,19 @@
 require_relative '../../playlyfe_test_class.rb'
 
-module Playlyfe
+module PlaylyfeClient
   module V2
-    class GameTest < Playlyfe::Test
+    class GameTest < PlaylyfeClient::Test
       
       def setup
         super
-        stub_game_query(Playlyfe::Testing::ExpectedResponses.full_game_hash) do
+        stub_game_query(PlaylyfeClient::Testing::ExpectedResponses.full_game_hash) do
           @game=connection.game
         end
       end    
 
       def test_setup_correctly_from_connection
         #@game stubbed in setup
-        expected_game_hash=Playlyfe::Testing::ExpectedResponses.game_hash
+        expected_game_hash=PlaylyfeClient::Testing::ExpectedResponses.game_hash
 
         assert_equal expected_game_hash, @game.to_hash
         assert_equal expected_game_hash, @game.game_hash
@@ -43,7 +43,7 @@ module Playlyfe
       # end
 
       def test_get_players
-        expected_players_hash_array=Playlyfe::Testing::ExpectedResponses.player_hash_array
+        expected_players_hash_array=PlaylyfeClient::Testing::ExpectedResponses.player_hash_array
         
         stub_players_query do
          expected_players_hash_array.each do |pl|
@@ -58,7 +58,7 @@ module Playlyfe
       end  
 
       def test_get_teams
-        expected_team_hash_array=Playlyfe::Testing::ExpectedResponses.team_hash_array
+        expected_team_hash_array=PlaylyfeClient::Testing::ExpectedResponses.team_hash_array
         stub_players_query { @game.players } #to load all players
 
         stub_teams_query do
@@ -72,7 +72,7 @@ module Playlyfe
       end  
 
       def test_get_leaderboards
-        full_leaderboards_array=Playlyfe::Testing::ExpectedResponses.full_leaderboards_array
+        full_leaderboards_array=PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array
 
         stub_players_query { @game.players } #to load all players
         stub_teams_query { @game.teams } #to load all teams
@@ -81,9 +81,9 @@ module Playlyfe
         def connection.get_full_leaderboard_hash(leaderboard_id, cycle="alltime", player_id=dummy_player_id) 
           case leaderboard_id 
           when 'leaderboard_plus_points'
-            return Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash
+            return PlaylyfeClient::Testing::ExpectedResponses.full_teams_leaderboard_hash
           when 'leaderboard1'  
-            return Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash
+            return PlaylyfeClient::Testing::ExpectedResponses.full_players_leaderboard_hash
           else
             raise "Uncatched stub for leaderboard_id = #{leaderboard_id}"  
           end
@@ -100,7 +100,7 @@ module Playlyfe
       end   
 
       def test_get_available_actions
-        expected_available_actions_hash_array=Playlyfe::Testing::ExpectedResponses.full_all_actions_array
+        expected_available_actions_hash_array=PlaylyfeClient::Testing::ExpectedResponses.full_all_actions_array
         stub_metrics_query do
           stub_all_actions_query do
 
@@ -115,7 +115,7 @@ module Playlyfe
       end  
 
       def test_get_all_metrics
-        expected_metric_array=Playlyfe::Testing::ExpectedResponses.full_metrics_array
+        expected_metric_array=PlaylyfeClient::Testing::ExpectedResponses.full_metrics_array
 
         stub_metrics_query do
           assert_equal expected_metric_array.size, @game.metrics.size

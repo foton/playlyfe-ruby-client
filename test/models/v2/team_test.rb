@@ -1,7 +1,7 @@
 require_relative '../../playlyfe_test_class.rb'
 
-module Playlyfe
-  class TeamTest < Playlyfe::Test
+module PlaylyfeClient
+  class TeamTest < PlaylyfeClient::Test
 
     def setup
       super
@@ -13,8 +13,8 @@ module Playlyfe
         @game.players
       end  
 
-      @exp_team_hash=Playlyfe::Testing::ExpectedResponses.team1_hash
-      @team = Playlyfe::V2::Team.new(@exp_team_hash, @game)
+      @exp_team_hash=PlaylyfeClient::Testing::ExpectedResponses.team1_hash
+      @team = PlaylyfeClient::V2::Team.new(@exp_team_hash, @game)
     end  
 
 
@@ -58,9 +58,9 @@ module Playlyfe
         def connection.get_full_leaderboard_hash(leaderboard_id, cycle="alltime", player_id=dummy_player_id) 
           case leaderboard_id 
           when 'leaderboard_plus_points'
-            return Playlyfe::Testing::ExpectedResponses.full_teams_leaderboard_hash
+            return PlaylyfeClient::Testing::ExpectedResponses.full_teams_leaderboard_hash
           when 'leaderboard1'  
-            return Playlyfe::Testing::ExpectedResponses.full_players_leaderboard_hash
+            return PlaylyfeClient::Testing::ExpectedResponses.full_players_leaderboard_hash
           else
             raise "Uncatched stub for leaderboard_id = #{leaderboard_id}"  
           end

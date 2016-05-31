@@ -1,7 +1,7 @@
-require_relative "../lib/playlyfe.rb"
+require_relative "../lib/playlyfe_client.rb"
 require_relative 'test_helper'
 
-module Playlyfe
+module PlaylyfeClient
 
   #here you can switch stubbed/expected responses for API versions
   require_relative "./stubbed_api/v2_expected_responses.rb"
@@ -20,7 +20,7 @@ module Playlyfe
     
     def connection
       #doing something like before(:all)
-      @@con_v2 ||= Playlyfe::V2::Connection.new(
+      @@con_v2 ||= PlaylyfeClient::V2::Connection.new(
         version: 'v2',
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
@@ -32,7 +32,7 @@ module Playlyfe
     include StubbedQuerries
 
     def initialize(*args)
-      puts("#{self.class} init :: real queries to API allowed ") if ["V2::StubbedResponsesTest", "ConnectionTest"].include?(self.class.to_s.gsub("Playlyfe::",""))
+      puts("#{self.class} init :: real queries to API allowed ") if ["V2::StubbedResponsesTest", "ConnectionTest"].include?(self.class.to_s.gsub("PlaylyfeClient::",""))
       super
     end
 

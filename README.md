@@ -1,8 +1,8 @@
 # PlaylyfeClient
 
-Model/Object oriented Playlyfe client based on Playlyfe SDK.
+Model/Object oriented PlaylyfeClient client based on PlaylyfeClient SDK.
 It's focus is abstract direct calls with hand written routes into calling methods on `game`.
-All aspects of game is defined at Playlyfe, this client serves only for sending actions and reading results and stats.
+All aspects of game is defined at PlaylyfeClient, this client serves only for sending actions and reading results and stats.
 
 ## Base Classes
 * Game
@@ -13,7 +13,7 @@ All aspects of game is defined at Playlyfe, this client serves only for sending 
 * Metric
 
 ### Game 
-  base client class to interact with Playlyfe game
+  base client class to interact with PlaylyfeClient game
   * has many available actions
   * has many players
   * has many teams
@@ -21,7 +21,7 @@ All aspects of game is defined at Playlyfe, this client serves only for sending 
   * has many leaderboards
 
 ### Action
-  Equivalent to Playlyfe action (or some complicated rule)
+  Equivalent to PlaylyfeClient action (or some complicated rule)
 
 ### Player
   Player of game , his profile and scores 
@@ -48,12 +48,12 @@ Or install it yourself as:
 
 ## Usage
 
-You have to setup a client at Playlyfe which can access API (only paid plans) form your backend.
+You have to setup a client at PlaylyfeClient which can access API (only paid plans) form your backend.
 Client shoul have 'Client Credential Flow' , all checks at config page should be on YES and should have all scopes with RW access.
 
 Then in your code initialize connection:
   
-    $ conn= Playlyfe::V2::Connection.new(
+    $ conn= PlaylyfeClient::V2::Connection.new(
         version: 'v2',
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
@@ -77,7 +77,7 @@ or play
 
 or add players
    
-    Playlyfe::V2::Player.create({id: "batman", alias: "Bruce Wayne"}, game)
+    PlaylyfeClient::V2::Player.create({id: "batman", alias: "Bruce Wayne"}, game)
 
 
 ## Development

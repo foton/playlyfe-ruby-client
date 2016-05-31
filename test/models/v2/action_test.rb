@@ -1,7 +1,7 @@
 require_relative '../../playlyfe_test_class.rb'
 
-module Playlyfe
-  class ActionTest < Playlyfe::Test
+module PlaylyfeClient
+  class ActionTest < PlaylyfeClient::Test
   
     def setup
       super
@@ -12,13 +12,13 @@ module Playlyfe
       stub_teams_query { @game.teams }
 
       @player = @game.players.find("player1")
-      @action_hash=Playlyfe::Testing::ExpectedResponses.get_hammer_screwdriver_and_plus_point_action_hash
+      @action_hash=PlaylyfeClient::Testing::ExpectedResponses.get_hammer_screwdriver_and_plus_point_action_hash
       @action = @game.available_actions.find(@action_hash["id"])
     end 
 
     def test_build_from_mixed_metric_hash
       action_h=@action_hash
-      action=Playlyfe::V2::Action.new( action_h, @game)
+      action=PlaylyfeClient::V2::Action.new( action_h, @game)
 
       ["id","name","variables", "description" ].each do |key|
         real_value=action.send(key)  
@@ -46,7 +46,7 @@ module Playlyfe
       real_after_scores={}        
       
       
-      stub_play_action(action_id, Playlyfe::Testing::ExpectedResponses.full_play_action_hammer_screwdriver_and_plus_point_hash) do
+      stub_play_action(action_id, PlaylyfeClient::Testing::ExpectedResponses.full_play_action_hammer_screwdriver_and_plus_point_hash) do
         #after action is played, updated player's profile is requested
         stub_player_profile_query(player_after_profile_hash) do
           action.play_by(@player)
@@ -103,11 +103,11 @@ module Playlyfe
     def test_raise_error_when_rate_limit_is_exceed
       action_id= "get_hammer_screwdriver_and_plus_point"
       action=@game.available_actions.find(action_id)
-      stubbed_response= Playlyfe::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action '#{action_id}' can only be triggered 1 times every day\"}", "") 
+      stubbed_response= PlaylyfeClient::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action '#{action_id}' can only be triggered 1 times every day\"}", "") 
 
       #DEFAULT: @game.ignore_rate_limit_errors=false
       connection.stub(:post_play_action, -> (action_id, player_id) { raise stubbed_response }) do
-        e=assert_raises(Playlyfe::ActionRateLimitExceededError) { action.play_by(@player) }
+        e=assert_raises(PlaylyfeClient::ActionRateLimitExceededError) { action.play_by(@player) }
   
         expected_error=stubbed_response
         assert_equal expected_error.name, e.name
@@ -118,14 +118,14 @@ module Playlyfe
     def test_silently_ignore_error_when_rate_limit_is_exceed
       action_id= "get_hammer_screwdriver_and_plus_point"
       action=@game.available_actions.find(action_id)
-      before_scores= stub_player_profile_query(Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1) { @player.scores }
-      stubbed_response= Playlyfe::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action '#{action_id}' can only be triggered 1 times every day\"}", "") 
+      before_scores= stub_player_profile_query(PlaylyfeClient::Testing::ExpectedResponses.full_profile_hash_for_player1) { @player.scores }
+      stubbed_response= PlaylyfeClient::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action '#{action_id}' can only be triggered 1 times every day\"}", "") 
 
       #NON-DEFAULT just pretend no action was played
       @game.ignore_rate_limit_errors=true
 
       connection.stub(:post_play_action, -> (action_id, player_id) { raise stubbed_response }) do
-        #e=assert_raises(Playlyfe::ActionRateLimitExceededError) { action.play_by(@player) }
+        #e=assert_raises(PlaylyfeClient::ActionRateLimitExceededError) { action.play_by(@player) }
         #nothing should be raised
         action.play_by(@player)
 
@@ -160,7 +160,7 @@ module Playlyfe
       def prepare_scores_after_action_play(player, action)
         case player.id 
         when "player1"
-          player_profile=Playlyfe::Testing::ExpectedResponses.full_profile_hash_for_player1
+          player_profile=PlaylyfeClient::Testing::ExpectedResponses.full_profile_hash_for_player1
         else  
           raise "Stubb is set only for 'player1', not for '#{player.id}'" 
         end
