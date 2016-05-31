@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'playlyfe/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "playlyfe"
+  spec.name          = "playlyfe-client"
   spec.version       = Playlyfe::VERSION
   spec.authors       = ["Foton"]
   spec.email         = ["foton@centrum.cz"]
