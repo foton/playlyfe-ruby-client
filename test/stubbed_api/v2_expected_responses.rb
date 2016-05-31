@@ -32,7 +32,7 @@ module PlaylyfeClient
 
       def self.full_game_hash
         {
-          "name" => "PlaylyfeClient Hermes",
+          "name" => "Playlyfe Hermes",
           "version" => "v1",
           "status" => "ok",
           "game" => game_hash

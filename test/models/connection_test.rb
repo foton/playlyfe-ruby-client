@@ -73,7 +73,7 @@ module PlaylyfeClient
       rescue PlaylyfeClient::GameError => e
         
         assert_equal e.name, "unsupported version of API"
-        assert_equal e.message, "'v1' of API is unsupported by playlyfe-client"
+        assert_equal e.message, "'v1' of API is unsupported by playlyfe_client"
       end
     end
         
