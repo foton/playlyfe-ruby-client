@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = PlaylyfeClient::VERSION
   spec.authors       = ["Foton"]
   spec.email         = ["foton@centrum.cz"]
-  spec.summary       = "Ruby client to connect to PlaylyfeClient.com game."
-  spec.description   = "Ruby client to connect to PlaylyfeClient.com game and play actions from game."
+  spec.summary       = "Ruby client to connect to Playlyfe.com game."
+  spec.description   = "Ruby client to connect to Playlyfe.com game and play actions from game."
   spec.homepage      = 'https://github.com/foton/playlyfe-ruby-client'
   spec.license       = "MIT"
 
