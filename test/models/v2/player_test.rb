@@ -36,6 +36,7 @@ module PlaylyfeClient
       player = PlaylyfeClient::V2::Player.new({ "id"=> "player1", "alias"=> "player1_alias", "enabled"=> true}, nil)
       assert_equal "player1", player.id
       assert_equal "player1_alias", player.alias
+      assert_equal "player1_alias", player.name
       assert player.enabled?
     end
 

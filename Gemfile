@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 #production dependecies
-gem 'rest_client'
+gem 'rest-client'
 gem 'json'
 gem 'jwt'
 

@@ -16,6 +16,10 @@ module PlaylyfeClient
         p
       end   
 
+      def name
+        @alias
+      end
+        
       def enabled?
         enabled
       end  

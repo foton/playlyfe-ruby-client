@@ -9,7 +9,11 @@ module PlaylyfeClient
 
       def add(item)
         @items << item
-      end  
+      end 
+
+      def each &block
+        @items.each &block
+      end 
 
       def find(str)
         (@items.detect {|item| item.id.include?(str)})

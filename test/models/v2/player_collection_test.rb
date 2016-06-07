@@ -54,6 +54,14 @@ module PlaylyfeClient
     def test_can_return_all
       assert_equal @collection.to_a , @collection.all
     end  
+
+    def test_can_iterate_on_items
+      rounds=0
+      @collection.each do |p|
+        rounds+=1
+      end  
+      assert_equal @collection.to_a.size, rounds
+    end  
    
 
   end
