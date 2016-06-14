@@ -31,8 +31,9 @@ module PlaylyfeClient
     def test_get_positions_correctly
       @leaderboard.positions.each_with_index do |real_value, index|
         expected_value=@exp_leaderboard_positions[index]
-        assert_equal expected_value[:entity]["id"], real_value[:entity].id, "Leaderboard '#{@exp_leaderboard_hash["id"]}' has at position #{index} value ENTITY #{real_value} instead expected '#{expected_value}'."
-        assert_equal expected_value[:score], real_value[:score], "Leaderboard '#{@exp_leaderboard_hash["id"]}'  has at position #{index} value SCORE #{real_value} instead expected '#{expected_value}'."
+         #there are no multipositions, so only one item at each positions
+        assert_equal expected_value[:entity]["id"], real_value.first[:entity].id, "Leaderboard '#{@exp_leaderboard_hash["id"]}' has at position #{index} value ENTITY #{real_value} instead expected '#{expected_value}'."
+        assert_equal expected_value[:score], real_value.first[:score], "Leaderboard '#{@exp_leaderboard_hash["id"]}'  has at position #{index} value SCORE #{real_value} instead expected '#{expected_value}'."
       end 
     end
     

@@ -21,14 +21,25 @@ module PlaylyfeClient
           fill_positions(lbd_hash[:data] || lbd_hash["data"] || [])
         end
         
+        #positions[x] is array of entities
+        #If there are 3 entities at rank 4, there will be array with 3 items at positions[3]
+        #Positions[4] and positions[5] will be []
+        #Playlyfe have this style of ranking too ( #1, #2, #3, #4, #4, #4, #7)
         def fill_positions(data)  
           data.each do |pos|
-            rank=(pos[:rank] || pos["rank"]).to_i - 1
-            score=pos[:score] || pos["score"] || 0
-            entity= pos[:player] || pos["player"] || pos[:team] || pos["team"] || nil
+            rank=(pos[:rank]).to_i - 1
+            score=pos[:score] || 0
+            entity= pos[:entity] || nil
             
-            @positions[rank] = {entity: entity, score: score}
+            if @positions[rank].nil?
+              @positions[rank] = [{entity: entity, score: score}]
+            else
+              @positions[rank] << {entity: entity, score: score}
+            end  
           end  
+
+          #fill empty positions with []
+          @positions.each_with_index {|p,i| @positions[i]=[] if p.nil? }
 
           @positions
         end  

@@ -7,9 +7,12 @@ module PlaylyfeClient
       private 
         
         def fill_positions(data)  
+          #preproces data into new_data
+          new_data=[]
+
           data.each do |pos|
-            rank=(pos[:rank] || pos["rank"]).to_i - 1
-            score=pos[:score] || pos["score"] || 0
+            rank=(pos[:rank] || pos["rank"]).to_i
+            score=pos[:score] || pos["score"]
             entity= pos[:team] || pos["team"]
 
             team=game.teams.find(entity[:id] || entity["id"])
@@ -18,11 +21,11 @@ module PlaylyfeClient
             if team.nil?
               fail PlaylyfeClient::LeaderboardError.new("{\"error\": \"Team not found\", \"error_description\": \"Team '#{entity[:id] || entity["id"]}' from '#{self.name}'[#{self.id}] leaderboard was not found between game.teams!\"}")
             end 
-
-            @positions[rank] = {entity: team, score: score}
+            
+            new_data << {rank: rank, entity: team, score: score}
           end  
-
-          @positions
+          
+          super(new_data)
         end  
 
     end

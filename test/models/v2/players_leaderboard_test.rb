@@ -31,10 +31,53 @@ module PlaylyfeClient
     def test_get_positions_correctly
       @leaderboard.positions.each_with_index do |real_value, index|
         expected_value=@exp_leaderboard_positions[index]
-        assert_equal expected_value[:entity]["id"], real_value[:entity].id, "Leaderboard '#{@exp_leaderboard_hash["id"]}' has at position #{index} value ENTITY #{real_value} instead expected '#{expected_value}'."
-        assert_equal expected_value[:score], real_value[:score], "Leaderboard '#{@exp_leaderboard_hash["id"]}'  has at position #{index} value SCORE #{real_value} instead expected '#{expected_value}'."
+        #there are no multipositions, so only one item at each positions
+        assert_equal expected_value[:entity]["id"], real_value.first[:entity].id, "Leaderboard '#{@exp_leaderboard_hash["id"]}' has at position #{index} value ENTITY #{real_value} instead expected '#{expected_value}'."
+        assert_equal expected_value[:score], real_value.first[:score], "Leaderboard '#{@exp_leaderboard_hash["id"]}'  has at position #{index} value SCORE #{real_value} instead expected '#{expected_value}'."
       end 
     end
+
+
+    def test_get_multipositions_correctly #there can be more entitities with same rank
+      exp_leaderboard_definition_hash= PlaylyfeClient::Testing::ExpectedResponses.full_leaderboards_array.first
+      exp_leaderboard_positions_hash = {
+          "data" =>  [
+            {
+              "player" =>  {
+                "alias" =>  "player1_alias",
+                "id" =>  "player1"
+              },
+              "score" =>  "6",
+              "rank" =>  1
+            },
+            {
+              "player" =>  {
+                "alias" =>  "player2_alias",
+                "id" =>  "player2"
+              },
+              "score" =>  "6",
+              "rank" =>  1
+            },
+            {
+              "player" =>  {
+                "alias" =>  "player3_alias",
+                "id" =>  "player3"
+              },
+              "score" =>  "4",
+              "rank" =>  3
+            }
+          ],
+          "total" =>  3
+        }
+      exp_leaderboard_hash=exp_leaderboard_definition_hash.merge(exp_leaderboard_positions_hash)
+
+      positions = PlaylyfeClient::V2::PlayersLeaderboard.new(exp_leaderboard_hash, @game).positions
+       
+      assert_equal 3, positions.size 
+      assert_equal 2, positions[0].size # player1 and player2 
+      assert_equal 0, positions[1].size # empty
+      assert_equal 1, positions[2].size # player3
+    end  
     
     def test_raise_exception_if_player_is_not_in_game_players          
       leaderboard_hash=@exp_leaderboard_hash.dup
