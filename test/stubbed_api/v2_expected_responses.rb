@@ -889,7 +889,23 @@ module PlaylyfeClient
               "timestamp" => "2016-05-20T13:20:13.079Z",
               "id" => "959e7271-1e8d-11e6-9d43-49dbe52b2558"
             },
-            {
+            ghspp_action_play_event_hash
+          ]
+
+        activities=response_2016_may_01_to_20  
+
+        if start_time
+          activities=activities.select {|act| act["timestamp"] > start_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") }
+        end    
+
+        if end_time
+          activities=activities.select {|act| act["timestamp"] < end_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") }
+        end    
+        activities 
+      end
+
+      def self.ghspp_action_play_event_hash
+        {
               "event" => "action",
               "action" => {
                 "id" => "get_hammer_screwdriver_and_plus_point",
@@ -940,19 +956,7 @@ module PlaylyfeClient
               "scopes" => [],
               "id" => "9b118ee0-1e8d-11e6-9d43-49dbe52b2558"
             }
-          ]
-
-        activities=response_2016_may_01_to_20  
-
-        if start_time
-          activities=activities.select {|act| act["timestamp"] > start_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") }
-        end    
-
-        if end_time
-          activities=activities.select {|act| act["timestamp"] < end_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") }
-        end    
-        activities 
-      end
+      end  
 
       def self.player_created_hash(pl_h)
         {

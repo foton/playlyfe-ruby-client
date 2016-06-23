@@ -4,6 +4,13 @@ module PlaylyfeClient
   module V2
 
     #I have to verify, that my stubs are in sync with real API responses
+    #player 1 must have 
+    #   Multitool 1x
+    #   Hammer 1x
+    #   Screwdriver 1x
+    #   plus_points 19
+    #   test_points 24
+
     class StubbedResponsesTest < PlaylyfeClient::Test
 
       def test_verify_game_hash
@@ -99,10 +106,11 @@ module PlaylyfeClient
         #i cannot stop PlaylyfeClient counting action plays, and I do not want to change stubbed values each time I run this test, so I fix it here
         fix_counts_for_actions( actions_triggered_during_testing,  real_response["actions"], stubbed_response["actions"])
 
-        verify_hash(real_response, stubbed_response, "play_action_hash")
-
         #to revert rewards
         connection.post_play_action(revert_action_id, player_id)
+
+        verify_hash(real_response, stubbed_response, "play_action_hash")
+
       end 
 
       def test_verify_player2_activity_feed_array

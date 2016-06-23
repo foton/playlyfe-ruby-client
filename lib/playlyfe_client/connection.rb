@@ -139,7 +139,7 @@ module PlaylyfeClient
           if response.body == 'null'
             return nil
           else
-            return JSON.parse(response.body)
+            return JSON.parse(response.body)#, symbolize_names: true)
           end
         end
       rescue => e

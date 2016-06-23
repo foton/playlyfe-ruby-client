@@ -74,6 +74,10 @@ module PlaylyfeClient
 
       assert_equal expected_value, real_value
     end  
+
+    def test_have_events
+      skip
+    end  
     
   end
 end

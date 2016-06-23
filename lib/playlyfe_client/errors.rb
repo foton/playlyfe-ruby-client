@@ -11,6 +11,7 @@ module PlaylyfeClient
   class MetricError < PlaylyfeClient::Error; end
   class PlaylyfeClient::ActionRateLimitExceededError < PlaylyfeClient::ActionError; end
   class PlaylyfeClient::PlayerExistsError < PlaylyfeClient::PlayerError; end
+  class PlaylyfeClient::CollectionFindOneIsNotSupportedError < PlaylyfeClient::Error; end
 
   class Error < StandardError
     attr_accessor :name, :message
