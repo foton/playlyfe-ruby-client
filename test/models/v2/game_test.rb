@@ -126,6 +126,10 @@ module PlaylyfeClient
         end        
       end 
 
+      def test_get_events_feed
+        skip #@game.events
+      end  
+
     end    
   end
 end

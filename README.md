@@ -48,8 +48,8 @@ Or install it yourself as:
 
 ## Usage
 
-You have to setup a client at PlaylyfeClient which can access API (only paid plans) form your backend.
-Client shoul have 'Client Credential Flow' , all checks at config page should be on YES and should have all scopes with RW access.
+You have to setup a client at PlaylyfeClient which can access API (only paid plans) from your backend.
+Client should have 'Client Credential Flow' , all checks at config page should be on YES and should have all scopes with RW access.
 
 Then in your code initialize connection:
   

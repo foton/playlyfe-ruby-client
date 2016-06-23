@@ -15,4 +15,5 @@ Minitest::Reporters.use! [Minitest::Reporters::RakeRerunReporter.new(reporter_op
 
 
 require_relative "./playlyfe_test_class.rb"
+require_relative "./support/event_test_hashes.rb"
 

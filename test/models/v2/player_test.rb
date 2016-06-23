@@ -152,7 +152,7 @@ module PlaylyfeClient
     end  
 
     def test_get_all_activities
-      stub_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) do
+      stub_player_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) do
         activities=@player.activities() 
         assert_equal 7, activities.size
         #activities are now just simple hashes
@@ -164,7 +164,7 @@ module PlaylyfeClient
     end    
 
     def test_get_activities_for_a_period
-      stub_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) do
+      stub_player_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) do
         activities=@player.activities(Time.parse("2016-05-13T08:16:41.000Z"), Time.parse("2016-05-17T10:00:00.000Z"))
         assert_equal 3, activities.size
         #activities are now just simple hashes

@@ -110,11 +110,11 @@ module PlaylyfeClient
         stubbed_start_time=Time.parse("2016-05-01T00:00:00Z")
         stubbed_end_time=Time.parse("2016-05-21T00:00:00Z")
 
-        real_response=connection.get_full_activity_feed_array(player_id, stubbed_start_time, stubbed_end_time)
+        real_response=connection.get_player_activity_array(player_id, stubbed_start_time, stubbed_end_time)
         stubbed_response={}
-        stub_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) { stubbed_response=connection.get_full_activity_feed_array(player_id, stubbed_start_time, stubbed_end_time)}
+        stub_player_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) { stubbed_response=connection.get_player_activity_array(player_id, stubbed_start_time, stubbed_end_time)}
         
-        verify_array(real_response, stubbed_response, "get_full_activity_feed_array")
+        verify_array(real_response, stubbed_response, "get_full_player2_activity_feed_array")
       end  
 
       def test_verify_play_not_alowed_action_hash
@@ -154,6 +154,17 @@ module PlaylyfeClient
         #cleanup
         connection.delete_player(player_h[:id])
       end  
+
+       def test_verify_game_activity_feed_array
+        stubbed_start_time=Time.parse("2016-05-01T00:00:00Z")
+        stubbed_end_time=Time.parse("2016-05-21T00:00:00Z")
+
+        real_response=connection.get_game_events_array(stubbed_start_time, stubbed_end_time)
+        stubbed_response={}
+        stub_game_events(PlaylyfeClient::Testing::ExpectedResponses.game_events_array) { stubbed_response=connection.get_game_events_array(stubbed_start_time, stubbed_end_time)}
+        
+        verify_array(real_response, stubbed_response, "get_game_events_array")
+      end 
 
 
       private

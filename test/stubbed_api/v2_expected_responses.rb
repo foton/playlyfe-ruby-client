@@ -970,6 +970,251 @@ module PlaylyfeClient
         PlaylyfeClient::PlayerExistsError.new("{\"error\": \"player_exists\", \"error_description\": \"A player with ID '#{player_id}' already exists\"}", "post https://api.playlyfe.com/v2/admin/players?&access_token=NDgwNTQ4ZDYtYjkzNC00N2M3LTkyMDYtN2M0N2MzMGYyOTY3")
       end 
 
+      def self.game_events_array
+        #response for /admin/activity?start=2016-05-01T00:00:00Z&end=2016-05-21T00:00:00Z
+        [
+          team_create_event_hash,
+          {
+            "event" => "create",
+            "timestamp" => "2016-05-12T15:22:03.976Z",
+            "team" => {
+              "id" => "team_57349f9b3409e252002cd0e3",
+              "name" => "Team 2 baased on Team 1 template"
+            },
+            "actor" => {
+              "id" => "player1",
+              "alias" => "player1_alias"
+            },
+            "id" => "47f2cc80-1855-11e6-8343-47b85380947e"
+          },
+          {
+            "event" => "create",
+            "timestamp" => "2016-05-13T08:17:33.744Z",
+            "team" => {
+              "id" => "team_57358d9d7d0ed66b01932e9a",
+              "name" => "Player2Team"
+            },
+            "actor" => {
+              "id" => "player2",
+              "alias" => "player2_alias"
+            },
+            "id" => "24eb9301-18e3-11e6-bb4b-c56c5e56f0bf"
+          },
+          {
+            "event" => "level",
+            "actor" => {
+              "id" => "player1",
+              "alias" => "player1_alias"
+            },
+            "changes" => [
+              {
+                "metric" => {
+                  "id" => "experience",
+                  "name" => "Experience",
+                  "type" => "state"
+                },
+                "delta" => {
+                  "old" => nil,
+                  "new" => "Journeyman"
+                }
+              }
+            ],
+            "rule" => {
+              "id" => "leveling_in_experience"
+            },
+            "timestamp" => "2016-05-17T09:52:12.209Z",
+            "id" => "07339211-1c15-11e6-994a-cdc1f8270ce4"
+          },
+          level_up_event_hash,
+          {
+            "event" => "level",
+            "actor" => {
+              "id" => "player1",
+              "alias" => "player1_alias"
+            },
+            "changes" => [
+              {
+                "metric" => {
+                  "id" => "experience",
+                  "name" => "Experience",
+                  "type" => "state"
+                },
+                "delta" => {
+                  "old" => "Master",
+                  "new" => "Guild leader"
+                }
+              }
+            ],
+            "rule" => {
+              "id" => "leveling_in_experience"
+            },
+            "timestamp" => "2016-05-17T09:53:04.387Z",
+            "id" => "264d4d31-1c15-11e6-994a-cdc1f8270ce4"
+          },
+          achievement_event_hash,
+          {
+            "event" => "level",
+            "actor" => {
+              "id" => "player3",
+              "alias" => "player3_alias"
+            },
+            "changes" => [
+              {
+                "metric" => {
+                  "id" => "experience",
+                  "name" => "Experience",
+                  "type" => "state"
+                },
+                "delta" => {
+                  "old" => nil,
+                  "new" => "Apprentice"
+                }
+              }
+            ],
+            "rule" => {
+              "id" => "leveling_in_experience"
+            },
+            "timestamp" => "2016-05-17T10:00:14.824Z",
+            "id" => "26dcc681-1c16-11e6-994a-cdc1f8270ce4"
+          },
+          {
+            "event" => "level",
+            "actor" => {
+              "id" => "player3",
+              "alias" => "player3_alias"
+            },
+            "changes" => [
+              {
+                "metric" => {
+                  "id" => "experience",
+                  "name" => "Experience",
+                  "type" => "state"
+                },
+                "delta" => {
+                  "old" => "Apprentice",
+                  "new" => "Journeyman"
+                }
+              }
+            ],
+            "rule" => {
+              "id" => "leveling_in_experience"
+            },
+            "timestamp" => "2016-05-17T10:00:18.049Z",
+            "id" => "28c8df11-1c16-11e6-abea-5b76dd840df5"
+          },
+          {
+            "event" => "level",
+            "actor" => {
+              "id" => "player2",
+              "alias" => "player2_alias"
+            },
+            "changes" => [
+              {
+                "metric" => {
+                  "id" => "experience",
+                  "name" => "Experience",
+                  "type" => "state"
+                },
+                "delta" => {
+                  "old" => nil,
+                  "new" => "Journeyman"
+                }
+              }
+            ],
+            "rule" => {
+              "id" => "leveling_in_experience"
+            },
+            "timestamp" => "2016-05-20T13:20:13.079Z",
+            "id" => "959e7271-1e8d-11e6-9d43-49dbe52b2558"
+          }
+        ]
+      end  
+
+      def self.team_create_event_hash
+        {
+          "event" => "create",
+          "timestamp" => "2016-05-12T15:21:31.418Z",
+          "team" => {
+            "id" => "team_57349f7b7d0ed66b0193101f",
+            "name" => "Team1 for RUby client"
+          },
+          "actor" => {
+            "id" => "player1",
+            "alias" => "player1_alias"
+          },
+          "id" => "348ad7a1-1855-11e6-bb4a-c56c5e56f0bf"
+        }
+      end
+
+      def self.level_up_event_hash  
+        {
+          "event" => "level",
+          "actor" => {
+            "id" => "player1",
+            "alias" => "player1_alias"
+          },
+          "changes" => [
+            {
+              "metric" => {
+                "id" => "experience",
+                "name" => "Experience",
+                "type" => "state"
+              },
+              "delta" => {
+                "old" => "Journeyman",
+                "new" => "Master"
+              }
+            }
+          ],
+          "rule" => {
+            "id" => "leveling_in_experience"
+          },
+          "timestamp" => "2016-05-17T09:52:45.582Z",
+          "id" => "1b17e2e1-1c15-11e6-abea-5b76dd840df5"
+        }
+      end  
+
+      def self.achievement_event_hash
+        {
+          "event" => "achievement",
+          "actor" => {
+            "id" => "player1",
+            "alias" => "player1_alias"
+          },
+          "changes" => [
+            {
+              "metric" => {
+                "id" => "toolbox",
+                "name" => "Toolbox",
+                "type" => "set"
+              },
+              "delta" => {
+                "Multitool" => {
+                  "old" => nil,
+                  "new" => "1"
+                }
+              }
+            },
+            {
+              "metric" => {
+                "id" => "compound_metric",
+                "name" => "Compound metric",
+                "type" => "compound"
+              },
+              "delta" => {
+                "old" => "22",
+                "new" => "21"
+              }
+            }
+          ],
+          "rule" => {
+            "id" => "get_a_multitool"
+          },
+          "timestamp" => "2016-05-17T09:53:04.387Z",
+          "id" => "264d4d32-1c15-11e6-994a-cdc1f8270ce4"
+        }
+      end
+
     end  #end of class
   end
 end

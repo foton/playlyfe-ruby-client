@@ -4,6 +4,7 @@ require_relative "./collection/team_collection.rb"
 require_relative "./collection/leaderboard_collection.rb"
 require_relative "./collection/action_collection.rb"
 require_relative "./collection/metric_collection.rb"
+require_relative "./collection/event_collection.rb"
 
 require_relative "../game.rb"
 

@@ -13,7 +13,7 @@ GEM
     builder (3.2.2)
     byebug (9.0.5)
     coderay (1.1.1)
-    domain_name (0.5.20160310)
+    domain_name (0.5.20160615)
       unf (>= 0.0.5, < 1.0.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -61,4 +61,4 @@ DEPENDENCIES
   rest-client
 
 BUNDLED WITH
-   1.10.6
+   1.12.5

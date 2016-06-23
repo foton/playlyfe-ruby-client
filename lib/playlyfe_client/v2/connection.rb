@@ -1,4 +1,3 @@
-
 require_relative "../connection.rb"
 
 module PlaylyfeClient
@@ -82,7 +81,7 @@ module PlaylyfeClient
         get("/runtime/definitions/metrics", {player_id: player_id})
       end  
 
-      def get_full_activity_feed_array(player_id, start_time=nil, end_time=nil)
+      def get_player_activity_array(player_id, start_time=nil, end_time=nil)
         start_str=start_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
         end_str=end_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
 
@@ -102,6 +101,18 @@ module PlaylyfeClient
 
       def delete_player(player_id)
         delete("/admin/players/#{player_id}")
+      end
+
+      def get_game_events_array(start_time=nil, end_time=nil)
+        start_str=start_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
+        end_str=end_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
+        if start_time
+          #get specified period of time
+          get("/admin/activity",{"start" => start_str, "end" => end_str})
+        else
+          #get last 24 hours
+          get("/admin/activity")
+        end 
       end  
 
     end  

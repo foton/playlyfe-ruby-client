@@ -59,7 +59,7 @@ module PlaylyfeClient
       def activities(start_time=nil,end_time=nil)
         unless defined?(@activities)
           #loading all activities for player (not restricted to some time period, ALL of them!)
-          @activities = build_activities_from(game.connection.get_full_activity_feed_array(self.id,self.game.created_at,Time.now.utc))
+          @activities = build_activities_from(game.connection.get_player_activity_array(self.id,self.game.created_at,Time.now.utc))
         end  
         
         activities=@activities  
