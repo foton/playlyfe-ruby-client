@@ -8,7 +8,9 @@ module PlaylyfeClient
         attr_reader :count #The count with which the action was played.
         attr_reader :changes
 
-
+        def player
+          game.players.find(player_id)
+        end  
 
         private
 
@@ -46,6 +48,8 @@ module PlaylyfeClient
 
         def set_changes(ev_hash)
           @changes=[]
+          return @changes if ev_hash["changes"].nil?
+
           for ch in ev_hash["changes"]
             
             if ch["delta"].has_key?("old")
