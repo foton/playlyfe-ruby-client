@@ -10,13 +10,7 @@ module PlaylyfeClient
       stub_players_query { @game.players }  
       stub_teams_query { @game.teams }
     end  
-
-      # PlaylyfeClient::V2::PlayerEvent::LevelChangedEvent
-      # PlaylyfeClient::V2::PlayerEvent::AchievementEvent
-      # PlaylyfeClient::V2::PlayerEvent::ActionPlayedEvent
-      # PlaylyfeClient::V2::PlayerEvent::CustomRuleAppliedEvent
-      # PlaylyfeClient::V2::PlayerEvent::ScoreUpdatedByAdminEvent
-    
+   
     def test_can_build_level_change_event
       event=PlaylyfeClient::V2::PlayerEvent::Base.build(PlaylyfeClient::Testing::ExpectedResponses.level_up_event_hash, @game)
 

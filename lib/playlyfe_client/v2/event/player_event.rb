@@ -18,39 +18,39 @@ module PlaylyfeClient
           super(ev_hash,game)
 
           
-          if ev_hash.has_key?("actor")
-            @actor_id=ev_hash["actor"]["id"]
-            @actor_alias=ev_hash["actor"]["alias"]
+          if @ev_hash.has_key?("actor")
+            @actor_id=@ev_hash["actor"]["id"]
+            @actor_alias=@ev_hash["actor"]["alias"]
           else  
             if player.nil?
-              raise "cannot create actor from hash #{ev_hash} and player #{player}"
+              raise "cannot create actor from hash #{@ev_hash} and player #{player}"
             else
               @actor_id=player.id
               @actor_alias=player.alias
             end  
           end  
 
-          @rule= ev_hash["rule"]["id"] unless ev_hash["rule"].nil?
-          @process= ev_hash["process"]["id"] unless ev_hash["process"].nil?
-          @action= ev_hash["action"]["id"] unless ev_hash["action"].nil?
-          @count= ev_hash["count"] || 0
+          @rule= @ev_hash["rule"]["id"] unless @ev_hash["rule"].nil?
+          @process= @ev_hash["process"]["id"] unless @ev_hash["process"].nil?
+          @action= @ev_hash["action"]["id"] unless @ev_hash["action"].nil?
+          @count= @ev_hash["count"] || 0
 
           @player_id=@actor_id
           @player_alias=@actor_alias
-          if ev_hash.has_key?("player")
-            @player_id=ev_hash["player"]["id"]
-            @player_alias=ev_hash["player"]["alias"]
+          if @ev_hash.has_key?("player")
+            @player_id=@ev_hash["player"]["id"]
+            @player_alias=@ev_hash["player"]["alias"]
           end  
 
-          set_changes(ev_hash)
+          set_changes
 
         end 
-
-        def set_changes(ev_hash)
+ 
+        def set_changes
           @changes=[]
-          return @changes if ev_hash["changes"].nil?
+          return @changes if @ev_hash["changes"].nil?
 
-          for ch in ev_hash["changes"]
+          for ch in @ev_hash["changes"]
             
             if ch["delta"].has_key?("old")
               chng={delta: [ ch["delta"]["old"], ch["delta"]["new"] ]}
@@ -62,7 +62,9 @@ module PlaylyfeClient
             
             @changes <<  chng
           end  
-        end  
+        end 
+
+       
       end
    
       class LevelChangedEvent < PlaylyfeClient::V2::PlayerEvent::Base; end
