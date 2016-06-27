@@ -118,9 +118,9 @@ module PlaylyfeClient
         stubbed_start_time=Time.parse("2016-05-01T00:00:00Z")
         stubbed_end_time=Time.parse("2016-05-21T00:00:00Z")
 
-        real_response=connection.get_player_activity_array(player_id, stubbed_start_time, stubbed_end_time)
+        real_response=connection.get_player_events_array(player_id, stubbed_start_time, stubbed_end_time)
         stubbed_response={}
-        stub_player_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) { stubbed_response=connection.get_player_activity_array(player_id, stubbed_start_time, stubbed_end_time)}
+        stub_player_events(PlaylyfeClient::Testing::ExpectedResponses.full_player2_events_array) { stubbed_response=connection.get_player_events_array(player_id, stubbed_start_time, stubbed_end_time)}
         
         verify_array(real_response, stubbed_response, "get_full_player2_activity_feed_array")
       end  
@@ -173,6 +173,18 @@ module PlaylyfeClient
         
         verify_array(real_response, stubbed_response, "get_game_events_array")
       end 
+
+      def test_verify_team_activity_feed_array
+        team_id="team_57349f7b7d0ed66b0193101f" #"Team1 for RUby client"
+        stubbed_start_time=Time.parse("2016-05-01T00:00:00Z")
+        stubbed_end_time=Time.parse("2016-05-21T00:00:00Z")
+
+        real_response=connection.get_team_events_array(team_id, stubbed_start_time, stubbed_end_time)
+        stubbed_response={}
+        stub_team_events(PlaylyfeClient::Testing::ExpectedResponses.team_events_array) { stubbed_response=connection.get_team_events_array(team_id, stubbed_start_time, stubbed_end_time)}
+        
+        verify_array(real_response, stubbed_response, "get_team_activity/events_feed_array")
+      end  
 
 
       private

@@ -13,6 +13,10 @@ module PlaylyfeClient
       def leaderboards
         @game.leaderboards.for_teams
       end
+
+      def events(start_time=nil,end_time=nil)
+        @events ||= PlaylyfeClient::V2::EventCollection.new(game, game.connection.get_team_events_array(self.id,start_time, end_time), self)
+      end
    
       private 
       

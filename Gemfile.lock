@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    playlyfe_client (1.0.6)
+    playlyfe_client (1.1.0)
       json
       jwt
       rest-client

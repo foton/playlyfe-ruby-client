@@ -90,7 +90,7 @@ module PlaylyfeClient
           if @ev_hash["team"].nil?
             if team_or_player.kind_of?(PlaylyfeClient::Team)
               @team_id=team_or_player.id
-              @team_name=team_or_player.alias
+              @team_name=team_or_player.name
             else
               raise "cannot create team from hash #{@ev_hash} and team #{team_or_player}"  
             end

@@ -8,8 +8,8 @@ module PlaylyfeClient
       stub_game_query { @game=connection.game }
       #we need players and teams uploaded in front
       stub_players_query { @game.players }
-      stub_teams_query { @game.teams}
-
+      stub_teams_query { @game.teams }
+      stub_metrics_query { @game.metrics }
       stub_leaderboards_query do
        
         #stubbing method directly, so it responds with expected responses and do not call real api
@@ -152,27 +152,27 @@ module PlaylyfeClient
     end  
 
     def test_get_all_activities
-      stub_player_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) do
-        activities=@player.activities() 
-        assert_equal 7, activities.size
-        #activities are now just simple hashes
-        assert_equal 4, (activities.select {|a| a["event"] == "action"}).size
-        assert_equal 1, (activities.select {|a| a["event"] == "level"}).size
-        assert_equal 1, (activities.select {|a| a["event"] == "create"}).size
-        assert_equal 1, (activities.select {|a| a["event"] == "invite:accept"}).size
+
+      stub_player_events(PlaylyfeClient::Testing::ExpectedResponses.full_player2_events_array) do
+        collection=@player.events
+      
+        assert_equal PlaylyfeClient::Testing::ExpectedResponses.full_player2_events_array.size, collection.size
+        assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::PlayerEvent::LevelChangedEvent}).size
+        assert_equal 4, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::PlayerEvent::ActionPlayedEvent}).size
+        assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::TeamEvent::TeamCreatedEvent}).size
+        assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::TeamEvent::InviteAcceptedEvent}).size
       end  
     end    
 
-    def test_get_activities_for_a_period
-      stub_player_activity_feed(PlaylyfeClient::Testing::ExpectedResponses.full_player2_activity_feed_array) do
-        activities=@player.activities(Time.parse("2016-05-13T08:16:41.000Z"), Time.parse("2016-05-17T10:00:00.000Z"))
-        assert_equal 3, activities.size
-        #activities are now just simple hashes
-        assert_equal 1, (activities.select {|a| a["event"] == "action"}).size
-        assert_equal 0, (activities.select {|a| a["event"] == "level"}).size
-        assert_equal 1, (activities.select {|a| a["event"] == "create"}).size
-        assert_equal 1, (activities.select {|a| a["event"] == "invite:accept"}).size
-      end  
+    def test_get_events_for_a_period
+      stub_player_events(PlaylyfeClient::Testing::ExpectedResponses.full_player2_events_array(Time.parse("2016-05-13T08:16:41.000Z"), Time.parse("2016-05-17T10:00:00.000Z"))) do
+        collection=@player.events(Time.parse("2016-05-13T08:16:41.000Z"), Time.parse("2016-05-17T10:00:00.000Z"))
+      
+        assert_equal 3, collection.size
+        assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::PlayerEvent::ActionPlayedEvent}).size
+        assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::TeamEvent::TeamCreatedEvent}).size
+        assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::TeamEvent::InviteAcceptedEvent}).size
+      end        
     end    
 
     def test_play_action

@@ -56,23 +56,8 @@ module PlaylyfeClient
         game.leaderboards.for_players
       end  
 
-      def activities(start_time=nil,end_time=nil)
-        unless defined?(@activities)
-          #loading all activities for player (not restricted to some time period, ALL of them!)
-          @activities = build_activities_from(game.connection.get_player_activity_array(self.id,self.game.created_at,Time.now.utc))
-        end  
-        
-        activities=@activities  
-        
-        if start_time
-          activities=activities.select {|act| act["timestamp"] > start_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") }
-        end    
-
-        if end_time
-          activities=activities.select {|act| act["timestamp"] < end_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") }
-        end   
-        
-        return activities
+      def events(start_time=nil,end_time=nil)
+        @events ||= PlaylyfeClient::V2::EventCollection.new(game, game.connection.get_player_events_array(self.id,start_time, end_time), self)
       end
    
       private 
@@ -126,12 +111,6 @@ module PlaylyfeClient
 
         def sets_metric_value_from(value)
           (value.each.collect {|item| {name: item["name"], count: item["count"].to_i} } )
-        end  
-
-        def build_activities_from(array_of_hashes)
-          #https://dev.playlyfe.com/docs/events.html
-          #TODO: DO a Events :: now, just simple hashes
-          array_of_hashes
         end  
 
     end

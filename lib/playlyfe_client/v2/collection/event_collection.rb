@@ -16,22 +16,20 @@ module PlaylyfeClient
       
       private
 
-        def initialize(game,event_array=[])  
-          super(game)
+        def initialize(game, event_array=[], player_team_or_process=nil)  
+          @game= game
           @items=[]
           event_array= game.connection.get_game_events_array if event_array == []
-          fill_items(event_array)
+          fill_items(event_array,player_team_or_process)
         end
         
-        def fill_items(hash_array)  
+        def fill_items(hash_array, player_team_or_process)  
           hash_array.each do |event_hash|
-            @items << get_correct_event_class(event_hash).new(event_hash, @game)
+          #  binding.pry
+            @items << PlaylyfeClient::V2::Event.build(event_hash, @game, player_team_or_process)
           end  
         end  
-         
-        def get_correct_event_class(event_hash)
-          PlaylyfeClient::V2::Event  #not yet implemented
-        end  
+        
          
     end  
   end

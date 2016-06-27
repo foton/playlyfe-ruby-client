@@ -5,14 +5,11 @@ module PlaylyfeClient
 
     def setup
       super
-      stub_game_query do
-        @game=connection.game
-      end
+      stub_game_query { @game=connection.game }
       #we need players for team.owner
-      stub_players_query do
-        @game.players
-      end  
-
+      stub_players_query { @game.players }
+      stub_metrics_query { @game.metrics }
+      
       @exp_team_hash=PlaylyfeClient::Testing::ExpectedResponses.team1_hash
       @team = PlaylyfeClient::V2::Team.new(@exp_team_hash, @game)
     end  
@@ -76,7 +73,16 @@ module PlaylyfeClient
     end  
 
     def test_have_events
-      skip
+      collection=[]
+      stub_team_events(PlaylyfeClient::Testing::ExpectedResponses.team_events_array) do 
+        collection=@team.events
+      end
+      
+      assert_equal PlaylyfeClient::Testing::ExpectedResponses.team_events_array.size, collection.size
+      assert_equal 6, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::PlayerEvent::LevelChangedEvent}).size
+      assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::PlayerEvent::AchievementEvent}).size
+      assert_equal 2, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::TeamEvent::InviteAcceptedEvent}).size
+      assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::TeamEvent::RolesChangedEvent}).size
     end  
     
   end

@@ -19,8 +19,8 @@ module PlaylyfeClient
       # PlaylyfeClient::V2::ProcessEvent::LeavedEvent
       # PlaylyfeClient::V2::ProcessEvent::ProcessDeletedEvent
       # PlaylyfeClient::V2::ProcessEvent::ProcessOwnershipTransferredEvent
-      # PlaylyfeClient::ProcessEvent::ProgressEvent
-      # PlaylyfeClient::ProcessEvent::ResolutionEvent
+      # PlaylyfeClient::V2::ProcessEvent::ProgressEvent
+      # PlaylyfeClient::V2::ProcessEvent::ResolutionEvent
       
 
     [ "process_create",

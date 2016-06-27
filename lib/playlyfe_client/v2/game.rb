@@ -50,6 +50,10 @@ module PlaylyfeClient
         puts(data)
       end  
 
+      def events
+        @events ||= PlaylyfeClient::V2::EventCollection.new(self)
+      end  
+
       private
 
         def initialize(conn)    

@@ -68,7 +68,7 @@ module PlaylyfeClient
       []
     end  
 
-    def activities(start_time=nil,end_time=nil)
+    def events(start_time=nil,end_time=nil)
       []
     end
 

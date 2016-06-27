@@ -17,7 +17,11 @@ module PlaylyfeClient
 
     def test_can_set_correct_event_classes
       collection = PlaylyfeClient::V2::EventCollection.new(@game, game_event_hash_array)
-#      assert_equal collection.to_s.select {|e| e.class = PlaylyfeClient::Event:: game_event_hash_array.size, collection.size
+
+      assert_equal 3, collection.size
+      assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::PlayerEvent::LevelChangedEvent}).size
+      assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::PlayerEvent::AchievementEvent}).size
+      assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::TeamEvent::TeamCreatedEvent}).size
     end  
 
     def test_can_create_from_game

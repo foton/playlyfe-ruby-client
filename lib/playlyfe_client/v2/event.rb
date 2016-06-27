@@ -6,12 +6,7 @@ module PlaylyfeClient
       def created_at
         @timestamp
       end  
-  
-      def changes
-        @changes||=set_changes
-      end  
-
-
+      
       private 
           
         def initialize(ev_hash,game)
@@ -21,26 +16,7 @@ module PlaylyfeClient
           @game=game
           @ev_hash=ev_hash
         end    
-
-        def set_changes
-          @changes=[]
-          binding.pry
-          return @changes if @ev_hash["changes"].nil?
-
-          for ch in @ev_hash["changes"]
-            
-            if ch["delta"].has_key?("old")
-              chng={delta: [ ch["delta"]["old"], ch["delta"]["new"] ]}
-            else
-              k=ch["delta"].keys.first
-              chng={delta: [ ch["delta"][k]["old"], ch["delta"][k]["new"], k ]}
-            end  
-            chng[:metric]=game.metrics.find(ch["metric"]["id"])
-            
-            @changes <<  chng
-          end  
-        end 
-
+  
     end  
   end
 end  
@@ -48,3 +24,19 @@ end
 require_relative "./event/player_event.rb"
 require_relative "./event/team_event.rb"
 require_relative "./event/process_event.rb"
+
+
+module PlaylyfeClient
+  module V2
+    class Event
+   
+      def self.build(ev_hash, game, team_player_or_process=nil)   
+        event= PlaylyfeClient::V2::PlayerEvent::Base.build(ev_hash,game,team_player_or_process)
+        event= PlaylyfeClient::V2::TeamEvent::Base.build(ev_hash,game,team_player_or_process) if event.nil?
+        event= PlaylyfeClient::V2::ProcessEvent::Base.build(ev_hash,game,team_player_or_process) if event.nil?
+        return event #could be nil!
+      end    
+    end  
+  end
+end  
+

@@ -81,14 +81,11 @@ module PlaylyfeClient
         get("/runtime/definitions/metrics", {player_id: player_id})
       end  
 
-      def get_player_activity_array(player_id, start_time=nil, end_time=nil)
-        start_str=start_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
-        end_str=end_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
-
+      def get_player_events_array(player_id, start_time=nil, end_time=nil)
         #/admin/players/player2/activity?start=2016-05-01T00:00:00Z&end=2016-05-21T00:00:00Z
         if start_time
           #get specified period of time
-          get("/admin/players/#{player_id}/activity",{"start" => start_str, "end" => end_str})
+          get("/admin/players/#{player_id}/activity",{"start" => start_str(start_time), "end" => end_str(end_time)})
         else
           #get last 24 hours
           get("/admin/players/#{player_id}/activity")
@@ -104,16 +101,34 @@ module PlaylyfeClient
       end
 
       def get_game_events_array(start_time=nil, end_time=nil)
-        start_str=start_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
-        end_str=end_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
         if start_time
           #get specified period of time
-          get("/admin/activity",{"start" => start_str, "end" => end_str})
+          get("/admin/activity",{"start" => start_str(start_time), "end" => end_str(end_time)})
         else
           #get last 24 hours
           get("/admin/activity")
         end 
       end  
+
+      def get_team_events_array(team_id, start_time=nil, end_time=nil)
+        if start_time
+          #get specified period of time
+          get("/admin/teams/#{team_id}/activity",{"start" => start_str(start_time), "end" => end_str(end_time)})
+        else
+          #get last 24 hours
+          get("/admin/teams/#{team_id}/activity")
+        end 
+      end  
+
+      private
+
+        def start_str(start_time)
+          start_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if start_time.kind_of?(Time)
+        end  
+
+        def end_str(end_time)
+          end_time.utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ") if end_time.kind_of?(Time)
+        end  
 
     end  
   end

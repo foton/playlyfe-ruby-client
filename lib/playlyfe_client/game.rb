@@ -24,6 +24,10 @@ module PlaylyfeClient
       []
     end
 
+    def events
+      []
+    end  
+
     private
 
       def initialize(conn)

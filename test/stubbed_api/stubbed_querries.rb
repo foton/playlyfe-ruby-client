@@ -60,8 +60,8 @@ module StubbedQuerries
     end
   end  
 
-  def stub_player_activity_feed(stubbed_response, &block) 
-    connection.stub :get_player_activity_array, stubbed_response do 
+  def stub_player_events(stubbed_response, &block) 
+    connection.stub :get_player_events_array, stubbed_response do 
       yield 
     end
   end  
@@ -74,6 +74,12 @@ module StubbedQuerries
 
   def stub_game_events(stubbed_response, &block) 
     connection.stub :get_game_events_array, stubbed_response do 
+      yield 
+    end
+  end
+
+  def stub_team_events(stubbed_response, &block) 
+    connection.stub :get_team_events_array, stubbed_response do 
       yield 
     end
   end

@@ -127,7 +127,15 @@ module PlaylyfeClient
       end 
 
       def test_get_events_feed
-        skip #@game.events
+        collection=[]
+        stub_game_events(PlaylyfeClient::Testing::ExpectedResponses.game_events_array) do 
+          collection=@game.events
+        end
+        assert_equal PlaylyfeClient::Testing::ExpectedResponses.game_events_array.size, collection.size
+        assert_equal 6, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::PlayerEvent::LevelChangedEvent}).size
+        assert_equal 1, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::PlayerEvent::AchievementEvent}).size
+        assert_equal 3, (collection.to_a.select {|e| e.class == PlaylyfeClient::V2::TeamEvent::TeamCreatedEvent}).size
+
       end  
 
     end    
