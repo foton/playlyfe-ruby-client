@@ -49,9 +49,14 @@ module PlaylyfeClient
         data=connection.get_game_image_data
         puts(data)
       end  
-
-      def events
-        @events ||= PlaylyfeClient::V2::EventCollection.new(self)
+ 
+      #results are cached if start_time is nil (events for last 24 hours), otherwise direct call to Playlyfe is made
+      def events(start_time=nil,end_time=nil)
+        if start_time.nil?
+          @events ||= PlaylyfeClient::V2::EventCollection.new(self)
+        else  
+          PlaylyfeClient::V2::EventCollection.new(self, self.connection.get_game_events_array(start_time, end_time))
+        end
       end  
 
       private

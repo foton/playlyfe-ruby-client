@@ -21,9 +21,9 @@ module PlaylyfeClient
       assert_equal "player1_alias", event.player_alias
 
       #assert_equal player1, event.acting_player
-      assert_equal "leveling_in_experience", event.rule
-      assert event.action.nil?
-      assert event.process.nil?
+      assert_equal "leveling_in_experience", event.rule_id
+      assert event.action_id.nil?
+      assert event.process_id.nil?
       assert_equal Time.utc(2016,5,17,9,52,45.582).to_f, event.timestamp.to_f
       assert_equal 1, event.changes.size
 
@@ -42,9 +42,9 @@ module PlaylyfeClient
       assert_equal "player1", event.player_id
       assert_equal "player1_alias", event.player_alias
 
-      assert_equal "get_a_multitool", event.rule
-      assert event.action.nil?
-      assert event.process.nil?
+      assert_equal "get_a_multitool", event.rule_id
+      assert event.action_id.nil?
+      assert event.process_id.nil?
       assert_equal Time.utc(2016,5,17,9,53,4.387).to_f, event.timestamp.to_f
       assert_equal 2, event.changes.size
 
@@ -69,9 +69,10 @@ module PlaylyfeClient
       assert_equal "player1", event.player_id
       assert_equal "player1_alias", event.player_alias
 
-      assert event.rule.nil?
-      assert_equal "get_hammer_screwdriver_and_plus_point", event.action
-      assert event.process.nil?
+      assert event.rule_id.nil?
+      assert_equal "get_hammer_screwdriver_and_plus_point", event.action_id
+      assert_equal @game.actions.find("get_hammer_screwdriver_and_plus_point"), event.action
+      assert event.process_id.nil?
       assert_equal 1, event.count
       assert_equal Time.utc(2016,5,20,13,20,22.2220001).to_f, event.timestamp.to_f
       assert_equal 3, event.changes.size
@@ -110,9 +111,9 @@ module PlaylyfeClient
       assert_equal "player1", event.player_id
       assert_equal "player1_alias", event.player_alias
 
-      assert_equal "my_custom_rule", event.rule
-      assert event.action.nil?
-      assert event.process.nil?
+      assert_equal "my_custom_rule", event.rule_id
+      assert event.action_id.nil?
+      assert event.process_id.nil?
       assert_equal Time.utc(2016,5,17,9,52,45.582).to_f, event.timestamp.to_f
       assert_equal 0, event.changes.size
 
@@ -144,9 +145,9 @@ module PlaylyfeClient
       assert_equal "player1", event.player_id
       assert_equal "player1_alias", event.player_alias
 
-      assert event.rule.nil?
-      assert event.action.nil?
-      assert event.process.nil?
+      assert event.rule_id.nil?
+      assert event.action_id.nil?
+      assert event.process_id.nil?
       assert_equal Time.utc(2016,5,17,9,52,45.582).to_f, event.timestamp.to_f
       assert_equal 2, event.changes.size
 

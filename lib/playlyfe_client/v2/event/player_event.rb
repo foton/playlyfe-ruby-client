@@ -4,13 +4,26 @@ module PlaylyfeClient
       class Base < PlaylyfeClient::V2::Event
         attr_reader :actor_id, :actor_alias #who trigger event  (player or admin)
         attr_reader :player_id, :player_alias #who receive results of event (player)
-        attr_reader :rule , :process, :action #what triggers event
+        attr_reader :rule_id , :rule_name,  :process_id, :process_name, :action_id, :action_name #what triggers event
         attr_reader :count #The count with which the action was played.
         attr_reader :changes
 
         def player
           game.players.find(player_id)
         end  
+
+        def rule
+          rule_id #todo
+        end
+
+        def process
+          process_id #todo
+        end  
+        
+        def action
+          return nil if action_id.nil?
+          game.actions.find(action_id)
+        end    
 
         private
 
@@ -30,9 +43,14 @@ module PlaylyfeClient
             end  
           end  
 
-          @rule= @ev_hash["rule"]["id"] unless @ev_hash["rule"].nil?
-          @process= @ev_hash["process"]["id"] unless @ev_hash["process"].nil?
-          @action= @ev_hash["action"]["id"] unless @ev_hash["action"].nil?
+          ["action", "rule", "process"].each do |att|
+            unless @ev_hash[att].nil?  
+              instance_variable_set("@#{att}_id", @ev_hash[att]["id"])
+              instance_variable_set("@#{att}_name", @ev_hash[att]["name"])
+            end
+          end  
+         
+
           @count= @ev_hash["count"] || 0
 
           @player_id=@actor_id

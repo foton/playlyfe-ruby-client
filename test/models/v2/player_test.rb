@@ -151,8 +151,7 @@ module PlaylyfeClient
       #skip #get /runtime/assets/players/player1  returning PNG image data
     end  
 
-    def test_get_all_activities
-
+    def test_get_all_events
       stub_player_events(PlaylyfeClient::Testing::ExpectedResponses.full_player2_events_array) do
         collection=@player.events
       

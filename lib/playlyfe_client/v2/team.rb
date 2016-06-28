@@ -13,9 +13,14 @@ module PlaylyfeClient
       def leaderboards
         @game.leaderboards.for_teams
       end
-
+      
+      #results are cached if start_time is nil (events for last 24 hours), otherwise direct call to Playlyfe is made
       def events(start_time=nil,end_time=nil)
-        @events ||= PlaylyfeClient::V2::EventCollection.new(game, game.connection.get_team_events_array(self.id,start_time, end_time), self)
+        if start_time.nil?
+          @events ||= PlaylyfeClient::V2::EventCollection.new(game, game.connection.get_team_events_array(self.id), self)
+        else
+          PlaylyfeClient::V2::EventCollection.new(game, game.connection.get_team_events_array(self.id,start_time, end_time), self)
+        end
       end
    
       private 

@@ -56,8 +56,13 @@ module PlaylyfeClient
         game.leaderboards.for_players
       end  
 
+      #results are cached if start_time is nil, otherwise, direct call to Playlyfe is made
       def events(start_time=nil,end_time=nil)
-        @events ||= PlaylyfeClient::V2::EventCollection.new(game, game.connection.get_player_events_array(self.id,start_time, end_time), self)
+        if start_time.nil?
+          @events ||= PlaylyfeClient::V2::EventCollection.new(game, game.connection.get_player_events_array(self.id), self)
+        else  
+          PlaylyfeClient::V2::EventCollection.new(game, game.connection.get_player_events_array(self.id, start_time, end_time), self)
+        end
       end
    
       private 
