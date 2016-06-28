@@ -36,8 +36,11 @@ module PlaylyfeClient
         end  
       end
       
-      def scores
-        @scores||=fill_scores
+      def scores(force_refill=false)
+        if (!defined?(@scores) || force_refill)
+          @scores=fill_scores
+        end
+        @scores  
       end
 
       def roles_in_team(team)
