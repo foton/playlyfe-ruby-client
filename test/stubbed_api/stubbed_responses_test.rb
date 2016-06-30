@@ -29,7 +29,6 @@ module PlaylyfeClient
         verify_hash(real_hash, stubbed_hash, "players_hash")
       end  
 
-
       def test_verify_teams_hash
         real_hash=connection.get_full_teams_hash
         stubbed_hash={}
@@ -131,7 +130,8 @@ module PlaylyfeClient
         #once_per_day_action should change only "test_points" metric, so we save "before value" and after this test we change it back to it
         original_test_points=(PlaylyfeClient::Testing::ExpectedResponses.full_profile_hash_for_player1["scores"].detect {|sc| sc["metric"]["id"] == "test_points"})["value"]
 
-        e=assert_raises(ActionRateLimitExceededError) do
+        e=assert_raises(PlaylyfeClient::ActionRateLimitExceededError) do
+
           real_response1=connection.post_play_action(once_per_day_action_id, player_id)
           #second call will not be definitelly first at this day
           real_response2=connection.post_play_action(once_per_day_action_id, player_id)

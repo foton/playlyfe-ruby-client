@@ -29,7 +29,7 @@ module PlaylyfeClient
           game.connection.post_play_action(action.id, self.id)
           @profile_hash= game.connection.get_full_player_profile_hash(self.id)
           @scores=fill_scores
-        rescue PlaylyfeClient::ActionRateLimitExceededError => e
+        rescue PlaylyfeClient::ActionRateLimitExceededError   => e
           unless game.ignore_rate_limit_errors  
             fail e
           end

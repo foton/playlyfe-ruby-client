@@ -12,6 +12,7 @@ module PlaylyfeClient
   class PlaylyfeClient::ActionRateLimitExceededError < PlaylyfeClient::ActionError; end
   class PlaylyfeClient::PlayerExistsError < PlaylyfeClient::PlayerError; end
   class PlaylyfeClient::CollectionFindOneIsNotSupportedError < PlaylyfeClient::Error; end
+  class PlaylyfeClient::ApiCallsLimitExceededError < PlaylyfeClient::Error; end
 
   class Error < StandardError
     attr_accessor :name, :message
@@ -33,6 +34,8 @@ module PlaylyfeClient
           err_class= PlaylyfeClient::ActionRateLimitExceededError
         elsif res_h['error'] == "player_exists"
           err_class= PlaylyfeClient::PlayerExistsError
+        elsif res_h['error'] == "plan_limit_exceeded"
+          err_class= PlaylyfeClient::ApiCallsLimitExceededError
               
         end  
       end  

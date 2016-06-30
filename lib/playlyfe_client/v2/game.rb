@@ -71,7 +71,7 @@ module PlaylyfeClient
           @title=game_hash["title"]
           @type=game_hash["type"]
           @timezone=game_hash["timezone"] #TODO converion to TZInfo::Timezone ? http://www.rubydoc.info/gems/tzinfo/frames
-          @created_at=Time.parse(game_hash["created"])
+          @created_at=game_hash["created"] ? Time.parse(game_hash["created"]) : nil
         end  
 
      

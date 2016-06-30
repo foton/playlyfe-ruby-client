@@ -34,6 +34,7 @@ module PlaylyfeClient
       @store = options[:store]
       @load = options[:load]
       @redirect_uri = options[:redirect_uri]
+      @skip_api_calls_limit_exceeded_error=options[:skip_api_calls_limit_exceeded_error] || false
       if @store.nil?
         @store = lambda { |token| puts 'Storing Token' }
       end
