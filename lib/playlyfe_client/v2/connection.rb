@@ -46,7 +46,7 @@ module PlaylyfeClient
       end  
 
       def get_full_players_hash
-        skip_errors_with({"data" => [], "total" => 0}) { get("/admin/players") }
+        skip_errors_with({"data" => [], "total" => 0}) { get("/admin/players", { limit: 1_000_000 } ) }
       end   
 
       def get_player_hash_array

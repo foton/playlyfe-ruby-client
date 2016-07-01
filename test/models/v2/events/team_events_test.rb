@@ -137,6 +137,32 @@ module PlaylyfeClient
       assert_equal ["Sergeant"], event.roles
     end  
 
+    def test_can_build_team_delete_event
+      team_delete_event_hash= {
+        "event" => "delete",
+        "timestamp" => "2016-07-01T07:06:11.768Z",
+        "team" => {
+          "id" => "team_57349f7b7d0ed66b0193101f",
+          "name" => "Team1 for RUby client"
+        },
+        "id" => "4ae7a380-3f5a-11e6-a085-2f5cce881c73"
+      }      
+
+      event=PlaylyfeClient::V2::TeamEvent::Base.build( team_delete_event_hash, @game)
+
+      assert event.kind_of?(PlaylyfeClient::V2::TeamEvent::TeamDeletedEvent)
+      
+      assert_equal nil, event.actor_id
+      assert_equal "", event.actor_alias
+      assert_equal nil, event.actor
+     
+      assert_equal "team_57349f7b7d0ed66b0193101f", event.team_id
+      assert_equal "Team1 for RUby client", event.team_name
+      assert_equal @game.teams.find("Team1 for RUby client"), event.team
+
+      assert_equal Time.utc(2016,7,1,7,6,11.768).to_f, event.timestamp.to_f
+      assert_equal 0, event.roles.size
+    end 
 
     private
     

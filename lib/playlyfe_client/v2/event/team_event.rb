@@ -8,14 +8,14 @@ module PlaylyfeClient
         attr_reader :roles, :changes
           
         def from_player
-          @from_player ||=game.players.find(from_player_id)
+          @from_player ||= (from_player_id.nil? ? nil : game.players.find(from_player_id) )
         end 
         alias_method :actor, :from_player
         alias_method :actor_id, :from_player_id
         alias_method :actor_alias, :from_player_alias
 
         def target_player 
-          @tagert_player=game.players.find(target_player_id)
+          @tagert_player||= (target_player_id.nil? ? nil : game.players.find(target_player_id) )
         end
         alias_method :inviter, :target_player  
         alias_method :invitee, :target_player  
@@ -33,7 +33,7 @@ module PlaylyfeClient
         alias_method :player_alias, :target_player_alias  
 
         def team
-          @team ||=game.teams.find(team_id)
+          @team ||=(team_id.nil? ? nil : game.teams.find(team_id))
         end 
        
         private
@@ -55,7 +55,9 @@ module PlaylyfeClient
               @from_player_id=team_or_player.id
               @from_player_alias=team_or_player.alias
             else
-              raise "cannot create actor/from_player from hash #{@ev_hash} and player #{team_or_player}"  
+              @from_player_id=nil
+              @from_player_alias=""
+              #raise "cannot create actor/from_player from hash #{@ev_hash} and player #{team_or_player}"  
             end
           else    
             @from_player_id=@ev_hash["actor"]["id"]
@@ -149,7 +151,7 @@ module PlaylyfeClient
           case ev_hash["event"] 
             when "create"
               klass= TeamCreatedEvent
-            when  "delete"
+            when "delete"
               klass= TeamDeletedEvent
             when "join"  
               klass= JoinedEvent
