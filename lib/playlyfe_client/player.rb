@@ -16,6 +16,10 @@ module PlaylyfeClient
     def play(action)
       false
     end
+
+    def reload!
+      nil
+    end 
     
     def scores
       {points: {} ,sets: {}, states: {}, compound: {}}

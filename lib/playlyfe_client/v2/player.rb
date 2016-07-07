@@ -24,17 +24,15 @@ module PlaylyfeClient
         enabled
       end  
 
-      def play(action)
-        begin
-          game.connection.post_play_action(action.id, self.id)
-          @profile_hash= game.connection.get_full_player_profile_hash(self.id)
-          @scores=fill_scores
-        rescue PlaylyfeClient::ActionRateLimitExceededError   => e
-          unless game.ignore_rate_limit_errors  
-            fail e
-          end
-        end  
+      def play(action, variables={})
+        action.play_by(self, variables)
+        reload!
       end
+
+      def reload!
+        @profile_hash= game.connection.get_full_player_profile_hash(self.id)
+        @scores=fill_scores
+      end  
       
       def scores(force_refill=false)
         if (!defined?(@scores) || force_refill)

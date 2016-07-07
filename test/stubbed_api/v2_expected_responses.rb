@@ -555,6 +555,9 @@ module PlaylyfeClient
       end
 
       def self.set_test_points_to_value_action_hash
+
+
+
         {
           "id" => "set_test_points_to_value",
           "name" => "set_test_points_to_value",
@@ -564,6 +567,12 @@ module PlaylyfeClient
               "name" => "tst_p",
               "required" => true,
               "type" => "int"
+            },
+            {
+              "default" => "default_string_value",
+              "name" => "useless_variable",
+              "required" => false,
+              "type" => "string"
             }
           ],
           "rewards" => [
@@ -1304,6 +1313,292 @@ module PlaylyfeClient
           },
           level_up_event6_hash
         ]
+      end
+
+      def self.set_test_points_action_play_request
+        #as player1  to /runtime/actions/set_test_points_to_value/play
+        { 
+          "variables" => {
+            "tst_p" => 33,
+            "useless_variable" => "new_stuff"
+          }
+        }
+      end  
+ 
+      def self.set_test_points_action_played_response
+        {
+          "actions" => [
+            {
+              "description" => "Just Action numero uno",
+              "id" => "action1",
+              "name" => "Action1 Name",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "test_points",
+                    "type" => "point",
+                    "name" => "test points"
+                  },
+                  "value" => "2",
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 10
+            },
+            {
+              "description" => "Action 2 is the second action to play. Adds plus_points and test_points.",
+              "id" => "action2",
+              "name" => "Action2 Name",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "plus_points",
+                    "type" => "point",
+                    "name" => "plus_points"
+                  },
+                  "value" => "1",
+                  "verb" => "add",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "test_points",
+                    "type" => "point",
+                    "name" => "test points"
+                  },
+                  "value" => "1",
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 2
+            },
+            {
+              "id" => "get_hammer",
+              "name" => "get_hammer",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Hammer" => "1"
+                  },
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 2
+            },
+            {
+              "id" => "get_hammer_screwdriver_and_plus_point",
+              "name" => "get_hammer_screwdriver_and_plus_point",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Hammer" => "1"
+                  },
+                  "verb" => "add",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "plus_points",
+                    "type" => "point",
+                    "name" => "plus_points"
+                  },
+                  "value" => "1",
+                  "verb" => "add",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Screwdriver" => "1"
+                  },
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 149
+            },
+            {
+              "description" => "For reverting action \"get_hammer_screwdriver_and_plus_point\".",
+              "id" => "loose_hammer_screwdriver_and_plus_point",
+              "name" => "loose_hammer_screwdriver_and_plus_point",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Hammer" => "1"
+                  },
+                  "verb" => "remove",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "toolbox",
+                    "type" => "set",
+                    "name" => "Toolbox"
+                  },
+                  "value" => {
+                    "Screwdriver" => "1"
+                  },
+                  "verb" => "remove",
+                  "probability" => 1
+                },
+                {
+                  "metric" => {
+                    "id" => "plus_points",
+                    "type" => "point",
+                    "name" => "plus_points"
+                  },
+                  "value" => "1",
+                  "verb" => "remove",
+                  "probability" => 1
+                }
+              ],
+              "count" => 133
+            },
+            {
+              "id" => "only_one_time_per_day_action",
+              "name" => "only one time per day action",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "test_points",
+                    "type" => "point",
+                    "name" => "test points"
+                  },
+                  "value" => "1",
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 16
+            },
+            {
+              "description" => "add 1 plus_point",
+              "id" => "plus_action",
+              "name" => "Plus action",
+              "variables" => [],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "plus_points",
+                    "type" => "point",
+                    "name" => "plus_points"
+                  },
+                  "value" => "1",
+                  "verb" => "add",
+                  "probability" => 1
+                }
+              ],
+              "count" => 1
+            },
+            {
+              "id" => "set_test_points_to_value",
+              "name" => "set_test_points_to_value",
+              "variables" => [
+                {
+                  "default" => 0,
+                  "name" => "tst_p",
+                  "required" => true,
+                  "type" => "int"
+                },
+                {
+                  "default" => "default_string_value",
+                  "name" => "useless_variable",
+                  "required" => false,
+                  "type" => "string"
+                }
+              ],
+              "rewards" => [
+                {
+                  "metric" => {
+                    "id" => "test_points",
+                    "type" => "point",
+                    "name" => "test points"
+                  },
+                  "value" => "$vars['tst_p'] ",
+                  "verb" => "set",
+                  "probability" => 1
+                }
+              ],
+              "count" => 77
+            }
+          ],
+          "events" => {
+            "local" => [
+              {
+                "event" => "action",
+                "actor" => {
+                  "id" => "player1",
+                  "alias" => "player1_alias"
+                },
+                "action" => {
+                  "id" => "set_test_points_to_value",
+                  "name" => "set_test_points_to_value",
+                  "vars" => {
+                    "tst_p" => 33,
+                    "useless_variable" => "new_stuff"
+                  }
+                },
+                "count" => 1,
+                "changes" => [
+                  {
+                    "metric" => {
+                      "id" => "test_points",
+                      "name" => "test points",
+                      "type" => "point"
+                    },
+                    "delta" => {
+                      "old" => "24",
+                      "new" => "33"
+                    }
+                  },
+                  {
+                    "metric" => {
+                      "id" => "compound_metric",
+                      "name" => "Compound metric",
+                      "type" => "compound"
+                    },
+                    "delta" => {
+                      "old" => "23",
+                      "new" => "32"
+                    }
+                  }
+                ],
+                "timestamp" => "2016-07-07T09:15:22.541Z",
+                "scopes" => [],
+                "id" => "55343dd0-4423-11e6-832e-3f5c3b3feb58"
+              }
+            ],
+            "global" => []
+          }
+        }
       end
 
     end  #end of class

@@ -109,7 +109,6 @@ module PlaylyfeClient
         connection.post_play_action(revert_action_id, player_id)
 
         verify_hash(real_response, stubbed_response, "play_action_hash")
-
       end 
 
       def test_verify_player2_activity_feed_array
@@ -128,7 +127,7 @@ module PlaylyfeClient
         player_id="player1"
         
         #once_per_day_action should change only "test_points" metric, so we save "before value" and after this test we change it back to it
-        original_test_points=(PlaylyfeClient::Testing::ExpectedResponses.full_profile_hash_for_player1["scores"].detect {|sc| sc["metric"]["id"] == "test_points"})["value"]
+        original_test_points=get_test_points_for_player1
 
         e=assert_raises(PlaylyfeClient::ActionRateLimitExceededError) do
 
@@ -185,6 +184,18 @@ module PlaylyfeClient
         
         verify_array(real_response, stubbed_response, "get_team_activity/events_feed_array")
       end  
+
+      def test_verify_play_action_set_test_points_to_value
+        player_id="player1"
+        original_test_points=get_test_points_for_player1(true).to_i
+        new_test_points=original_test_points+10
+
+        real_response=connection.post_play_action(set_test_points_action_id, player_id, {variables: {tst_p: new_test_points}})
+        assert_equal new_test_points, get_test_points_for_player1(true).to_i
+
+        real_response=connection.post_play_action(set_test_points_action_id, player_id, {variables: {tst_p: original_test_points}})
+        assert_equal original_test_points, get_test_points_for_player1(true).to_i
+      end 
 
 
       private
@@ -261,6 +272,15 @@ module PlaylyfeClient
         def actions_triggered_during_testing
           [action_id, revert_action_id, once_per_day_action_id, set_test_points_action_id]
         end
+
+        def get_test_points_for_player1(make_api_call=false)
+          if make_api_call
+            profile_hash=connection.get_full_player_profile_hash("player1")
+          else 
+            profile_hash=PlaylyfeClient::Testing::ExpectedResponses.full_profile_hash_for_player1
+          end
+          (profile_hash["scores"].detect {|sc| sc["metric"]["id"] == "test_points"})["value"]
+        end  
     end
   end
 end      

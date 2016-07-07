@@ -5,6 +5,10 @@ module PlaylyfeClient
     class Action < PlaylyfeClient::Action
       attr_reader :id, :name, :description, :rewards, :variables, :times_played
 
+      def required_variables
+        @required_variables||=variables.select {|v| v["required"]}
+      end  
+
       private
 
         def initialize(action_hash, game)
@@ -51,6 +55,47 @@ module PlaylyfeClient
           end  
           items
         end
+
+        def fail_if_variables_are_wrong  
+          return true if self.variables.empty?
+
+          missing_variables=[]
+          wrong_variables=[]
+
+          self.variables.each do |v|
+            vfp=@variables_for_play[v["name"]] || @variables_for_play[v["name"].to_sym]
+            if vfp.nil? 
+              if self.required_variables.include?(v)
+                missing_variables << v
+              end  
+            else
+              unless check_type_of_variable_for_play(v,vfp)  
+                wrong_variables << [v,vfp]
+              end
+            end    
+          end  
+
+          unless missing_variables.empty?
+            fail PlaylyfeClient::ActionPlayedWithoutRequiredVariables.new("{\"error\": \"missing_required_variables\", \"error_description\": \"The Action '#{self.id}' can only be played with required variables [#{self.required_variables.collect {|v| "'#{v["name"]}'"}.join(", ")}].\"}", "") 
+          end
+          
+          unless wrong_variables.empty?  
+            list=wrong_variables.collect {|wv| "'#{wv.first["name"]}[#{wv.first["type"]}] => #{wv.last}'"}
+            fail PlaylyfeClient::ActionPlayedWithWrongVariables.new("{\"error\": \"variables_have_wrong_types\", \"error_description\": \"Given variables for action '#{self.id}' have wrong types [#{list.join(", ")}].\"}", "") 
+          end  
+        end  
+
+        def check_type_of_variable_for_play(v,vfp)  
+          case v["type"] 
+          when "int"
+            vfp.kind_of?(Integer)
+          when "string"
+            vfp.kind_of?(String)
+          else
+            false
+          end  
+        end  
+
 
     end  
   end  

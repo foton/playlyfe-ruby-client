@@ -71,6 +71,66 @@ module PlaylyfeClient
       assert_equal expected_after_scores[:compounds][:compound_metric], real_after_scores[:compounds][:compound_metric]
     end  
 
+    def test_action_knows_its_variables
+      action_id= "get_hammer_screwdriver_and_plus_point"
+      action=@game.available_actions.find(action_id)
+      assert_equal [], action.variables
+      assert_equal [], action.required_variables
+
+      action_id= "set_test_points_to_value"
+      expected_variables_array= [{ "default" => 0, "name" => "tst_p", "required" => true,"type" => "int" },
+            { "default" => "default_string_value", "name" => "useless_variable", "required" => false, "type" => "string" }
+          ]
+      action=@game.available_actions.find(action_id)
+      assert_equal 2, action.variables.size
+      assert_equal expected_variables_array, action.variables
+      assert_equal 1, action.required_variables.size
+      assert_equal "tst_p", action.required_variables.first["name"]
+    end  
+
+    def test_do_not_play_action_without_required_variables
+      action_id= "set_test_points_to_value"
+      action=@game.available_actions.find(action_id)
+      
+      #should not hit connection, this is security stub
+      stub_play_action(action_id, PlaylyfeClient::Testing::ExpectedResponses.full_play_action_hammer_screwdriver_and_plus_point_hash) do
+        e=assert_raises(PlaylyfeClient::ActionPlayedWithoutRequiredVariables) { action.play_by(@player) }
+  
+        expected_error=PlaylyfeClient::ActionPlayedWithoutRequiredVariables.new("{\"error\": \"missing_required_variables\", \"error_description\": \"The Action '#{action_id}' can only be played with required variables ['tst_p'].\"}", "") 
+        assert_equal expected_error.name, e.name
+        assert_equal expected_error.message.gsub(/access_token=\w*/,""), e.message.gsub(/access_token=\w*/,"")
+      end   
+    end  
+
+    def test_do_not_play_action_with_variables_of_wrong_types
+      action_id= "set_test_points_to_value"
+      action=@game.available_actions.find(action_id)
+      
+      #should not hit connection, this is security stub
+      stub_play_action(action_id, PlaylyfeClient::Testing::ExpectedResponses.full_play_action_hammer_screwdriver_and_plus_point_hash) do
+        e=assert_raises(PlaylyfeClient::ActionPlayedWithWrongVariables) { action.play_by(@player, {tst_p: 12, useless_variable: 1}) }
+
+        expected_error=PlaylyfeClient::ActionPlayedWithWrongVariables.new("{\"error\": \"variables_have_wrong_types\", \"error_description\": \"Given variables for action '#{action_id}' have wrong types ['useless_variable[string] => 1'].\"}", "") 
+        assert_equal expected_error.name, e.name
+        assert_equal expected_error.message.gsub(/access_token=\w*/,""), e.message.gsub(/access_token=\w*/,"")
+      end   
+    end  
+
+    def test_play_action_with_variables
+      action_id= "set_test_points_to_value"
+      action=@game.available_actions.find(action_id)
+
+      mock = MiniTest::Mock.new
+      args=[:post, "/runtime/actions/#{action_id}/play", {player_id: @player.id}, PlaylyfeClient::Testing::ExpectedResponses.set_test_points_action_play_request,false]
+      mock.expect(:call, {}, args)      
+      
+      @game.connection.stub(:api, mock) do
+        action.play_by(@player, PlaylyfeClient::Testing::ExpectedResponses.set_test_points_action_play_request["variables"]) 
+      end  
+      mock.verify
+    end 
+
+
     def test_apply_rewards_on_scores
       action_id= "get_hammer_screwdriver_and_plus_point"
       action=@game.available_actions.find(action_id)
@@ -106,7 +166,7 @@ module PlaylyfeClient
       stubbed_response= PlaylyfeClient::ActionRateLimitExceededError.new("{\"error\": \"rate_limit_exceeded\", \"error_description\": \"The Action '#{action_id}' can only be triggered 1 times every day\"}", "") 
 
       #DEFAULT: @game.ignore_rate_limit_errors=false
-      connection.stub(:post_play_action, -> (action_id, player_id) { raise stubbed_response }) do
+      connection.stub(:post_play_action, -> (action_id, player_id, body) { raise stubbed_response }) do
         e=assert_raises(PlaylyfeClient::ActionRateLimitExceededError) { action.play_by(@player) }
   
         expected_error=stubbed_response
@@ -124,7 +184,7 @@ module PlaylyfeClient
       #NON-DEFAULT just pretend no action was played
       @game.ignore_rate_limit_errors=true
 
-      connection.stub(:post_play_action, -> (action_id, player_id) { raise stubbed_response }) do
+      connection.stub(:post_play_action, -> (action_id, player_id, body) { raise stubbed_response }) do
         #e=assert_raises(PlaylyfeClient::ActionRateLimitExceededError) { action.play_by(@player) }
         #nothing should be raised
         action.play_by(@player)

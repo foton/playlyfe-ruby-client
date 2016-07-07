@@ -13,6 +13,8 @@ module PlaylyfeClient
   class PlaylyfeClient::PlayerExistsError < PlaylyfeClient::PlayerError; end
   class PlaylyfeClient::CollectionFindOneIsNotSupportedError < PlaylyfeClient::Error; end
   class PlaylyfeClient::ApiCallsLimitExceededError < PlaylyfeClient::Error; end
+  class PlaylyfeClient::ActionPlayedWithoutRequiredVariables < PlaylyfeClient::ActionError; end
+  class PlaylyfeClient::ActionPlayedWithWrongVariables < PlaylyfeClient::ActionError; end
 
   class Error < StandardError
     attr_accessor :name, :message
