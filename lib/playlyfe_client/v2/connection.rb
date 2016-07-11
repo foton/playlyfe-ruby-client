@@ -58,7 +58,7 @@ module PlaylyfeClient
       end
         
       def get_full_teams_hash
-        skip_errors_with({"data" => [], "total" => 0}) { get("/admin/teams") }
+        skip_errors_with({"data" => [], "total" => 0}) { get("/admin/teams", { limit: 1_000_000 }) }
       end  
       
       def get_team_hash_array
@@ -82,7 +82,7 @@ module PlaylyfeClient
       end  
 
       def get_full_leaderboard_hash(leaderboard_id, cycle="alltime", player_id=dummy_player_id)
-        skip_errors_with({"data" => [], "total" => 0}) { get("/runtime/leaderboards/#{leaderboard_id}", {cycle: cycle, player_id: player_id}) }
+        skip_errors_with({"data" => [], "total" => 0}) { get("/runtime/leaderboards/#{leaderboard_id}", {cycle: cycle, player_id: player_id, limit: 1_000_000 }) }
       end 
 
       def get_full_all_actions_array(player_id=dummy_player_id)
